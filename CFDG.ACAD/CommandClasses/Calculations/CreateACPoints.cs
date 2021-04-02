@@ -12,19 +12,24 @@ namespace CFDG.ACAD.CommandClasses.Calculations
         [CommandMethod("CreateACPoints", CommandFlags.Modal | CommandFlags.NoPaperSpace)]
         public void InitialCommand()
         {
-            Document AcDoc = AcApplication.DocumentManager.MdiActiveDocument;
-            Editor AcEdit = AcDoc.Editor;
-            Database AcDb = AcDoc.Database;
+            (Document _, Editor AcEditor) = UserInput.GetCurrentDocSpace();
 
             while (true)
             {
                 Point3d point = UserInput.SelectPointInDoc("Please select a point: ");
-
-                if (point.X == -1 && point.Y == -1)
+                AcEditor.WriteMessage($"Value of entry: [{point.X:F3}', {point.Y:F3}', {point.Z:F3}'].\n");
+                if (point == new Point3d(-1,-1,-1))
                 {
                     return;
                 }
-                UserInput.AddPointToDrawing(point, BlockTableRecord.ModelSpace);
+                if (point == new Point3d(0, 0, 0))
+                {
+                    AcEditor.WriteMessage("Not a valid point.\n");
+                }
+                else
+                {
+                    UserInput.AddPointToDrawing(point, BlockTableRecord.ModelSpace);
+                }
             }
         }
     }
