@@ -130,6 +130,7 @@ namespace CFDG.ACAD
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Computations", "Computations",
                         Ribbon.CreateLargeButton("Group Comp\nPoints", "GroupPoints", Properties.Resources.Create_PG),
+                        Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Export_PG),
                         Ribbon.RibbonSpacer,
                         Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
                             Ribbon.CreateSmallButton("Slope From Points", "SlopeFromPoints","Calculate slope by selecting two points.", Properties.Resources.SlopeByPoints),

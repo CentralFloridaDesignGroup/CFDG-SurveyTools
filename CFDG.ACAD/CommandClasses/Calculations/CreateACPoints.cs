@@ -17,6 +17,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             while (true)
             {
                 Point3d point = UserInput.SelectPointInDoc("Please select a point: ");
+                AcEditor.WriteMessage($"Raw value: {point}");
                 AcEditor.WriteMessage($"Value of entry: [{point.X:F3}', {point.Y:F3}', {point.Z:F3}'].\n");
                 if (point == new Point3d(-1,-1,-1))
                 {

@@ -43,41 +43,28 @@ namespace CFDG.UI.windows.Calculations
 
         private void CustomEntryKeyPress(object sender, KeyEventArgs args)
         {
-           TextBox tbox = (TextBox)sender;
+           /*TextBox tbox = (TextBox)sender;
             if (IsValidFileName(tbox.Text))
             {
                 tbox.BorderBrush = Brushes.Black;
                 return;
             }
-            tbox.BorderBrush = Brushes.Red;
+            tbox.BorderBrush = Brushes.Red;*/
         }
 
         private void CmdCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
-            this.Close();
-        }
-
-        private void CmdSubmit_Click(object sender, RoutedEventArgs e)
-        {
-            if (LbPointGroups.SelectedItems.Count < 1)
+            InitializeComponent();
+            /*this.pointGroups = pointGroups;
+            foreach (ObjectId pointGroupId in pointGroups)
             {
-                return;
+                PointGroup group = (PointGroup)pointGroupId.GetObject(OpenMode.ForRead);
+                if (true)
+                {
+                    LbPointGroups.Items.Add(group.Name);
+                }
             }
-        }
-
-        private bool IsValidFileName(string filename)
-        {
-            Regex containsABadCharacter = new Regex("[" + Regex.Escape(new string(System.IO.Path.GetInvalidPathChars())) + "]");
-
-            if (containsABadCharacter.IsMatch(filename)) { return false; };
-
-            return true;
-        }
-
-        private void ConfirmPointGroups(object sender, RoutedEventArgs e)
-        {
-            
+            this.DialogResult = false;*/
         }
     }
 }

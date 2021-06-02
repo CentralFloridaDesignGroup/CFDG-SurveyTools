@@ -76,7 +76,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button x:Name="CmdSubmit" Content="Export Points" Height="25" Margin="0 0 10 0" Grid.Column="0"
-                            Click="CmdSubmit_Click"/>
+                            />
                     <Button x:Name="CmdCancel" Content="Cancel" Height="25" Margin="10 0 0 0" Grid.Column="1"
                             Click="CmdCancel_Click" />
                 </Grid>
