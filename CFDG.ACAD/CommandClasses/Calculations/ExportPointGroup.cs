@@ -34,36 +34,49 @@ namespace CFDG.ACAD.CommandClasses.Calculations
 
         private void GetPointGroupCollection()
         {
-            PointGroupCollection pgCollection;
-            using (Transaction AcTran = AcApplication.DocumentManager.MdiActiveDocument.Database.TransactionManager.StartTransaction())
+            (Document AcDocument, Editor AcEditor) = UserInput.GetCurrentDocSpace();
+            List<string> groups = GetPointGroupList();
+
+            if (!AcDocument.IsNamedDrawing)
             {
-                (Document AcDocument, Editor AcEditor) = UserInput.GetCurrentDocSpace();
+                AcEditor.WriteMessage("\nThe file has not been saved. Cannot export points until the file has the job number in its name.");
+                return;
+            }
 
-                if (!AcDocument.IsNamedDrawing)
-                {
-                    AcEditor.WriteMessage("\nThe file has not been saved. Cannot export points until the file has the job number in its name.");
-                    return;
-                }
+            if (string.IsNullOrEmpty(Functions.DocumentProperties.GetJobNumber(AcDocument)))
+            {
+                AcEditor.WriteMessage("\nNo job number was detected for the project.");
+                return;
+            }
 
-                if (string.IsNullOrEmpty(Functions.DocumentProperties.GetJobNumber(AcDocument)))
-                {
-                    AcEditor.WriteMessage("\nNo job number was detected for the project.");
-                    return;
-                }
 
-                pgCollection = CivilApp.ActiveDocument.PointGroups;
-                List<string> groups = new List<string> { };
 
+            var exportPointGroup = new UI.windows.Calculations.ExportPointGroup(groups, AcDocument);
+            AcApplication.ShowModelessWindow(exportPointGroup);
+        }
+
+        private static List<string> GetPointGroupList()
+        {
+            (Document AcDocument, Editor AcEditor) = UserInput.GetCurrentDocSpace();
+            var acDatabase = AcDocument.Database;
+            var groups = new List<string> { };
+
+
+            using (Transaction tr = acDatabase.TransactionManager.StartTransaction())
+            {
+                var pgCollection = CivilApp.ActiveDocument.PointGroups;
                 foreach (ObjectId group in pgCollection)
                 {
                     PointGroup pointGroup = (PointGroup)group.GetObject(OpenMode.ForRead);
-                    if (pointGroup.Name.ToLower() != "_all points" && pointGroup.Name.ToLower() != "no display") { groups.Add(pointGroup.Name); }
+                    if (pointGroup.Name.ToLower() != "_all points" && pointGroup.Name.ToLower() != "no display") 
+                    { 
+                        groups.Add(pointGroup.Name); 
+                    }
                 }
-
-                UI.windows.Calculations.ExportPointGroup exportPointGroup = new UI.windows.Calculations.ExportPointGroup(groups, Functions.DocumentProperties.GetJobNumber(AcDocument));
-                AcApplication.ShowModalWindow(exportPointGroup);
-                AcTran.Commit();
+                tr.Commit();
             }
+
+            return groups;
         }
     }
 }

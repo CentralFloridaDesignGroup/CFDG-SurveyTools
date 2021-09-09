@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using System.Text.RegularExpressions;
+using Autodesk.AutoCAD.ApplicationServices;
 
 namespace CFDG.UI.windows.Calculations
 {
@@ -24,21 +25,22 @@ namespace CFDG.UI.windows.Calculations
     {
         public Models.ExportPointGroupModel PointGroupModel { get; set; }
 
-        public ExportPointGroup(List<string> pointGroups, string path)
+        private Document currentDoc { get; set; }
+
+        public ExportPointGroup(List<string> pointGroups, Document document)
         {
             InitializeComponent();
             PointGroupModel = new Models.ExportPointGroupModel();
-            LbPointGroups.Items.Add("!All Points");
-            LbPointGroups.Items.Add("!Comp Points");
+            CmbPointGroups.ItemsSource = pointGroups;
             foreach (string group in pointGroups)
             {
-                LbPointGroups.Items.Add(group);
+                //LbPointGroups.Items.Add(group);
             }
-            LbPointGroups.Items.IsLiveSorting = true;
-            string jobNumber = API.JobNumber.Parse(path, API.JobNumberFormats.ShortHyphan);
-            this.Title = $"Export Point Groups - {jobNumber}";
+            //LbPointGroups.Items.IsLiveSorting = true;
+            string jobNumber = API.JobNumber.Parse(document.Name, API.JobNumberFormats.ShortHyphan);
+            this.Title = $"Export Point - {jobNumber}";
 
-            PointGroupModel.FileName = API.JobNumber.GetPath(jobNumber);
+            currentDoc = document;
         }
 
         private void CustomEntryKeyPress(object sender, KeyEventArgs args)
@@ -54,17 +56,13 @@ namespace CFDG.UI.windows.Calculations
 
         private void CmdCancel_Click(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
-            /*this.pointGroups = pointGroups;
-            foreach (ObjectId pointGroupId in pointGroups)
-            {
-                PointGroup group = (PointGroup)pointGroupId.GetObject(OpenMode.ForRead);
-                if (true)
-                {
-                    LbPointGroups.Items.Add(group.Name);
-                }
-            }
-            this.DialogResult = false;*/
+            DialogResult = false;
+            Close();
+        }
+
+        private void CmdSelectPoints_Click(object sender, RoutedEventArgs e)
+        {
+            currentDoc.SendStringToExecute("._getcogopoint ", false, false, true);
         }
     }
 }

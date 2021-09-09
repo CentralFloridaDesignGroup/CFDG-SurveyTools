@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CFDG.UI.windows.Calculations"
         mc:Ignorable="d"
-        Title="Export Point Group" Height="550" Width="400"
+        Title="Export Point Group" Height="460" Width="300"
         FontSize="12" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Button">
@@ -24,17 +24,33 @@
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="5"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <ListBox x:Name="LbPointGroups" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" SelectionMode="Extended"/>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
+            <TextBlock Text="Point Filter:" Margin="10 0 10 5" FontWeight="Bold"/>
+            <RadioButton x:Name="RbAllPoints" Content="All Points" Margin="15 5"/>
+            <RadioButton x:Name="RbCalcPoints" Content="All Calculation Points" Margin="15 5"/>
+            <RadioButton x:Name="RbPointGroup" Margin="15 5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" IsChecked="True">
+                <ComboBox x:Name="CmbPointGroups" IsEnabled="{Binding IsChecked, ElementName=RbPointGroup}"/>
+            </RadioButton>
+            <RadioButton x:Name="RbPointSelection" Margin="15 5"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Center">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <Button x:Name="CmdSelectPoints" Content="S" Height="24" Width="24" IsEnabled="{Binding IsChecked, ElementName=RbPointSelection}"
+                            Click="CmdSelectPoints_Click"/>
+                    <Label x:Name="LblPointsSelected" Content="0 point(s) selected."/>
+                </StackPanel>
+            </RadioButton>
+        </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch">
             <TextBlock Text="Export Location:" Margin="10 0 10 5" FontWeight="Bold"/>
             <RadioButton x:Name="RbProjectCompFolder" Margin="15 5" IsChecked="True">Project's Comp Folder</RadioButton>
@@ -54,7 +70,7 @@
                 </Grid>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Stretch">
+        <StackPanel Orientation="Vertical" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch">
             <TextBlock Text="Export Name:" Margin="10 0 10 5" FontWeight="Bold"/>
             <RadioButton x:Name="RbAutoGenName" Margin="15 5" IsChecked="True">Automatic Name</RadioButton>
             <RadioButton x:Name="RbCustomName" Margin="15 5" IsEnabled="False">Custom Name</RadioButton>

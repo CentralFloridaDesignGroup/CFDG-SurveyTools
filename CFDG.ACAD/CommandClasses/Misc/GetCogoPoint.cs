@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autodesk.AutoCAD.ApplicationServices;
+﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
-using CFDG.API;
-using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace CFDG.ACAD.CommandClasses.Misc
 {
@@ -21,13 +14,13 @@ namespace CFDG.ACAD.CommandClasses.Misc
         public void InitialCommand()
         {
             (_, Editor acEditor) = UserInput.GetCurrentDocSpace();
-            var pointId = selectPoint();
+            ObjectId pointId = selectPoint();
             if (pointId == ObjectId.Null)
             {
                 acEditor.WriteMessage("The point did not have a valid object id. Please run the AUDIT command.\n");
                 return;
             }
-            var cogoPoint = GetCogoByID(pointId); 
+            CogoPoint cogoPoint = GetCogoByID(pointId);
             if (cogoPoint == null)
             {
                 acEditor.WriteMessage("Could not find a point, please report this issue.\n");
@@ -65,7 +58,7 @@ namespace CFDG.ACAD.CommandClasses.Misc
             var acPSO = new PromptSelectionOptions
             {
                 SingleOnly = true,
-                SinglePickInSpace = true                
+                SinglePickInSpace = true
             };
             PromptSelectionResult acPSR;
 
@@ -75,7 +68,7 @@ namespace CFDG.ACAD.CommandClasses.Misc
                 acEditor.WriteMessage("The operation was cancelled by the user.\n");
                 return ObjectId.Null;
             }
-            var objectId = acPSR.Value[0].ObjectId;
+            ObjectId objectId = acPSR.Value[0].ObjectId;
             return objectId;
         }
     }
