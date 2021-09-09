@@ -119,7 +119,7 @@ namespace CFDG.ACAD
                     Ribbon.CreatePanel("Project Management", "ProjectManagement",
                     Ribbon.CreateLargeSplitButton(
                         Ribbon.CreateLargeButton("Open\nFolder", "OpenProjectFolder", Properties.Resources.folder),
-                        Ribbon.CreateLargeButton("Open Comp\nFolder", "OpenCompFolder", Properties.Resources.folder, Properties.Resources.overlay_edit),
+                        Ribbon.CreateLargeButton("Open Calc\nFolder", "OpenCompFolder", Properties.Resources.folder, Properties.Resources.overlay_edit),
                         Ribbon.CreateLargeButton("Open Field\nData Folder", "OpenFieldDataFold", Properties.Resources.folder, Properties.Resources.overlay_field),
                         Ribbon.CreateLargeButton("Open Submittal\nFolder", "OpenSubmittalFolder", Properties.Resources.folder, Properties.Resources.overlay_export)
                         )

@@ -116,6 +116,7 @@
     <Compile Include="CommandClasses\Calculations\CreateACPoints.cs" />
     <Compile Include="CommandClasses\Calculations\ExportPointGroup.cs" />
     <Compile Include="CommandClasses\Calculations\GroupPoints.cs" />
+    <Compile Include="CommandClasses\Misc\GetCogoPoint.cs" />
     <Compile Include="Extensions\PointGroupExtensions.cs" />
     <Compile Include="Interfaces\ICommandMethod.cs" />
     <Compile Include="CommandClasses\Calculations\MeasureDown.cs" />
