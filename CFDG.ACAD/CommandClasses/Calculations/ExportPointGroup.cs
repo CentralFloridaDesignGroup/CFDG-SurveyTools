@@ -52,7 +52,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
 
 
             var exportPointGroup = new UI.windows.Calculations.ExportPointGroup(groups, AcDocument);
-            AcApplication.ShowModelessWindow(exportPointGroup);
+            AcApplication.ShowModalWindow(exportPointGroup);
         }
 
         private static List<string> GetPointGroupList()
