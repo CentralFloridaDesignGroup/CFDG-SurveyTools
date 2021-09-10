@@ -15,6 +15,8 @@ using Autodesk.Civil.DatabaseServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using System.Text.RegularExpressions;
 using Autodesk.AutoCAD.ApplicationServices;
+using System.Diagnostics;
+using Autodesk.AutoCAD.EditorInput;
 
 namespace CFDG.UI.windows.Calculations
 {
@@ -37,7 +39,8 @@ namespace CFDG.UI.windows.Calculations
                 //LbPointGroups.Items.Add(group);
             }
             //LbPointGroups.Items.IsLiveSorting = true;
-            string jobNumber = API.JobNumber.Parse(document.Name, API.JobNumberFormats.ShortHyphan);
+            var filename = System.IO.Path.GetFileNameWithoutExtension(document.Name);
+            string jobNumber = API.JobNumber.Parse(filename, API.JobNumberFormats.ShortHyphan);
             this.Title = $"Export Point - {jobNumber}";
 
             currentDoc = document;
@@ -62,7 +65,35 @@ namespace CFDG.UI.windows.Calculations
 
         private void CmdSelectPoints_Click(object sender, RoutedEventArgs e)
         {
-            currentDoc.SendStringToExecute("._getcogopoint ", false, false, true);
+            var objectIds = GetPoint(true);
+            LblPointsSelected.Content = $"{objectIds.Count} point{(objectIds.Count == 1 ? '\0' : 's')} selected";
+        }
+
+        public List<ObjectId> GetPoint(bool multipleSelections)
+        {
+            Document acDocument = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Editor acEditor = acDocument.Editor;
+            List<ObjectId> pointIds = new List<ObjectId> { };
+
+            bool firstPoint = true;
+
+            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+
+            using (acEditor.StartUserInteraction(this))
+            using (acDocument.LockDocument())
+            {
+                var pointIdList = API.ACAD.GetCogoPoint.selectPoint(true);
+                foreach (var id in pointIdList)
+                {
+                    if (!pointIds.Contains(id))
+                    {
+                        pointIds.Add(id);
+                    }
+                }
+                firstPoint = false;
+            }
+
+            return pointIds;
         }
     }
 }
