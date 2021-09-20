@@ -26,6 +26,7 @@ namespace CFDG.UI.windows.Calculations
     public partial class ExportPointGroup : Window
     {
         public Models.ExportPointGroupModel PointGroupModel { get; set; }
+        public API.ACAD.CogoExporter Exporter { get; set; }
 
         private Document currentDoc { get; set; }
         private static List<ObjectId> PointsToExport { get; set; }
@@ -45,6 +46,7 @@ namespace CFDG.UI.windows.Calculations
             this.Title = $"Export Point - {jobNumber}";
 
             currentDoc = document;
+            Exporter = new API.ACAD.CogoExporter();
         }
 
         private void CustomEntryKeyPress(object sender, KeyEventArgs args)
@@ -74,6 +76,7 @@ namespace CFDG.UI.windows.Calculations
             }
             PointsToExport = objectIds;
             LblPointsSelected.Content = $"{PointsToExport.Count} point{(PointsToExport.Count == 1 ? '\0' : 's')} selected";
+            Exporter.AddPointRange(objectIds);
         }
 
         public List<ObjectId> GetPoint(bool multipleSelections)
@@ -81,8 +84,6 @@ namespace CFDG.UI.windows.Calculations
             Document acDocument = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Editor acEditor = acDocument.Editor;
             List<ObjectId> pointIds = new List<ObjectId> { };
-
-            bool firstPoint = true;
 
             Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
 
@@ -97,7 +98,6 @@ namespace CFDG.UI.windows.Calculations
                         pointIds.Add(id);
                     }
                 }
-                firstPoint = false;
             }
 
             return pointIds;

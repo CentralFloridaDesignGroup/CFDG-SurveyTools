@@ -60,7 +60,7 @@ namespace CFDG.ACAD
         {
             (_, Editor AcEditor) = GetCurrentDocSpace();
 
-            if (VerifyZenthValues(false))
+            if (VerifyZenthValues(true))
             {
                 var ppo = new PromptPointOptions($"\n{message}")
                 {

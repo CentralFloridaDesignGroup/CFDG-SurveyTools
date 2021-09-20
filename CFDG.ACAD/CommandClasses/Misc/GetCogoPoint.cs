@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -30,6 +31,25 @@ namespace CFDG.ACAD.CommandClasses.Misc
             }
 
             acEditor.WriteMessage($"Point: {cogoPoint.PointNumber} | Easting: {cogoPoint.Easting} | Northing: {cogoPoint.Northing} | Elevation: {cogoPoint.Elevation} | Description: {cogoPoint.RawDescription}\n");
+            Clipboard.SetText($"{cogoPoint.Easting:0.000}\t{cogoPoint.Northing:0.000}\t{cogoPoint.Elevation:0.000}\t{cogoPoint.RawDescription}", TextDataFormat.Text);
+        }
+
+        [CommandMethod("ExportLocation", CommandFlags.Modal | CommandFlags.NoBlockEditor | CommandFlags.NoPaperSpace)]
+        public void GetCogoText()
+        {
+            (_, Editor acEditor) = UserInput.GetCurrentDocSpace();
+            var coordinate3d = UserInput.SelectPointInDoc("Please select a point.\n");
+            if (coordinate3d == new Autodesk.AutoCAD.Geometry.Point3d(-1, -1, -1))
+            {
+                acEditor.WriteMessage("Command exited.");
+                return;
+            }
+            if (coordinate3d == new Autodesk.AutoCAD.Geometry.Point3d(0, 0, 0))
+            {
+                acEditor.WriteMessage("Command snapped to 0,0,0; exiting.\n");
+                return;
+            }
+            Clipboard.SetText($"{coordinate3d.X:0.000}\t{coordinate3d.Y:0.000}\t{coordinate3d.Z:0.000}", TextDataFormat.Text);
         }
 
         public static List<ObjectId> GetPoint(bool multipleSelections, System.IntPtr handle)
