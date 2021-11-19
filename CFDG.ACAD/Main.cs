@@ -130,7 +130,6 @@ namespace CFDG.ACAD
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Computations", "Computations",
                         Ribbon.CreateLargeButton("Group Comp\nPoints", "GroupPoints", Properties.Resources.Create_PG),
-                        Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Export_PG),
                         Ribbon.RibbonSpacer,
                         Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
                             Ribbon.CreateSmallButton("Slope From Points", "SlopeFromPoints","Calculate slope by selecting two points.", Properties.Resources.SlopeByPoints),
@@ -138,6 +137,13 @@ namespace CFDG.ACAD
                             Ribbon.CreateSmallButton("Footprint", "Footprint","Draw a polyline by entering positive or negative values and angles.",
                             Properties.Resources.footprint)
                         )
+                    )
+                );
+
+                rtab.Panels.Add(
+                    Ribbon.CreatePanel("Export", "Export",
+                        Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Export_PG),
+                        Ribbon.CreateLargeButton("Create\nPDF", "PrintToPDF")
                     )
                 );
 

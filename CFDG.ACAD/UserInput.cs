@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using CFDG.ACAD.Functions;
 using CFDG.API;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 
@@ -83,7 +86,6 @@ namespace CFDG.ACAD
             }
             return new Point3d(-1, -1, -1);
         }
-
 
         /// <summary>
         /// Select a angle in the current document
@@ -168,6 +170,84 @@ namespace CFDG.ACAD
                 trans.AddNewlyCreatedDBObject(pointObj, true);
                 trans.Commit();
             }
+        }
+
+        /// <summary>
+        /// Check if current work space is the model space.
+        /// </summary>
+        /// <returns>true if in model space, false if in a layout page.</returns>
+        public static bool IsInModel()
+        {
+            return AcApplication.DocumentManager.MdiActiveDocument.Database.TileMode ? true : false;
+        }
+
+        /// <summary>
+        /// Check if current work space is a layout page.
+        /// </summary>
+        /// <returns>true if in a layout page, false if in model space.</returns>
+        public static bool IsInLayout()
+        {
+            return !IsInModel();
+        }
+
+        /// <summary>
+        /// Note an error in the command line of autocad.
+        /// </summary>
+        /// <param name="message">Message to show.</param>
+        public static void NoteError(string message)
+        {
+            NoteError(message, false);
+        }
+
+        /// <summary>
+        /// Note an error in the command line of autocad.
+        /// </summary>
+        /// <param name="message">Message to show.</param>
+        /// <param name="showDialogBox">Show a dialog box to click "OK" on.</param>
+        public static void NoteError(string message, bool showDialogBox)
+        {
+            (_, Editor AcEditor) = GetCurrentDocSpace();
+            string ErrMsg = $"Error: {message}";
+            if (showDialogBox)
+            {
+                MessageBox.Show(ErrMsg, "Error", MessageBoxButton.OK);
+            }
+            AcEditor.WriteMessage($"{Environment.NewLine}{ErrMsg}");
+        }
+
+        /// <summary>
+        /// Get the project folder
+        /// </summary>
+        /// <param name="AcDoc"></param>
+        public static bool CheckForProjectFolder(Document AcDoc, out string projectFolder)
+        {
+            // determines the job number of the active drawing.
+            string jobNumber = DocumentProperties.GetJobNumber(AcDoc);
+            if (string.IsNullOrEmpty(jobNumber))
+            {
+                UserInput.NoteError("Could not determine the project number.");
+                projectFolder = string.Empty;
+                return false;
+            }
+
+            // Gets the base path of the project and exits if it doesn't exist.
+            string jobPath = API.JobNumber.GetPath(jobNumber);
+            if (string.IsNullOrEmpty(jobPath))
+            {
+                UserInput.NoteError("Could not determine the project folder.");
+                projectFolder = string.Empty;
+                return false;
+            }
+
+            // Check for the project directory. If it doesn't exist, exit the command.
+            if (!Directory.Exists(jobPath))
+            {
+                UserInput.NoteError("Could not find the project directory on the server.");
+                projectFolder = string.Empty;
+                return false;
+            }
+            projectFolder = jobPath;
+            return true;
         }
         #endregion
 
