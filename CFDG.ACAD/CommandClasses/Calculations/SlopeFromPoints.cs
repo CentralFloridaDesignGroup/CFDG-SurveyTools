@@ -2,6 +2,7 @@
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
+using CFDG.ACAD.Common;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace CFDG.ACAD.CommandClasses.Calculations
@@ -26,7 +27,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
 
             if (DistanceWindow == null)
             {
-                var distanceWin = new UI.SlopeDistance(startPnt, endPnt);
+                UI.SlopeDistance distanceWin = new UI.SlopeDistance(startPnt, endPnt);
                 DistanceWindow = distanceWin;
                 AcApplication.ShowModelessWindow(distanceWin);
                 DistanceWindow.Closed += DistanceWindow_Closed;

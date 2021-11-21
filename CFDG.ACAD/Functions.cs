@@ -16,7 +16,7 @@ namespace CFDG.ACAD.Functions
         /// <summary>
         /// Retrieve the job number from a file name.
         /// </summary>
-        /// <param name="document">Document object</param>
+        /// <param name="document">AutoCAD Document object</param>
         /// <returns>Job number found or empty if not found.</returns>
         public static string GetJobNumber(Document document)
         {
@@ -63,11 +63,11 @@ namespace CFDG.ACAD.Functions
         /// <returns>ImageSource of Bitmap</returns>
         public static BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
-            using (var memory = new MemoryStream())
+            using (MemoryStream memory = new MemoryStream())
             {
                 bitmap.Save(memory, ImageFormat.Png);
                 memory.Position = 0;
-                var bitmapImage = new BitmapImage();
+                BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
                 bitmapImage.StreamSource = memory;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
@@ -91,8 +91,8 @@ namespace CFDG.ACAD.Functions
 
             int width = bitmaps.Max(map => map.Width);
             int height = bitmaps.Max(map => map.Height);
-            var result = new Bitmap(width, height);
-            using (var g = Graphics.FromImage(result))
+            Bitmap result = new Bitmap(width, height);
+            using (Graphics g = Graphics.FromImage(result))
             {
                 foreach (Bitmap map in bitmaps)
                 {

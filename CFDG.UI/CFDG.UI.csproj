@@ -107,6 +107,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ExportPointGroupModel.cs" />
     <Compile Include="windows\Calculations\ExportPointGroup.xaml.cs">
       <DependentUpon>ExportPointGroup.xaml</DependentUpon>
     </Compile>
@@ -165,6 +166,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PageSingle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CFDG.API\CFDG.API.csproj">
+      <Project>{3e9d0793-99ad-40f6-b73f-8a2fc42dc3e8}</Project>
+      <Name>CFDG.API</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

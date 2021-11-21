@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.AutoCAD.DatabaseServices;
+using System.Text.RegularExpressions;
+using Autodesk.AutoCAD.ApplicationServices;
+using System.Diagnostics;
+using Autodesk.AutoCAD.EditorInput;
 
 namespace CFDG.UI.windows.Calculations
 {
@@ -21,26 +25,82 @@ namespace CFDG.UI.windows.Calculations
     /// </summary>
     public partial class ExportPointGroup : Window
     {
-        private PointGroupCollection pointGroups;
+        public Models.ExportPointGroupModel PointGroupModel { get; set; }
+        public API.ACAD.CogoExporter Exporter { get; set; }
 
-        public ExportPointGroup()
+        private Document currentDoc { get; set; }
+        private static List<ObjectId> PointsToExport { get; set; }
+
+        public ExportPointGroup(List<string> pointGroups, Document document)
         {
             InitializeComponent();
+            PointGroupModel = new Models.ExportPointGroupModel();
+            CmbPointGroups.ItemsSource = pointGroups;
+            foreach (string group in pointGroups)
+            {
+                //LbPointGroups.Items.Add(group);
+            }
+            //LbPointGroups.Items.IsLiveSorting = true;
+            var filename = System.IO.Path.GetFileNameWithoutExtension(document.Name);
+            string jobNumber = API.JobNumber.Parse(filename, API.JobNumberFormats.ShortHyphan);
+            this.Title = $"Export Point - {jobNumber}";
+
+            currentDoc = document;
+            Exporter = new API.ACAD.CogoExporter();
         }
 
-        public ExportPointGroup(PointGroupCollection pointGroups)
+        private void CustomEntryKeyPress(object sender, KeyEventArgs args)
         {
-            InitializeComponent();
-            this.pointGroups = pointGroups;
-            foreach (ObjectId pointGroupId in pointGroups)
+           /*TextBox tbox = (TextBox)sender;
+            if (IsValidFileName(tbox.Text))
             {
-                PointGroup group = (PointGroup)pointGroupId.GetObject(OpenMode.ForRead);
-                if (true)
+                tbox.BorderBrush = Brushes.Black;
+                return;
+            }
+            tbox.BorderBrush = Brushes.Red;*/
+        }
+
+        private void CmdCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+
+        private void CmdSelectPoints_Click(object sender, RoutedEventArgs e)
+        {
+            var objectIds = GetPoint(true);
+            if (objectIds.Count == 1 && objectIds[0] == ObjectId.Null)
+            {
+                LblPointsSelected.Content = "0 points selected.";
+                return;
+            }
+            PointsToExport = objectIds;
+            LblPointsSelected.Content = $"{PointsToExport.Count} point{(PointsToExport.Count == 1 ? '\0' : 's')} selected";
+            Exporter.AddPointRange(objectIds);
+        }
+
+        public List<ObjectId> GetPoint(bool multipleSelections)
+        {
+            Document acDocument = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Editor acEditor = acDocument.Editor;
+            List<ObjectId> pointIds = new List<ObjectId> { };
+
+            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+
+            using (acEditor.StartUserInteraction(this))
+            using (acDocument.LockDocument())
+            {
+                var pointIdList = API.ACAD.GetCogoPoint.selectPoint(true);
+                foreach (var id in pointIdList)
                 {
-                    LbPointGroups.Items.Add(group.Name);
+                    if (!pointIds.Contains(id))
+                    {
+                        pointIds.Add(id);
+                    }
                 }
             }
-            this.DialogResult = false;
+
+            return pointIds;
         }
     }
 }

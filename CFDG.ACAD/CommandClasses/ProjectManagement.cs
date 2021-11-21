@@ -43,9 +43,9 @@ namespace CFDG.ACAD
             // determine the path
             switch (option.ToLower())
             {
-                case "comp":
+                case "calc":
                 {
-                    jobPath += @"\Comp";
+                    jobPath += @"\Calc";
                     break;
                 }
                 case "submittal":
@@ -86,7 +86,7 @@ namespace CFDG.ACAD
         [CommandMethod("OpenCompFolder")]
         public static void OpenCompFolder()
         {
-            OpenFolder("comp");
+            OpenFolder("calc");
         }
 
         /// <summary>

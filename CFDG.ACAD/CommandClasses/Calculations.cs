@@ -1,5 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Runtime;
+using Autodesk.Civil.DatabaseServices;
+using CFDG.ACAD.Extensions;
 
 namespace CFDG.ACAD
 {
@@ -21,7 +28,7 @@ namespace CFDG.ACAD
         /// Creates a point file from a selected point group.
         /// </summary>
         /*[CommandMethod("ExportPointGroups")]
-        /*public static void ExportPointGroups()
+        public static void ExportPointGroups()
         {
             Document acDoc = AcApp.DocumentManager.MdiActiveDocument;
             Database acDb = acDoc.Database;
@@ -33,7 +40,11 @@ namespace CFDG.ACAD
 
             #region Job Number
             var jobNumber = Path.GetFileNameWithoutExtension(acDoc.Name);
-            if (jobNumber.Length > 9) jobNumber = jobNumber.Remove(9);
+            if (jobNumber.Length > 9)
+            {
+                jobNumber = jobNumber.Remove(9);
+            }
+
             if (!API.JobNumber.TryParse(jobNumber))
             {
                 acEd.WriteMessage("Job number could not be determined." + Environment.NewLine);

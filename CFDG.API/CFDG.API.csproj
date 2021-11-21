@@ -83,6 +83,13 @@
       <HintPath>..\packages\AutoCAD.NET.23.0.0\lib\net47\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AecBaseMgd, Version=8.1.48.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Civil3D2019.Base.1.0.0\lib\AecBaseMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="AeccDbMgd, Version=13.0.613.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\Civil3D2019.Base.1.0.0\lib\AeccDbMgd.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -93,6 +100,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACAD\CogoExporter.cs" />
+    <Compile Include="ACAD\GetCogoPoint.cs" />
     <Compile Include="Calculate.cs" />
     <Compile Include="JobNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

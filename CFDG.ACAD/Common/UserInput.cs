@@ -1,12 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using CFDG.ACAD.Functions;
 using CFDG.API;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 
-namespace CFDG.ACAD
+namespace CFDG.ACAD.Common
 {
     public class UserInput
     {
@@ -25,14 +29,14 @@ namespace CFDG.ACAD
         /// <returns></returns>
         public static string GetStringFromUser(string message)
         {
-            (_, Editor AcEditor) = GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
-            var pso = new PromptStringOptions(message)
+            PromptStringOptions pso = new PromptStringOptions(message)
             {
                 AllowSpaces = false
             };
 
-            PromptResult tr = AcEditor.GetString(pso);
+            PromptResult tr = acVariables.Editor.GetString(pso);
             if (tr.Status == PromptStatus.Cancel)
             {
                 return "";
@@ -58,11 +62,11 @@ namespace CFDG.ACAD
         /// <returns>A 3D point</returns>
         public static Point3d SelectPointInDoc(string message, Point3d basePoint)
         {
-            (_, Editor AcEditor) = GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
-            if (VerifyZenthValues(false))
+            if (VerifyZenthValues(true))
             {
-                var ppo = new PromptPointOptions($"\n{message}")
+                PromptPointOptions ppo = new PromptPointOptions($"\n{message}")
                 {
                     AllowArbitraryInput = true,
                     AllowNone = false
@@ -74,7 +78,7 @@ namespace CFDG.ACAD
                     ppo.UseDashedLine = true;
                 }
 
-                PromptPointResult pr = AcEditor.GetPoint(ppo);
+                PromptPointResult pr = acVariables.Editor.GetPoint(ppo);
                 if (pr.Status != PromptStatus.Cancel)
                 {
                     return pr.Value;
@@ -83,7 +87,6 @@ namespace CFDG.ACAD
             }
             return new Point3d(-1, -1, -1);
         }
-
 
         /// <summary>
         /// Select a angle in the current document
@@ -96,7 +99,7 @@ namespace CFDG.ACAD
         {
             var angle = SelectAngleInDoc(message, basePoint);
 
-            var measures = new Triangle(distance, angle);
+            Triangle measures = new Triangle(distance, angle);
 
             return new Vector2d(measures.SideA, measures.SideB);
         }
@@ -108,9 +111,9 @@ namespace CFDG.ACAD
 
         public static double SelectAngleInDoc(string message, Point3d basePoint)
         {
-            (_, Editor AcEditor) = GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
-            var pao = new PromptAngleOptions(message)
+            PromptAngleOptions pao = new PromptAngleOptions(message)
             {
                 AllowArbitraryInput = true,
                 AllowNone = true,
@@ -121,27 +124,28 @@ namespace CFDG.ACAD
                 DefaultValue = 0,
                 UseDefaultValue = true
             };
-            PromptDoubleResult ar = AcEditor.GetAngle(pao);
+            PromptDoubleResult ar = acVariables.Editor.GetAngle(pao);
             if (ar.Status == PromptStatus.Cancel)
             {
                 return -1;
             }
 
+#pragma warning disable IDE0047 // Remove unnecessary parentheses
             return (180 / Math.PI) * ar.Value;
+#pragma warning restore IDE0047 // Remove unnecessary parentheses
         }
 
         public static void AddObjectToDrawing(Entity entity)
         {
-            (Document acDocument, Editor acEditor) = GetCurrentDocSpace();
-            Database acDatabase = acDocument.Database;
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
-            using (Transaction acTrans = acDatabase.TransactionManager.StartTransaction())
+            using (Transaction acTrans = acVariables.Database.TransactionManager.StartTransaction())
             {
                 // Open the Block table record for read
-                var acBlkTbl = acTrans.GetObject(acDatabase.BlockTableId, OpenMode.ForRead) as BlockTable;
+                BlockTable acBlkTbl = acTrans.GetObject(acVariables.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
 
                 // Open the Block table record Model space for write
-                var acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+                BlockTableRecord acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
                 entity.SetDatabaseDefaults();
                 acBlkTblRec.AppendEntity(entity);
@@ -152,15 +156,14 @@ namespace CFDG.ACAD
 
         public static void AddPointToDrawing(Point3d point, string blockTableRecordSpace)
         {
-            (Document AcDocument, _) = GetCurrentDocSpace();
-            Database AcDatabase = AcDocument.Database;
-            using (Transaction trans = AcDatabase.TransactionManager.StartTransaction())
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
+            using (Transaction trans = acVariables.Database.TransactionManager.StartTransaction())
             {
                 // Open the Block table record for read
-                var acBlkTbl = trans.GetObject(AcDatabase.BlockTableId, OpenMode.ForRead) as BlockTable;
+                BlockTable acBlkTbl = trans.GetObject(acVariables.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
 
                 // Open the Block table record Model space for write
-                var acBlkTblRec = trans.GetObject(acBlkTbl[blockTableRecordSpace], OpenMode.ForWrite) as BlockTableRecord;
+                BlockTableRecord acBlkTblRec = trans.GetObject(acBlkTbl[blockTableRecordSpace], OpenMode.ForWrite) as BlockTableRecord;
 
                 DBPoint pointObj = new DBPoint(point);
                 pointObj.SetDatabaseDefaults();
@@ -169,20 +172,76 @@ namespace CFDG.ACAD
                 trans.Commit();
             }
         }
-        #endregion
 
-        #region Private Methods
+        /// <summary>
+        /// Check if current work space is the model space.
+        /// </summary>
+        /// <returns>true if in model space, false if in a layout page.</returns>
+        public static bool IsInModel()
+        {
+            return AcApplication.DocumentManager.MdiActiveDocument.Database.TileMode;
+        }
 
+        /// <summary>
+        /// Check if current work space is a layout page.
+        /// </summary>
+        /// <returns>true if in a layout page, false if in model space.</returns>
+        public static bool IsInLayout()
+        {
+            return !IsInModel();
+        }
+
+        /// <summary>
+        /// Get the project folder
+        /// </summary>
+        /// <param name="AcDoc"></param>
+        public static bool CheckForProjectFolder(Document AcDoc, out string projectFolder)
+        {
+            // determines the job number of the active drawing.
+            string jobNumber = DocumentProperties.GetJobNumber(AcDoc);
+            if (string.IsNullOrEmpty(jobNumber))
+            {
+                Logging.Warning("Could not determine the project number.");
+                projectFolder = string.Empty;
+                return false;
+            }
+
+            // Gets the base path of the project and exits if it doesn't exist.
+            string jobPath = API.JobNumber.GetPath(jobNumber);
+            if (string.IsNullOrEmpty(jobPath))
+            {
+                Logging.Warning("Could not determine the project folder.");
+                projectFolder = string.Empty;
+                return false;
+            }
+
+            // Check for the project directory. If it doesn't exist, exit the command.
+            if (!Directory.Exists(jobPath))
+            {
+                Logging.Warning("Could not find the project directory on the server.");
+                projectFolder = string.Empty;
+                return false;
+            }
+            projectFolder = jobPath;
+            return true;
+        }
 
         /// <summary>
         /// Get the current document and editor
         /// </summary>
         /// <returns>Document and Editor</returns>
-        public static (Document AcDocument, Editor AcEditor) GetCurrentDocSpace()
+        public static AcVariablesStruct GetCurrentDocSpace()
         {
-            Document document = AcApplication.DocumentManager.MdiActiveDocument;
-            return (document, document.Editor);
+            AcVariablesStruct acVariables;
+            acVariables.Document = AcApplication.DocumentManager.MdiActiveDocument;
+            acVariables.Editor = acVariables.Document.Editor;
+            acVariables.Database = acVariables.Document.Database;
+            return acVariables;
         }
+
+        #endregion
+
+        #region Private Methods
 
         //TODO: Add more reliability 
         /// <summary>
@@ -192,7 +251,7 @@ namespace CFDG.ACAD
         /// <returns>true if match or override, false if cancel.</returns>
         private static bool VerifyZenthValues(bool preferredValue)
         {
-            (_, Editor AcEditor) = GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             bool OSnapZ = Convert.ToBoolean(AcApplication.TryGetSystemVariable("OSnapZ")); //0 [false] - Disabled / 1 [true] - enabled
 
             // If the preferred value is equal to the set value, return true (passed) or return true (passed) if not required.
@@ -203,13 +262,13 @@ namespace CFDG.ACAD
             }
 
             //FEATURE: Enable temporary disablement of AutoCAD variables.
-            var pkwo = new PromptKeywordOptions($"OSnapZ is {(preferredValue ? "disabled" : "enabled")}, Do you want to continue?");
+            PromptKeywordOptions pkwo = new PromptKeywordOptions($"OSnapZ is {(preferredValue ? "disabled" : "enabled")}, Do you want to continue?");
             pkwo.Keywords.Add("Yes");
             pkwo.Keywords.Add("No");
             pkwo.Keywords.Default = "Yes";
 
             //Ask for user input.
-            PromptResult KeywordResult = AcEditor.GetKeywords(pkwo);
+            PromptResult KeywordResult = acVariables.Editor.GetKeywords(pkwo);
             switch (KeywordResult.StringResult)
             {
                 case "No":
