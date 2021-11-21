@@ -5,6 +5,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
+using CFDG.ACAD.Common;
 
 namespace CFDG.ACAD.CommandClasses.Misc
 {
@@ -15,38 +16,36 @@ namespace CFDG.ACAD.CommandClasses.Misc
         [CommandMethod("GetCogoPoint", CommandFlags.Modal | CommandFlags.NoBlockEditor | CommandFlags.NoPaperSpace)]
         public void InitialCommand()
         {
-            (_, Editor acEditor) = UserInput.GetCurrentDocSpace();
-            ObjectId[] pointIdList = selectPoint();
+            ObjectId[] pointIdList = SelectPoint();
             ObjectId pointId = pointIdList[0];
             if (pointId == ObjectId.Null)
             {
-                acEditor.WriteMessage("The point did not have a valid object id. Please run the AUDIT command.\n");
+                Logging.Error("The point did not have a valid object id. Please run the AUDIT command.\n");
                 return;
             }
             CogoPoint cogoPoint = GetCogoByID(pointId);
             if (cogoPoint == null)
             {
-                acEditor.WriteMessage("Could not find a point, please report this issue.\n");
+                Logging.Critical("Could not find a point, please report this issue.\n", true);
                 return;
             }
 
-            acEditor.WriteMessage($"Point: {cogoPoint.PointNumber} | Easting: {cogoPoint.Easting} | Northing: {cogoPoint.Northing} | Elevation: {cogoPoint.Elevation} | Description: {cogoPoint.RawDescription}\n");
+            Logging.Info($"Point: {cogoPoint.PointNumber} | Easting: {cogoPoint.Easting} | Northing: {cogoPoint.Northing} | Elevation: {cogoPoint.Elevation} | Description: {cogoPoint.RawDescription}\n");
             Clipboard.SetText($"{cogoPoint.Easting:0.000}\t{cogoPoint.Northing:0.000}\t{cogoPoint.Elevation:0.000}\t{cogoPoint.RawDescription}", TextDataFormat.Text);
         }
 
         [CommandMethod("ExportLocation", CommandFlags.Modal | CommandFlags.NoBlockEditor | CommandFlags.NoPaperSpace)]
         public void GetCogoText()
         {
-            (_, Editor acEditor) = UserInput.GetCurrentDocSpace();
-            var coordinate3d = UserInput.SelectPointInDoc("Please select a point.\n");
+            Autodesk.AutoCAD.Geometry.Point3d coordinate3d = UserInput.SelectPointInDoc("Please select a point.\n");
             if (coordinate3d == new Autodesk.AutoCAD.Geometry.Point3d(-1, -1, -1))
             {
-                acEditor.WriteMessage("Command exited.");
+                Logging.Info("Command exited.");
                 return;
             }
             if (coordinate3d == new Autodesk.AutoCAD.Geometry.Point3d(0, 0, 0))
             {
-                acEditor.WriteMessage("Command snapped to 0,0,0; exiting.\n");
+                Logging.Debug("Command snapped to 0,0,0; exiting.\n");
                 return;
             }
             Clipboard.SetText($"{coordinate3d.X:0.000}\t{coordinate3d.Y:0.000}\t{coordinate3d.Z:0.000}", TextDataFormat.Text);
@@ -54,18 +53,18 @@ namespace CFDG.ACAD.CommandClasses.Misc
 
         public static List<ObjectId> GetPoint(bool multipleSelections, System.IntPtr handle)
         {
-            (Document acDocument, Editor acEditor) = UserInput.GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             List<ObjectId> pointIds = new List<ObjectId> { };
 
             bool firstPoint = true;
 
-            using (acEditor.StartUserInteraction(handle))
-            using (acDocument.LockDocument())
+            using (acVariables.Editor.StartUserInteraction(handle))
+            using (acVariables.Document.LockDocument())
             {
                 while (multipleSelections || firstPoint)
                 {
-                    var pointIdList = selectPoint(true);
-                    foreach (var id in pointIdList)
+                    ObjectId[] pointIdList = SelectPoint(true);
+                    foreach (ObjectId id in pointIdList)
                     {
                         if (!pointIds.Contains(id))
                         {
@@ -81,11 +80,10 @@ namespace CFDG.ACAD.CommandClasses.Misc
 
         public static CogoPoint GetCogoByID(ObjectId objectId)
         {
-            (Document acDocument, Editor acEditor) = UserInput.GetCurrentDocSpace();
-            Database acDatabase = acDocument.Database;
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             CogoPoint cogoPoint;
 
-            using (Transaction tr = acDatabase.TransactionManager.StartTransaction())
+            using (Transaction tr = acVariables.Database.TransactionManager.StartTransaction())
             {
                 cogoPoint = (CogoPoint)objectId.GetObject(OpenMode.ForRead);
                 tr.Commit();
@@ -93,16 +91,16 @@ namespace CFDG.ACAD.CommandClasses.Misc
             return cogoPoint;
         }
 
-        private static ObjectId[] selectPoint(bool isMultiple = false)
+        private static ObjectId[] SelectPoint(bool isMultiple = false)
         {
-            (Document acDocument, Editor acEditor) = UserInput.GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             PromptSelectionOptions acPSO;
 
-            var typeValue = new TypedValue[]
+            TypedValue[] typeValue = new TypedValue[]
                     {
                             new TypedValue((int)DxfCode.Start, "AECC_COGO_POINT")
                     };
-            var acSelectionFilter = new SelectionFilter(typeValue);
+            SelectionFilter acSelectionFilter = new SelectionFilter(typeValue);
 
             if (!isMultiple)
             {
@@ -122,11 +120,11 @@ namespace CFDG.ACAD.CommandClasses.Misc
             }
             PromptSelectionResult acPSR;
 
-            acPSR = acEditor.GetSelection(acPSO, acSelectionFilter);
+            acPSR = acVariables.Editor.GetSelection(acPSO, acSelectionFilter);
             if (acPSR.Status != PromptStatus.OK)
             {
-                acEditor.WriteMessage("The operation was cancelled by the user.\n");
-                var emptyList = new ObjectId[] { ObjectId.Null };
+                Logging.Info("The operation was cancelled by the user.\n");
+                ObjectId[] emptyList = new ObjectId[] { ObjectId.Null };
                 return emptyList;
             }
             ObjectId[] objectIds = acPSR.Value.GetObjectIds();

@@ -10,7 +10,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.PlottingServices;
 using Autodesk.AutoCAD.Runtime;
-using CFDG.ACAD.Functions;
+using CFDG.ACAD.Common;
 
 namespace CFDG.ACAD.CommandClasses.Export
 {
@@ -20,33 +20,33 @@ namespace CFDG.ACAD.CommandClasses.Export
         [CommandMethod("PrintToPDF", CommandFlags.Modal | CommandFlags.NoBlockEditor)]
         public static void PrintSinglePDF()
         {
-            (Document AcDoc, Editor AcEditor) = UserInput.GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             if (!UserInput.IsInLayout())
             {
-                UserInput.NoteError("Please be in a layout view, command does not work in model space.", true);
+                Logging.Error("Please be in a layout view, command does not work in model space.", true);
                 return;
             }
 
-            if (!UserInput.CheckForProjectFolder(AcDoc, out string jobPath)) { 
-                UserInput.NoteError("Could not determine the project name or folder, see above for error.", true);
+            if (!UserInput.CheckForProjectFolder(acVariables.Document, out _)) {
+                Logging.Error("Could not determine the project name or folder, see above for error.", true);
                 return;
             }
 
             HandlePrint();
 
-            AcEditor.WriteMessage($"{Environment.NewLine}Command \"PrintToPDF\" exited successfully.");
+            Logging.Debug($"{Environment.NewLine}Command \"PrintToPDF\" exited successfully.");
         }
 
         private static void HandlePrint()
         {
-            (Document AcDoc, Editor AcEditor) = UserInput.GetCurrentDocSpace();
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             LayoutManager layoutMgr = LayoutManager.Current;
             string layout = layoutMgr.CurrentLayout;
             if (PlotFactory.ProcessPlotState != ProcessPlotState.NotPlotting)
             {
-                if (!UserInput.CheckForProjectFolder(AcDoc, out string jobPath))
+                if (!UserInput.CheckForProjectFolder(acVariables.Document, out _))
                 {
-                    UserInput.NoteError("Cannot plot while another plot is running, please try again in a few seconds.");
+                    Logging.Error("Cannot plot while another plot is running, please try again in a few seconds.");
                     return;
                 }
             }
@@ -56,7 +56,7 @@ namespace CFDG.ACAD.CommandClasses.Export
             using (plotEngine)
             {
                 plotStatus = PlotHandler.Preview(plotEngine, layout);
-                AcEditor.WriteMessage($"{Environment.NewLine}Preview return: {plotStatus}");
+                Logging.Debug($"{Environment.NewLine}Preview return: {plotStatus}");
                 if (plotStatus == PreviewEndPlotStatus.Plot)
                 {
 

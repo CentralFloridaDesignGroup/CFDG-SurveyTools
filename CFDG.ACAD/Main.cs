@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Windows;
@@ -67,7 +68,6 @@ namespace CFDG.ACAD
             OnEachDocLoad();
         }
 
-        //TODO: Add function to notify user if n amount of documents are open.
         /// <summary>
         /// Shared method between LoadDWG and OnAppLoad
         /// </summary>
@@ -76,6 +76,13 @@ namespace CFDG.ACAD
             if ((bool)XML.ReadValue("Autocad", "EnableOsnapZ"))
             {
                 ACApplication.SetSystemVariable("OSnapZ", 1);
+            }
+            DocumentCollection docs = ACApplication.DocumentManager;
+            int currentDocCount = docs.Count;
+            int excessive = (int)XML.ReadValue("autocad", "warnExcessiveDwgOpen");
+            if (excessive > 0 && currentDocCount >= excessive)
+            {
+                MessageBox.Show($"You currently have {currentDocCount} drawings open. A notification will show until you have under {excessive} drawings open. Please save and close drawings that you are done with.", "Close drawings", MessageBoxButton.OK);
             }
         }
 
@@ -91,7 +98,6 @@ namespace CFDG.ACAD
         /// </summary>
         private void EstablishTab()
         {
-            //TODO: Fix tab name to include "Survey"
             //Get tab name
             string tabName = (string)XML.ReadValue("General", "CompanyAbbreviation");
 

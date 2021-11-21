@@ -122,6 +122,7 @@
     <Compile Include="Extensions\PointGroupExtensions.cs" />
     <Compile Include="Interfaces\ICommandMethod.cs" />
     <Compile Include="CommandClasses\Calculations\MeasureDown.cs" />
+    <Compile Include="Common\Logging.cs" />
     <Compile Include="Ribbon\Ribbon.cs" />
     <Compile Include="CommandClasses\Calculations.cs" />
     <Compile Include="Functions.cs" />
@@ -137,7 +138,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\RibbonButtonHandler.cs" />
-    <Compile Include="UserInput.cs" />
+    <Compile Include="Common\UserInput.cs" />
+    <Compile Include="Structs\BasicAcStruct.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

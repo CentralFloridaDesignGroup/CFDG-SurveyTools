@@ -112,7 +112,7 @@ namespace CFDG.ACAD
         /// <returns>Large vertical RibbonSplitButton</returns>
         public static RibbonSplitButton CreateLargeSplitButton(params RibbonButton[] buttons)
         {
-            var btn = new RibbonSplitButton
+            RibbonSplitButton btn = new RibbonSplitButton
             {
                 Text = "splitbutton",
                 CommandHandler = new RibbonButtonHandler(),
@@ -124,7 +124,7 @@ namespace CFDG.ACAD
                 Size = RibbonItemSize.Large,
                 Orientation = Orientation.Vertical
             };
-            foreach (var commandBtn in buttons)
+            foreach (RibbonButton commandBtn in buttons)
             {
                 btn.Items.Add(commandBtn);
             }
@@ -234,7 +234,7 @@ namespace CFDG.ACAD
                 Source = rps
             };
 
-            foreach (var rItem in ribbonItems)
+            foreach (RibbonItem rItem in ribbonItems)
             {
                 rps.Items.Add(rItem);
             }

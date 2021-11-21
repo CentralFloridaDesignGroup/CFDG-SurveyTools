@@ -7,6 +7,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.PlottingServices;
+using CFDG.ACAD.Common;
 
 namespace CFDG.ACAD.CommandClasses.Export
 {
@@ -14,11 +15,10 @@ namespace CFDG.ACAD.CommandClasses.Export
     {
         public static PreviewEndPlotStatus Preview(PlotEngine pe, string layout)
         {
-            (Document AcDoc, Editor AcEditor) = UserInput.GetCurrentDocSpace();
-            Database AcDatabase = AcDoc.Database;
+            AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
             PreviewEndPlotStatus returnValue = PreviewEndPlotStatus.Cancel;
-            using (Transaction AcTransaction = AcDatabase.TransactionManager.StartTransaction())
+            using (Transaction AcTransaction = acVariables.Database.TransactionManager.StartTransaction())
             {
                 Layout layoutObject = (Layout)AcTransaction.GetObject(LayoutManager.Current.GetLayoutId(layout), OpenMode.ForRead);
 
@@ -66,7 +66,7 @@ namespace CFDG.ACAD.CommandClasses.Export
                 using (ppd)
                 {
                     ppd.set_PlotMsgString(PlotMessageIndex.DialogTitle, "Custom Preview Progress");
-                    ppd.set_PlotMsgString(PlotMessageIndex.SheetName, AcDoc.Name.Substring(AcDoc.Name.LastIndexOf("\\") + 1));
+                    ppd.set_PlotMsgString(PlotMessageIndex.SheetName, acVariables.Document.Name.Substring(acVariables.Document.Name.LastIndexOf("\\") + 1));
                     ppd.set_PlotMsgString(PlotMessageIndex.CancelJobButtonMessage, "Cancel Job");
                     ppd.set_PlotMsgString(PlotMessageIndex.CancelSheetButtonMessage, "Cancel Sheet");
                     ppd.set_PlotMsgString(PlotMessageIndex.SheetSetProgressCaption, "Sheet Set Progress");
@@ -81,7 +81,7 @@ namespace CFDG.ACAD.CommandClasses.Export
                     pe.BeginPlot(ppd, null);
 
                     // We'll be plotting/previewing a single document
-                    pe.BeginDocument(pi, AcDoc.Name, null, 1, false, "");
+                    pe.BeginDocument(pi, acVariables.Document.Name, null, 1, false, "");
 
                     // Which contains a single sheet
                     ppd.OnBeginSheet();

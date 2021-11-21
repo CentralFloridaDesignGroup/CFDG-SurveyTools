@@ -53,7 +53,7 @@
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch">
             <TextBlock Text="Export Location:" Margin="10 0 10 5" FontWeight="Bold"/>
-            <RadioButton x:Name="RbProjectCompFolder" Margin="15 5" IsChecked="True">Project's Comp Folder</RadioButton>
+            <RadioButton x:Name="RbProjectCompFolder" Margin="15 5" IsChecked="True">Project's Calc Folder</RadioButton>
             <RadioButton x:Name="RbProjectMainFolder" Margin="15 5">Project's Main Folder</RadioButton>
             <RadioButton x:Name="RbCustomLocation" Margin="15 5" IsEnabled="false">Specified Folder</RadioButton>
             <StackPanel HorizontalAlignment="Stretch">
