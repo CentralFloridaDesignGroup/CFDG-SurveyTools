@@ -38,7 +38,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 return;
             }
 
-            if (string.IsNullOrEmpty(Functions.DocumentProperties.GetJobNumber(acVariables.Document)))
+            if (string.IsNullOrEmpty(DocumentProperties.GetJobNumber(acVariables.Document)))
             {
                 Logging.Warning("\nNo job number was detected for the project.");
                 return;

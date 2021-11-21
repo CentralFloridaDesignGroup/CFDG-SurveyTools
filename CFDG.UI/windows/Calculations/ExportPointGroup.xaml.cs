@@ -90,7 +90,7 @@ namespace CFDG.UI.windows.Calculations
             using (acEditor.StartUserInteraction(this))
             using (acDocument.LockDocument())
             {
-                var pointIdList = API.ACAD.GetCogoPoint.selectPoint(true);
+                var pointIdList = API.ACAD.GetCogoPoint.SelectPoint(true);
                 foreach (var id in pointIdList)
                 {
                     if (!pointIds.Contains(id))

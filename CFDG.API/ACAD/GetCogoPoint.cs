@@ -7,6 +7,7 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace CFDG.API.ACAD
 {
+    //TODO: Integrate with ACAD UserInput on migration.
     public class GetCogoPoint
     {
         public static List<ObjectId> GetPoint(bool multipleSelections, System.IntPtr handle)
@@ -22,8 +23,8 @@ namespace CFDG.API.ACAD
             {
                 while (multipleSelections || firstPoint)
                 {
-                    var pointIdList = selectPoint(true);
-                    foreach (var id in pointIdList)
+                    ObjectId[] pointIdList = SelectPoint(true);
+                    foreach (ObjectId id in pointIdList)
                     {
                         if (!pointIds.Contains(id))
                         {
@@ -40,7 +41,6 @@ namespace CFDG.API.ACAD
         public static CogoPoint GetCogoByID(ObjectId objectId)
         {
             Document acDocument = Application.DocumentManager.MdiActiveDocument;
-            Editor acEditor = acDocument.Editor;
             Database acDatabase = acDocument.Database;
             CogoPoint cogoPoint;
 
@@ -52,17 +52,17 @@ namespace CFDG.API.ACAD
             return cogoPoint;
         }
 
-        public static ObjectId[] selectPoint(bool isMultiple = false)
+        public static ObjectId[] SelectPoint(bool isMultiple = false)
         {
             Document acDocument = Application.DocumentManager.MdiActiveDocument;
             Editor acEditor = acDocument.Editor;
             PromptSelectionOptions acPSO;
 
-            var typeValue = new TypedValue[]
+            TypedValue[] typeValue = new TypedValue[]
                     {
                             new TypedValue((int)DxfCode.Start, "AECC_COGO_POINT")
                     };
-            var acSelectionFilter = new SelectionFilter(typeValue);
+            SelectionFilter acSelectionFilter = new SelectionFilter(typeValue);
 
             if (!isMultiple)
             {
@@ -86,7 +86,7 @@ namespace CFDG.API.ACAD
             if (acPSR.Status != PromptStatus.OK)
             {
                 acEditor.WriteMessage("The operation was cancelled by the user.\n");
-                var emptyList = new ObjectId[] { ObjectId.Null };
+                ObjectId[] emptyList = new ObjectId[] { ObjectId.Null };
                 return emptyList;
             }
             ObjectId[] objectIds = acPSR.Value.GetObjectIds();

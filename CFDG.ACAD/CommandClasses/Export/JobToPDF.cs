@@ -14,11 +14,11 @@ using CFDG.ACAD.Common;
 
 namespace CFDG.ACAD.CommandClasses.Export
 {
-    public class JobToPDF
+    public class JobToPDF : ICommandMethod
     {
 
         //[CommandMethod("PrintToPDF", CommandFlags.Modal | CommandFlags.NoBlockEditor)]
-        public static void PrintSinglePDF()
+        public void InitialCommand()
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             if (!UserInput.IsInLayout())
