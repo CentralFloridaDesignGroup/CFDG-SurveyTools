@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:CFDG.ACAD.Installer"
         mc:Ignorable="d"
         FontSize="14"
-        Title="AutoCAD Plugin Installer" Height="450" Width="800">
+        ResizeMode="NoResize"
+        Title="AutoCAD Plugin Installer v1.0.0" Height="450" Width="700">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>

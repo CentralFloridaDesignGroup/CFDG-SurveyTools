@@ -20,14 +20,14 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             Document acDoc = AcApplication.DocumentManager.MdiActiveDocument;
             Database acDb = acDoc.Database;
             Editor adEd = acDoc.Editor;
-            CivilDocument cApp = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
+            CivilDocument cApp = CivilApplication.ActiveDocument;
 
-            var points = new List<string> { };
+            List<string> points = new List<string> { };
             string pointStr = "";
             string descriptionStr = "";
 
             // Get the purpose of the points
-            var pStrOpts = new PromptStringOptions("\nEnter the purpose: ")
+            PromptStringOptions pStrOpts = new PromptStringOptions("\nEnter the purpose: ")
             {
                 AllowSpaces = true
             };
@@ -38,7 +38,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             string purpose = pRlt.StringResult;
 
             //Selection method
-            var pKeyOpts = new PromptKeywordOptions("\nPlease select a method of point selection: ");
+            PromptKeywordOptions pKeyOpts = new PromptKeywordOptions("\nPlease select a method of point selection: ");
             pKeyOpts.Keywords.Add("List");
             pKeyOpts.Keywords.Add("Selection");
             pKeyOpts.Keywords.Add("Descriptions");
@@ -63,11 +63,11 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 }
                 case "Selection":
                 {
-                    var tvs = new TypedValue[]
+                    TypedValue[] tvs = new TypedValue[]
                     {
                             new TypedValue((int)DxfCode.Start, "AECC_COGO_POINT")
                     };
-                    var selFltr = new SelectionFilter(tvs);
+                    SelectionFilter selFltr = new SelectionFilter(tvs);
                     PromptSelectionResult acSSPrompt;
                     acSSPrompt = adEd.GetSelection(selFltr);
                     if (acSSPrompt.Status == PromptStatus.Cancel) { adEd.WriteMessage("\nAction aborted."); return; }
@@ -76,7 +76,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                     {
                         foreach (ObjectId obj in acSSPrompt.Value.GetObjectIds())
                         {
-                            var pnt = (CogoPoint)obj.GetObject(OpenMode.ForRead);
+                            CogoPoint pnt = (CogoPoint)obj.GetObject(OpenMode.ForRead);
                             points.Add(pnt.PointNumber.ToString());
                         }
                         points.Sort();
@@ -108,7 +108,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 //Establish points
                 string groupName = $"[{DateTime.Now:MM-dd-yyyy}] {purpose.ToUpper()}";
 
-                var query = new StandardPointGroupQuery();
+                StandardPointGroupQuery query = new StandardPointGroupQuery();
                 if (selType == "Descriptions")
                 {
                     query.IncludeRawDescriptions = descriptionStr;
@@ -125,7 +125,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                     return;
                 }
                 ObjectId groupId = pointGroups.Add(groupName);
-                var group = (PointGroup)groupId.GetObject(OpenMode.ForRead);
+                PointGroup group = (PointGroup)groupId.GetObject(OpenMode.ForRead);
                 group.SetQuery(query);
                 tr.Commit();
             }

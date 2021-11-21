@@ -8,7 +8,7 @@ using CFDG.ACAD.Common;
 
 namespace CFDG.ACAD.CommandClasses.Misc
 {
-    public class GetCogoPoint
+    public class GetCogoPoint : ICommandMethod
     {
 
 

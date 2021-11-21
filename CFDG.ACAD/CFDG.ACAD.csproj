@@ -119,6 +119,9 @@
     <Compile Include="CommandClasses\Export\JobToPDF.cs" />
     <Compile Include="CommandClasses\Export\PrintPreview.cs" />
     <Compile Include="CommandClasses\Misc\GetCogoPoint.cs" />
+    <Compile Include="CommandClasses\ProjectManagement\OpenProjectFolder.cs" />
+    <Compile Include="Common\DocumentProperties.cs" />
+    <Compile Include="Common\Imaging.cs" />
     <Compile Include="Extensions\PointGroupExtensions.cs" />
     <Compile Include="Interfaces\ICommandMethod.cs" />
     <Compile Include="CommandClasses\Calculations\MeasureDown.cs" />
@@ -129,13 +132,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Ribbon\Ribbon.cs" />
-    <Compile Include="CommandClasses\Calculations.cs" />
-    <Compile Include="Functions.cs" />
     <Compile Include="CommandClasses\Calculations\Footprint.cs" />
     <Compile Include="CommandClasses\Calculations\SlopeFromPoints.cs" />
-    <Compile Include="CommandClasses\ImportExport.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="CommandClasses\ProjectManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ribbon\RibbonButtonHandler.cs" />
     <Compile Include="Common\UserInput.cs" />
@@ -226,5 +225,6 @@
   <ItemGroup>
     <None Include="Resources\Point Group.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
