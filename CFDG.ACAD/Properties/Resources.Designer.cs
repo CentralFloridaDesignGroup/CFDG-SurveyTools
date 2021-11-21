@@ -83,26 +83,6 @@ namespace CFDG.ACAD.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Create_PG {
-            get {
-                object obj = ResourceManager.GetObject("Create PG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Export_PG {
-            get {
-                object obj = ResourceManager.GetObject("Export PG", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap field {
             get {
                 object obj = ResourceManager.GetObject("field", resourceCulture);
@@ -183,6 +163,16 @@ namespace CFDG.ACAD.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap overlay_add {
+            get {
+                object obj = ResourceManager.GetObject("overlay_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap overlay_edit {
             get {
                 object obj = ResourceManager.GetObject("overlay-edit", resourceCulture);
@@ -226,6 +216,16 @@ namespace CFDG.ACAD.Properties {
         internal static System.Drawing.Bitmap placehold_32 {
             get {
                 object obj = ResourceManager.GetObject("placehold 32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Point_Group {
+            get {
+                object obj = ResourceManager.GetObject("Point_Group", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

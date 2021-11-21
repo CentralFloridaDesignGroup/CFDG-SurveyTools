@@ -17,7 +17,7 @@ namespace CFDG.ACAD.CommandClasses.Export
     public class JobToPDF
     {
 
-        [CommandMethod("PrintToPDF", CommandFlags.Modal | CommandFlags.NoBlockEditor)]
+        //[CommandMethod("PrintToPDF", CommandFlags.Modal | CommandFlags.NoBlockEditor)]
         public static void PrintSinglePDF()
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();

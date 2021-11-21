@@ -3,6 +3,7 @@ using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Windows;
+using CFDG.ACAD.Common;
 using CFDG.API;
 using ACApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 
@@ -55,7 +56,7 @@ namespace CFDG.ACAD
                 Autodesk.AutoCAD.ApplicationServices.Application.Idle -= OnAppLoad;
             }
 
-            ACApplication.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"\nCFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} has been loaded successfully\n");
+            Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} has been loaded successfully");
 
             OnEachDocLoad();
         }
@@ -135,7 +136,7 @@ namespace CFDG.ACAD
                 //Computations Tab
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Computations", "Computations",
-                        Ribbon.CreateLargeButton("Group Comp\nPoints", "GroupPoints", Properties.Resources.Create_PG),
+                        Ribbon.CreateLargeButton("Group Comp\nPoints", "GroupPoints", Properties.Resources.Point_Group, Properties.Resources.overlay_add),
                         Ribbon.RibbonSpacer,
                         Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
                             Ribbon.CreateSmallButton("Slope From Points", "SlopeFromPoints","Calculate slope by selecting two points.", Properties.Resources.SlopeByPoints),
@@ -148,8 +149,8 @@ namespace CFDG.ACAD
 
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Export", "Export",
-                        Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Export_PG),
-                        Ribbon.CreateLargeButton("Create\nPDF", "PrintToPDF")
+                        Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Point_Group, Properties.Resources.overlay_export)
+                        //Ribbon.CreateLargeButton("Create\nPDF", "PrintToPDF")
                     )
                 );
 
