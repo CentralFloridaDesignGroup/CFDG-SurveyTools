@@ -149,8 +149,8 @@ namespace CFDG.ACAD
 
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Export", "Export",
-                        Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Point_Group, Properties.Resources.overlay_export)
-                        //Ribbon.CreateLargeButton("Create\nPDF", "PrintToPDF")
+                        Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Point_Group, Properties.Resources.overlay_export),
+                        Ribbon.CreateLargeButton("Create\nPDF", "PrintToPDF")
                     )
                 );
 

@@ -1,6 +1,0 @@
-D:\HNH-Projects\AutoCAD Plugin\HNH.ACAD\bin\Debug\HNH.ACAD.dll
-D:\HNH-Projects\AutoCAD Plugin\HNH.ACAD\bin\Debug\HNH.ACAD.pdb
-D:\HNH-Projects\AutoCAD Plugin\HNH.ACAD\obj\Debug\HNH.ACAD.csprojAssemblyReference.cache
-D:\HNH-Projects\AutoCAD Plugin\HNH.ACAD\obj\Debug\HNH.ACAD.csproj.CoreCompileInputs.cache
-D:\HNH-Projects\AutoCAD Plugin\HNH.ACAD\obj\Debug\HNH.ACAD.dll
-D:\HNH-Projects\AutoCAD Plugin\HNH.ACAD\obj\Debug\HNH.ACAD.pdb

@@ -1,0 +1,161 @@
+﻿<Window x:Class="CFDG.UI.windows.Export.OpenFileDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        FontSize="14"
+        MinHeight="360" MinWidth="680"
+        Title="OpenFileDialog" Height="400" Width="800">
+    <Window.Resources>
+        <Style TargetType="ToggleButton">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="0 0 5 0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <Rectangle x:Name="frame"
+                               Fill="{TemplateBinding Background}"
+                               Stroke="{TemplateBinding BorderBrush}"
+                               StrokeThickness="2" Height="20" RadiusX="10" RadiusY="10"/>
+
+                            <Ellipse x:Name="thumb"
+                             Fill="{TemplateBinding BorderBrush}"
+                             HorizontalAlignment="Left" Margin="5"
+                             Width="10" Height="10"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="frame" Property="Stroke" Value="DodgerBlue"/>
+                                <Setter TargetName="frame" Property="Fill" Value="DodgerBlue"/>
+                                <Setter TargetName="thumb" Property="Fill" Value="White"/>
+                                <Setter TargetName="thumb" Property="HorizontalAlignment"
+                                Value="Right"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+        </Style>
+        <Style x:Key="BtnPrimary" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="DodgerBlue"/>
+            <Setter Property="BorderBrush" Value="DodgerBlue"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <DockPanel LastChildFill="True">
+                <TextBlock>Current Directory:</TextBlock>
+                <TextBox x:Name="TxtCurrentPath" BorderThickness="0 0 0 1" BorderBrush="Black"  Margin="5 0"
+                         KeyDown="TxtCurrentPath_KeyDown"
+                         GotFocus="TxtCurrentPath_GotFocus"/>
+            </DockPanel>
+            <DockPanel Margin="0 5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel Grid.Column="0">
+                        <TextBlock>Got to Project:</TextBlock>
+                        <TextBox x:Name="TxtJobNumber" BorderThickness="0 0 0 1" BorderBrush="Black" Width="150" Margin="5 0"
+                                 KeyDown="TxtJobNumber_KeyDown"/>
+                        <Button x:Name="CmdOpenProject" Content="Open" Width="75" HorizontalAlignment="Left" Margin="5 0"
+                                Click="CmdOpenProject_Click"/>
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                        <Button x:Name="CmdHome" Content="Return to Project" Width="125" Margin="5 0"
+                                Click="CmdHome_Click"/>
+                        <Button x:Name="CmdNewFolder" Content="New Folder" Width="125" Margin="5 0" />
+                        <Button x:Name="CmdDirUp" Content="↑" Width="24" Margin="5 0 0 0"
+                            Click="CmdDirUp_Click"/>
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+        </StackPanel>
+        <DataGrid IsReadOnly="True" x:Name="LstDirList" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" SelectionMode="Single" GridLinesVisibility="None" Background="White"
+                  MouseDoubleClick="LstDirList_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="24">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding icon}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Filename" Width="450" Binding="{Binding name}"/>
+                <DataGridTextColumn Header="Creation Date" Width="250" Binding="{Binding editDate}"/>
+                <DataGridTextColumn Header="Type" Visibility="Collapsed" Binding="{Binding type}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="0">
+            <StackPanel Orientation="Horizontal" Margin="0 2.5" VerticalAlignment="Center">
+                <ToggleButton x:Name="ChkIncludeDate" VerticalAlignment="Center" IsChecked="True" 
+                              Click="ChkIncludeDate_Checked"/>
+                <TextBlock>Include date in filename</TextBlock>
+            </StackPanel>
+            <DockPanel LastChildFill="True" Margin="0 2.5">
+                <TextBlock Margin="0 0 5 0">Description:</TextBlock>
+                <TextBox x:Name="TxtDescription" BorderThickness="0 0 0 1" BorderBrush="Black"
+                         TextChanged="TxtDescription_TextChanged"/>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="2">
+            <StackPanel Orientation="Horizontal" Margin="0 2.5">
+                <ToggleButton x:Name="ChkAutoNameFile" VerticalAlignment="Center" IsChecked="True" 
+                              Click="ChkAutomaticName_Checked"/>
+                <TextBlock>Automatic File Name</TextBlock>
+            </StackPanel>
+            <DockPanel LastChildFill="True" Margin="0 2.5">
+                <TextBlock Margin="0 0 5 0">File Name:</TextBlock>
+                <TextBox x:Name="TxtFileName" BorderThickness="0 0 0 1" BorderBrush="Black">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, ElementName=ChkAutoNameFile}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0 2.5" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center">
+            <ToggleButton x:Name="ChkOpenAfterCreate" VerticalAlignment="Center" IsChecked="True" 
+                              Click="ChkIncludeDate_Checked"/>
+            <TextBlock>Open the file after being created.</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="2">
+            <Button x:Name="CmdSave" Content="Save" Width="100" Margin="5 0" Style="{StaticResource BtnPrimary}"
+                    Click="CmdSave_Click"/>
+            <Button x:Name="CmdCancel" Content="Cancel" Width="100" Margin="5 0 0 0"
+                    Click="CmdCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

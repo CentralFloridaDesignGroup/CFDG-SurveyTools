@@ -6,7 +6,7 @@ using CFDG.ACAD.Common;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 using CivilApp = Autodesk.Civil.ApplicationServices.CivilApplication;
 
-namespace CFDG.ACAD.CommandClasses.Calculations
+namespace CFDG.ACAD.CommandClasses.Export
 {
     public class ExportPointGroup : ICommandMethod
     {
@@ -38,7 +38,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 return;
             }
 
-            if (string.IsNullOrEmpty(DocumentProperties.GetJobNumber(acVariables.Document)))
+            if (string.IsNullOrEmpty(API.JobNumber.GetJobNumber(acVariables.Document)))
             {
                 Logging.Warning("\nNo job number was detected for the project.");
                 return;

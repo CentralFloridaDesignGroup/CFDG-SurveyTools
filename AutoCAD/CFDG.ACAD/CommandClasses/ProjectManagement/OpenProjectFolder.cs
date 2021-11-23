@@ -60,7 +60,7 @@ namespace CFDG.ACAD.CommandClasses.ProjectManagement
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
             // determines the job number of the active drawing.
-            string jobNumber = DocumentProperties.GetJobNumber(acVariables.Document);
+            string jobNumber = API.JobNumber.GetJobNumber(acVariables.Document);
             if (string.IsNullOrEmpty(jobNumber))
             {
                 Logging.Warning("Could not find a job number from the file name (is the drawing saved?).");

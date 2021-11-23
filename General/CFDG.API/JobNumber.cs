@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
+using Autodesk.AutoCAD.ApplicationServices;
 
 namespace CFDG.API
 {
@@ -73,7 +74,7 @@ namespace CFDG.API
         /// <returns>True if a job number format, false if not.</returns>
         public static bool TryParse(string Input)
         {
-            return TryParse(Input, out _, JobNumberFormats.LongHyphan);
+            return TryParse(Input, JobNumberFormats.LongHyphan, out _);
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace CFDG.API
         /// <param name="Format">The format you wish to output in <paramref name="FormatNumber"/>.</param>
         /// <param name="FormatNumber">The formatted string if it can be transformed.</param>
         /// <returns>True if a job number format, false if not.</returns>
-        public static bool TryParse(string Input, out string FormatNumber, JobNumberFormats Format)
+        public static bool TryParse(string Input, JobNumberFormats Format, out string FormatNumber)
         {
             if (string.IsNullOrEmpty(Input))
             {
@@ -153,7 +154,7 @@ namespace CFDG.API
             string dir = (string)XML.ReadValue("general", "defaultprojectpath");
 
             //Error checks
-            if (!TryParse(JobNumber, out string fullNumber, JobNumberFormats.LongHyphan))
+            if (!TryParse(JobNumber, JobNumberFormats.LongHyphan, out string fullNumber))
             {
                 //Log.AddWarning($"Job number {JobNumber} failed to correctly parse.");
                 return null;
@@ -186,7 +187,7 @@ namespace CFDG.API
         /// <returns>Reformatted job number.</returns>
         public static string Parse(string Input, JobNumberFormats Format)
         {
-            if (TryParse(Input, out string reformatted, Format))
+            if (TryParse(Input, Format, out string reformatted))
             {
                 return reformatted;
             }
@@ -194,6 +195,43 @@ namespace CFDG.API
             {
                 return "";
             }
+        }
+
+        /// <summary>
+        /// Retrieve the job number from a file name.
+        /// </summary>
+        /// <param name="document">AutoCAD Document object</param>
+        /// <returns>Job number found or empty if not found.</returns>
+        public static string GetJobNumber(Document document)
+        {
+            string jobNumber = Path.GetFileNameWithoutExtension(document.Name);
+            return ParseFileName(jobNumber);
+        }
+
+        /// <summary>
+        /// Retrieve the job number from a file name.
+        /// </summary>
+        /// <param name="document">Document path</param>
+        /// <returns>Job number found or empty if not found.</returns>
+        public static string GetJobNumber(string document)
+        {
+            string jobNumber = Path.GetFileNameWithoutExtension(document);
+            return ParseFileName(jobNumber);
+        }
+
+        /// <summary>
+        /// Parses a file name to determine if the job number is in the filename.
+        /// </summary>
+        /// <param name="fileName">Filename to search for a job number.</param>
+        /// <returns>Job number or <paramref name="empty"/> string</returns>
+        private static string ParseFileName(string fileName)
+        {
+            dynamic match = Regex.Match(fileName, API.XML.ReadValue("General", "DefaultProjectNumber"));
+            if (match.Success)
+            {
+                return match.Value;
+            }
+            return "";
         }
     }
 }
