@@ -108,8 +108,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ExportPointGroupModel.cs" />
+    <Compile Include="TextMessageBoxResultEnum.cs" />
     <Compile Include="windows\Calculations\ExportPointGroup.xaml.cs">
       <DependentUpon>ExportPointGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Common\TextMessageBoxForm.xaml.cs">
+      <DependentUpon>TextMessageBoxForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Export\OpenFileDialog.xaml.cs">
+      <DependentUpon>OpenFileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\FeedbackWindow.xaml.cs">
       <DependentUpon>FeedbackWindow.xaml</DependentUpon>
@@ -148,6 +155,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="windows\Common\TextMessageBoxForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\Export\OpenFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="windows\FeedbackWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -173,5 +188,6 @@
       <Name>CFDG.API</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -197,7 +197,7 @@ namespace CFDG.ACAD.Common
         public static bool CheckForProjectFolder(Document AcDoc, out string projectFolder)
         {
             // determines the job number of the active drawing.
-            string jobNumber = DocumentProperties.GetJobNumber(AcDoc);
+            string jobNumber = API.JobNumber.GetJobNumber(AcDoc);
             if (string.IsNullOrEmpty(jobNumber))
             {
                 Logging.Warning("Could not determine the project number.");

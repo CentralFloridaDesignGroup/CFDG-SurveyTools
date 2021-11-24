@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.PlottingServices;
 using Autodesk.AutoCAD.Runtime;
 using CFDG.ACAD.Common;
@@ -17,7 +12,7 @@ namespace CFDG.ACAD.CommandClasses.Export
     public class JobToPDF : ICommandMethod
     {
 
-        //[CommandMethod("PrintToPDF", CommandFlags.Modal | CommandFlags.NoBlockEditor)]
+        [CommandMethod("PrintToPDF", CommandFlags.Modal | CommandFlags.NoBlockEditor)]
         public void InitialCommand()
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
@@ -52,15 +47,28 @@ namespace CFDG.ACAD.CommandClasses.Export
             }
 
             PreviewEndPlotStatus plotStatus;
-            PlotEngine plotEngine = PlotFactory.CreatePreviewEngine((int)PreviewEngineFlags.Plot);
-            using (plotEngine)
+            plotStatus = PlotHandler.Preview(layout);
+            if (plotStatus != PreviewEndPlotStatus.Plot)
             {
-                plotStatus = PlotHandler.Preview(plotEngine, layout);
-                Logging.Debug($"{Environment.NewLine}Preview return: {plotStatus}");
-                if (plotStatus == PreviewEndPlotStatus.Plot)
-                {
+                return;
+            }
 
-                }
+            UI.windows.Export.OpenFileDialog selectFileDialog = new UI.windows.Export.OpenFileDialog(acVariables.Document.Name, new List<string> { ".pdf" });
+            Autodesk.AutoCAD.ApplicationServices.Application.ShowModalWindow(selectFileDialog);
+
+            if (!(bool)selectFileDialog.DialogResult)
+            {
+                Logging.Info("File not selected.");
+                return;
+            }
+
+            Logging.Debug($"{selectFileDialog.Directory} -> {selectFileDialog.FileName}");
+
+            PlotHandler.Plot(layout, Path.Combine(selectFileDialog.Directory, selectFileDialog.FileName));
+            Logging.Info("Plot created successfully.");
+            if (selectFileDialog.OpenAfterCreation)
+            {
+                Process.Start(Path.Combine(selectFileDialog.Directory, selectFileDialog.FileName));
             }
         }
     }

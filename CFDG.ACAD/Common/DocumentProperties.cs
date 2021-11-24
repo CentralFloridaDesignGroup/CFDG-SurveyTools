@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using Autodesk.AutoCAD.ApplicationServices;
 
@@ -9,6 +10,7 @@ namespace CFDG.ACAD.Common
     /// </summary>
     public class DocumentProperties
     {
+        [Obsolete("CFDG.ACAD.Common.GetJobNumber has been moved to CFDG.API.JobNumber.GetJobNumber.", false)]
         /// <summary>
         /// Retrieve the job number from a file name.
         /// </summary>
@@ -20,6 +22,7 @@ namespace CFDG.ACAD.Common
             return Parse(jobNumber);
         }
 
+        [Obsolete("CFDG.ACAD.Common.GetJobNumber has been moved to CFDG.API.JobNumber.GetJobNumber.", false)]
         /// <summary>
         /// Retrieve the job number from a file name.
         /// </summary>
@@ -31,6 +34,7 @@ namespace CFDG.ACAD.Common
             return Parse(jobNumber);
         }
 
+        [Obsolete("CFDG.ACAD.Common.Parse has been moved to CFDG.API.JobNumber.ParseFileName.", false)]
         /// <summary>
         /// Parses a file name to determine if the job number is in the filename.
         /// </summary>

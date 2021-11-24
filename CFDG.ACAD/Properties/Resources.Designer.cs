@@ -203,6 +203,16 @@ namespace CFDG.ACAD.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap pdf_file {
+            get {
+                object obj = ResourceManager.GetObject("pdf_file", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap placehold_16 {
             get {
                 object obj = ResourceManager.GetObject("placehold 16", resourceCulture);
