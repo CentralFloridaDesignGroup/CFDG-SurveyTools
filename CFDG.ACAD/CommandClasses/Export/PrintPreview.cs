@@ -13,14 +13,23 @@ namespace CFDG.ACAD.CommandClasses.Export
 {
     public class PlotHandler
     {
-        public static PreviewEndPlotStatus Preview(PlotEngine pe, string layout)
+        public static PreviewEndPlotStatus Preview(string layout)
         {
-            return PlotHandle(pe, layout, "");
+
+            PlotEngine plotEngine = PlotFactory.CreatePreviewEngine((int)PreviewEngineFlags.Plot);
+            using (plotEngine)
+            {
+                return PlotHandle(plotEngine, layout, "");
+            }
         }
 
-        public static PreviewEndPlotStatus Plot(PlotEngine pe, string layout, string filePath)
+        public static PreviewEndPlotStatus Plot(string layout, string filePath)
         {
-            return PlotHandle(pe, layout, filePath);
+            PlotEngine plotEngine = PlotFactory.CreatePublishEngine();
+            using (plotEngine)
+            {
+                return PlotHandle(plotEngine, layout, filePath);
+            }
         }
 
         private static PreviewEndPlotStatus PlotHandle(PlotEngine pe, string layout, string saveDir)

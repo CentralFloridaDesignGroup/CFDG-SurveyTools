@@ -108,8 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ExportPointGroupModel.cs" />
+    <Compile Include="TextMessageBoxResultEnum.cs" />
     <Compile Include="windows\Calculations\ExportPointGroup.xaml.cs">
       <DependentUpon>ExportPointGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Common\TextMessageBoxForm.xaml.cs">
+      <DependentUpon>TextMessageBoxForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\Export\OpenFileDialog.xaml.cs">
       <DependentUpon>OpenFileDialog.xaml</DependentUpon>
@@ -148,6 +152,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="windows\Calculations\ExportPointGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\Common\TextMessageBoxForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

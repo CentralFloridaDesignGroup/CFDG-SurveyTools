@@ -29,6 +29,7 @@ namespace CFDG.UI.windows.Export
         }
 
         internal string ProjectNumber { get; set; }
+
         internal readonly string CurrentDate = DateTime.Now.ToString("MM-dd-yyyy");
 
         internal bool IncludeDate { get; set; }
@@ -74,8 +75,6 @@ namespace CFDG.UI.windows.Export
 
             PopulateDirectory();
         }
-
-
 
         private void PopulateDirectory()
         {
@@ -265,6 +264,17 @@ namespace CFDG.UI.windows.Export
         private void TxtCurrentPath_GotFocus(object sender, RoutedEventArgs e)
         {
             TxtCurrentPath.SelectAll();
+        }
+
+        private void CmdNewFolder_Click(object sender, RoutedEventArgs e)
+        {
+            TextMessageBoxResult res = Common.TextMessageBox.Show("Please enter a name for the folder.", out string dialogTextResult);
+            if (res != TextMessageBoxResult.OK)
+            {
+                return;
+            }
+            System.IO.Directory.CreateDirectory(Path.Combine(Directory, dialogTextResult));
+            PopulateDirectory();
         }
     }
 }
