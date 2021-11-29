@@ -12,22 +12,21 @@ namespace CFDG.API
 {
     public class Imaging
     {
-        //URGENT: Fix the black background on the image during conversion.
+        
         public static BitmapImage BitmapToImageSource(Icon icon)
         {
             Bitmap bitmap = FromIconToBitmap(icon);
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.MakeTransparent();
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                 memory.Position = 0;
-                BitmapImage bitmapimage = new BitmapImage();
-                bitmapimage.BeginInit();
-                bitmapimage.StreamSource = memory;
-                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapimage.EndInit();
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
 
-                return bitmapimage;
+                return bitmapImage;
             }
         }
 

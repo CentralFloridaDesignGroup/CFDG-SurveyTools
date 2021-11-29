@@ -1,0 +1,16 @@
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\CFDG.ACAD.dll
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\CFDG.ACAD.pdb
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\AecBaseMgd.dll
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\AeccDbMgd.dll
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\CFDG.API.dll
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\CFDG.UI.dll
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\CFDG.API.pdb
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\CFDG.UI.pdb
+D:\CFDG-Projects\CFDG.ACAD\obj\Debug (ACAD 19)\CFDG.ACAD.csprojAssemblyReference.cache
+D:\CFDG-Projects\CFDG.ACAD\obj\Debug (ACAD 19)\CFDG.ACAD.Properties.Resources.resources
+D:\CFDG-Projects\CFDG.ACAD\obj\Debug (ACAD 19)\CFDG.ACAD.csproj.GenerateResource.cache
+D:\CFDG-Projects\CFDG.ACAD\obj\Debug (ACAD 19)\CFDG.ACAD.csproj.CoreCompileInputs.cache
+D:\CFDG-Projects\CFDG.ACAD\obj\Debug (ACAD 19)\CFDG.ACAD.csproj.CopyComplete
+D:\CFDG-Projects\CFDG.ACAD\obj\Debug (ACAD 19)\CFDG.ACAD.dll
+D:\CFDG-Projects\CFDG.ACAD\obj\Debug (ACAD 19)\CFDG.ACAD.pdb
+D:\CFDG-Projects\CFDG.ACAD\bin\Debug (ACAD 19)\AppSettings.xml

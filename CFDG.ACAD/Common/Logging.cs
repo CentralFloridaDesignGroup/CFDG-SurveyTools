@@ -77,17 +77,15 @@ namespace CFDG.ACAD.Common
             }
         }
 
-        [Conditional("DEBUG")]
         /// <summary>
         /// Show a debug message and log the action.
         /// </summary>
         /// <param name="message">Message to show.</param>
         public static void Debug(string message)
         {
-            Critical(message, false);
+            Debug(message, false);
         }
 
-        [Conditional("DEBUG")]
         /// <summary>
         /// Show a debug message and log the action.
         /// </summary>
@@ -95,11 +93,13 @@ namespace CFDG.ACAD.Common
         /// <param name="showModalDialog">Show the modal dialog.</param>
         public static void Debug(string message, bool showModalDialog)
         {
+#if DEBUG
             WriteAcMessage(ComposeMessage(message, MessageLevel.Debug, true));
             if (showModalDialog)
             {
                 CreateModalDialog(message, MessageLevel.Debug);
             }
+#endif
         }
 
         #endregion
@@ -114,7 +114,7 @@ namespace CFDG.ACAD.Common
         private static void WriteAcMessage(string message)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
-            acVariables.Editor.WriteMessage($"{Environment.NewLine}{message}");
+            acVariables.Editor.WriteMessage($"{message}{Environment.NewLine}");
         }
 
         /// <summary>

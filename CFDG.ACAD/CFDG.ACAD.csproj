@@ -73,6 +73,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Ribbon\RibbionActionButton.cs" />
     <Compile Include="Ribbon\Ribbon.cs" />
     <Compile Include="CommandClasses\Calculations\Footprint.cs" />
     <Compile Include="CommandClasses\Calculations\SlopeFromPoints.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ribbon\RibbonButtonHandler.cs" />
     <Compile Include="Common\UserInput.cs" />
+    <Compile Include="Ribbon\RibbonActionButtonHandler.cs" />
     <Compile Include="Structs\BasicAcStruct.cs" />
   </ItemGroup>
   <ItemGroup>

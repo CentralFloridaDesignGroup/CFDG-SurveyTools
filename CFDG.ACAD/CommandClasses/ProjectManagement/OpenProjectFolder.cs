@@ -20,31 +20,36 @@ namespace CFDG.ACAD.CommandClasses.ProjectManagement
             OpenFolder("");
         }
 
+        public static void OpenMainFolder(string project = "")
+        {
+            OpenFolder("", project);
+        }
+
         /// <summary>
         /// Open the active drawing's project computations folder.
         /// </summary>
         [CommandMethod("OpenCompFolder")]
-        public void OpenCompFolder()
+        public static void OpenCompFolder(string project = "")
         {
-            OpenFolder("calc");
+            OpenFolder("calc", project);
         }
 
         /// <summary>
         /// Open the active drawing's project submittals folder.
         /// </summary>
         [CommandMethod("OpenSubmittalFolder")]
-        public void OpenSubmittalFolder()
+        public static void OpenSubmittalFolder(string project = "")
         {
-            OpenFolder("submittal");
+            OpenFolder("submittal", project);
         }
 
         /// <summary>
         /// Open the active drawing's project submittals folder.
         /// </summary>
         [CommandMethod("OpenFieldDataFolder")]
-        public void OpenFieldDataFolder()
+        public static void OpenFieldDataFolder(string project = "")
         {
-            OpenFolder("fielddata");
+            OpenFolder("fielddata", project);
         }
 
         #endregion
@@ -55,12 +60,12 @@ namespace CFDG.ACAD.CommandClasses.ProjectManagement
         /// Opens the specified folder of the active drawing's project.
         /// </summary>
         /// <param name="option">The sub-folder to open.</param>
-        private static void OpenFolder(string option)
+        private static void OpenFolder(string option, string projectNumber = "")
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
             // determines the job number of the active drawing.
-            string jobNumber = API.JobNumber.GetJobNumber(acVariables.Document);
+            string jobNumber = API.JobNumber.GetJobNumber(string.IsNullOrEmpty(projectNumber) ? acVariables.Document.Name : projectNumber);
             if (string.IsNullOrEmpty(jobNumber))
             {
                 Logging.Warning("Could not find a job number from the file name (is the drawing saved?).");

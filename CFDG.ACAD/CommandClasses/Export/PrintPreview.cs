@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -19,7 +20,15 @@ namespace CFDG.ACAD.CommandClasses.Export
             PlotEngine plotEngine = PlotFactory.CreatePreviewEngine((int)PreviewEngineFlags.Plot);
             using (plotEngine)
             {
-                return PlotHandle(plotEngine, layout, "");
+                try
+                {
+                    return PlotHandle(plotEngine, layout, "");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Critical(ex.Message);
+                    return PreviewEndPlotStatus.Cancel;
+                }
             }
         }
 
@@ -28,7 +37,15 @@ namespace CFDG.ACAD.CommandClasses.Export
             PlotEngine plotEngine = PlotFactory.CreatePublishEngine();
             using (plotEngine)
             {
-                return PlotHandle(plotEngine, layout, filePath);
+                try
+                {
+                    return PlotHandle(plotEngine, layout, filePath);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Critical(ex.Message);
+                    return PreviewEndPlotStatus.Cancel;
+                }
             }
         }
 
@@ -45,6 +62,7 @@ namespace CFDG.ACAD.CommandClasses.Export
                 // We'll be plotting the current layout
                 BlockTableRecord btr = (BlockTableRecord)AcTransaction.GetObject(layoutObject.BlockTableRecordId, OpenMode.ForRead);
                 Layout lo = (Layout)AcTransaction.GetObject(btr.LayoutId, OpenMode.ForRead);
+                Logging.Info($"Plotting layout {lo.LayoutName}");
 
                 PlotSettings ps = new PlotSettings(lo.ModelType);
                 ps.CopyFrom(lo);
@@ -64,6 +82,7 @@ namespace CFDG.ACAD.CommandClasses.Export
                 };
 
                 piv.Validate(pi);
+                Logging.Info($"Validation complete\nStarting plot");
 
                 // Create a Progress Dialog to provide info and allow thej user to cancel
                 PlotProgressDialog ppd = new PlotProgressDialog(!isPlot, 1, true);
@@ -107,6 +126,7 @@ namespace CFDG.ACAD.CommandClasses.Export
 
                     // Finish the document
                     pe.EndDocument(null);
+                    Logging.Info("Plot complete.");
 
                     // And finish the plot
                     ppd.PlotProgressPos = 100;
