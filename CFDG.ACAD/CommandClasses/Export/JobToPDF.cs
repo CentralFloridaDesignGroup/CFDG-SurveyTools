@@ -80,6 +80,7 @@ namespace CFDG.ACAD.CommandClasses.Export
             await Task.Run(() =>
             {
                 while (!File.Exists(path)) { }
+                System.Threading.Thread.Sleep(500);
                 Process.Start(path);
             });
             Logging.Debug("File created, located, and opened.");
