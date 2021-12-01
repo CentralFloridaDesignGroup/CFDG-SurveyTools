@@ -1,0 +1,14 @@
+D:\CFDG-Projects\CFDG.API\bin\Debug\AppSettings.xml
+D:\CFDG-Projects\CFDG.API\bin\Debug\CFDG.API.dll
+D:\CFDG-Projects\CFDG.API\bin\Debug\CFDG.API.pdb
+D:\CFDG-Projects\CFDG.API\bin\Debug\AecBaseMgd.dll
+D:\CFDG-Projects\CFDG.API\bin\Debug\AeccDbMgd.dll
+D:\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.CoreCompileInputs.cache
+D:\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.CopyComplete
+D:\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.dll
+D:\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.pdb
+D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.csproj.AssemblyReference.cache
+D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.csproj.CoreCompileInputs.cache
+D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.dll
+D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.pdb
+D:\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.AssemblyReference.cache

@@ -120,15 +120,22 @@ namespace CFDG.ACAD
                     Title = tabName,
                     Id = "CSurveyTab"
                 };
-
+                var textBoxRibbon = Ribbon.CreateRibbonTextBox(
+                            "Other Job Number",
+                            "Enter a job number to open another project folder from AutoCAD. Leave blank to open the current project folder.",
+                            "TxtProMngJobNumber"
+                        );
                 //Project Management Tab
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Project Management", "ProjectManagement",
-                    Ribbon.CreateLargeSplitButton(
-                        Ribbon.CreateLargeButton("Open\nFolder", "OpenProjectFolder", Properties.Resources.folder),
-                        Ribbon.CreateLargeButton("Open Calc\nFolder", "OpenCompFolder", Properties.Resources.folder, Properties.Resources.overlay_edit),
-                        Ribbon.CreateLargeButton("Open Field\nData Folder", "OpenFieldDataFold", Properties.Resources.folder, Properties.Resources.overlay_field),
-                        Ribbon.CreateLargeButton("Open Submittal\nFolder", "OpenSubmittalFolder", Properties.Resources.folder, Properties.Resources.overlay_export)
+                    Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageAndText,
+                        textBoxRibbon,
+                        Ribbon.CreateSmallSplitButton(
+                            Ribbon.CreateSmallActionButton("Open\nFolder", CommandClasses.ProjectManagement.OpenProjectFolder.OpenMainFolder, textBoxRibbon, Properties.Resources.folder),
+                            Ribbon.CreateSmallActionButton("Open Calc\nFolder", CommandClasses.ProjectManagement.OpenProjectFolder.OpenCompFolder, textBoxRibbon, Properties.Resources.folder, Properties.Resources.overlay_edit),
+                            Ribbon.CreateSmallActionButton("Open Field\nData Folder", CommandClasses.ProjectManagement.OpenProjectFolder.OpenFieldDataFolder, textBoxRibbon, Properties.Resources.folder, Properties.Resources.overlay_field),
+                            Ribbon.CreateSmallActionButton("Open Submittal\nFolder", CommandClasses.ProjectManagement.OpenProjectFolder.OpenSubmittalFolder, textBoxRibbon, Properties.Resources.folder, Properties.Resources.overlay_export)
+                            )
                         )
                     )
                 );

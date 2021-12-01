@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <!--General Settings-->
+  <general>
+    <companyname value="Central Florida Design Group" type="string"/>
+    <companyabbreviation value="H&amp;H Survey" type="string"/>
+    <defaultprojectpath value="Z:\" type="string"/>
+    <defaultprojectnumber value="(((\d{2}|\d{4})-\d{2}-\d{3})|\d{9}|\d{7})" type="string"/>
+  </general>
+  <api>
+    <devmode value="false" type="bool"/>
+    <testint value="12" type="int"/>
+  </api>
+  <!--AutoCAD Settings-->
+  <autocad>
+    <enableosnapz value="true" type="bool"/>
+    <warnexcessivedwgopen value="10" type="int"/>
+  </autocad>
+</settings>

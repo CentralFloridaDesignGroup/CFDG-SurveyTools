@@ -27,11 +27,13 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="TxtMessage" Text="placeholder text" Margin="0 5" Grid.Row="0"/>
-        <TextBox x:Name="TxtInput" Grid.Row="1" FontSize="16" BorderThickness="0 0 0 2" Margin="0 5"/>
+        <TextBox x:Name="TxtInput" Grid.Row="1" FontSize="16" BorderThickness="0 0 0 2" Margin="0 5"
+                 GotFocus="TxtInput_GotFocus"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5" Grid.Row="2">
             <Button x:Name="CmdSubmit" Content="Accept" Margin="0 0 5 0" Style="{StaticResource BtnPrimary}" Width="100" Height="30"
                     Click="CmdSubmit_Click"/>
-            <Button x:Name="CmdCancel" Content="Cencel" Margin="5 0 0 0" Width="100" Height="30"/>
+            <Button x:Name="CmdCancel" Content="Cancel" Margin="5 0 0 0" Width="100" Height="30"
+                    Click="CmdCancel_Click"/>
         </StackPanel>
     </Grid>
 </Window>

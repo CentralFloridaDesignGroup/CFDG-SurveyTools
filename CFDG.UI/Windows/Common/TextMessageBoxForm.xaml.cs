@@ -27,6 +27,12 @@ namespace CFDG.UI.windows.Common
         {
             InitializeComponent();
             Result = TextMessageBoxResult.Cancel;
+            TxtMessage.Text = msg;
+            Title = ttl;
+            if (!string.IsNullOrEmpty(presetVal))
+            {
+                TxtInput.Text = presetVal;
+            }
         }
 
         private void CmdSubmit_Click(object sender, RoutedEventArgs e)
@@ -39,6 +45,11 @@ namespace CFDG.UI.windows.Common
         private void CmdCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void TxtInput_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TxtInput.SelectAll();
         }
     }
 

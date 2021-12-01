@@ -1,0 +1,530 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {
+      "AutoCAD.NET/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Core": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        }
+      },
+      "AutoCAD.NET.Core/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Model": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCoreMgd.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCoreMgd.dll": {}
+        }
+      },
+      "AutoCAD.NET.Model/23.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        }
+      },
+      "Civil3D2019.Base/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        },
+        "runtime": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        }
+      },
+      "CFDG.API/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/CFDG.API.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.API.dll": {}
+        }
+      },
+      "CFDG.UI/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "CFDG.API": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win": {
+      "AutoCAD.NET/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Core": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        }
+      },
+      "AutoCAD.NET.Core/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Model": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCoreMgd.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCoreMgd.dll": {}
+        }
+      },
+      "AutoCAD.NET.Model/23.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        }
+      },
+      "Civil3D2019.Base/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        },
+        "runtime": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        }
+      },
+      "CFDG.API/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/CFDG.API.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.API.dll": {}
+        }
+      },
+      "CFDG.UI/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "CFDG.API": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win-x64": {
+      "AutoCAD.NET/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Core": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        }
+      },
+      "AutoCAD.NET.Core/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Model": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCoreMgd.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCoreMgd.dll": {}
+        }
+      },
+      "AutoCAD.NET.Model/23.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        }
+      },
+      "Civil3D2019.Base/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        },
+        "runtime": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        }
+      },
+      "CFDG.API/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/CFDG.API.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.API.dll": {}
+        }
+      },
+      "CFDG.UI/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "CFDG.API": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.7.2/win-x86": {
+      "AutoCAD.NET/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Core": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCui.dll": {},
+          "lib/net47/AcDx.dll": {},
+          "lib/net47/AcMgd.dll": {},
+          "lib/net47/AcMr.dll": {},
+          "lib/net47/AcSeamless.dll": {},
+          "lib/net47/AcTcMgd.dll": {},
+          "lib/net47/AcWindows.dll": {},
+          "lib/net47/AdUIMgd.dll": {},
+          "lib/net47/AdUiPalettes.dll": {},
+          "lib/net47/AdWindows.dll": {}
+        }
+      },
+      "AutoCAD.NET.Core/23.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoCAD.NET.Model": "[23.0.0, 24.0.0)"
+        },
+        "compile": {
+          "lib/net47/AcCoreMgd.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcCoreMgd.dll": {}
+        }
+      },
+      "AutoCAD.NET.Model/23.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        },
+        "runtime": {
+          "lib/net47/AcDbMgd.dll": {},
+          "lib/net47/acdbmgdbrep.dll": {}
+        }
+      },
+      "Civil3D2019.Base/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        },
+        "runtime": {
+          "lib/AecBaseMgd.dll": {},
+          "lib/AeccDbMgd.dll": {}
+        }
+      },
+      "CFDG.API/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/CFDG.API.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.API.dll": {}
+        }
+      },
+      "CFDG.UI/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "CFDG.API": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CFDG.UI.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AutoCAD.NET/23.0.0": {
+      "sha512": "3YaXDJC0p32Grbn0g6Mf8Fpxx5mI1uA0xU1gkJiPWnDu6eHK/ec2oNV0BSP1Bu3UOF1m52Ls+j8tpu712Cdz5Q==",
+      "type": "package",
+      "path": "autocad.net/23.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "adsk.xml",
+        "autocad.net.23.0.0.nupkg.sha512",
+        "autocad.net.nuspec",
+        "lib/net47/AcCui.dll",
+        "lib/net47/AcCui.xml",
+        "lib/net47/AcDx.dll",
+        "lib/net47/AcDx.xml",
+        "lib/net47/AcMgd.dll",
+        "lib/net47/AcMgd.xml",
+        "lib/net47/AcMr.dll",
+        "lib/net47/AcMr.xml",
+        "lib/net47/AcSeamless.dll",
+        "lib/net47/AcTcMgd.dll",
+        "lib/net47/AcTcMgd.xml",
+        "lib/net47/AcWindows.dll",
+        "lib/net47/AcWindows.xml",
+        "lib/net47/AdUIMgd.dll",
+        "lib/net47/AdUIMgd.xml",
+        "lib/net47/AdUiPalettes.dll",
+        "lib/net47/AdWindows.dll",
+        "lib/net47/AdWindows.xml",
+        "tools/install.ps1"
+      ]
+    },
+    "AutoCAD.NET.Core/23.0.0": {
+      "sha512": "cUriS1b9C4ydmvrZ1GYtHLugybuy6KhG5VzZJpbhJAsqWTLfgXt/fJSDM53Wq7301VFn0XhoK3DhO4vembY2Uw==",
+      "type": "package",
+      "path": "autocad.net.core/23.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "adsk.xml",
+        "autocad.net.core.23.0.0.nupkg.sha512",
+        "autocad.net.core.nuspec",
+        "lib/net47/AcCoreMgd.dll",
+        "lib/net47/AcCoreMgd.xml",
+        "tools/install.ps1"
+      ]
+    },
+    "AutoCAD.NET.Model/23.0.0": {
+      "sha512": "dAYMJfENU/8GZGQOgoeEaA+cWULSZwZP/8ZUDERO5t9/hCj+xcKCLlBw4JOLPMhXq5JzxhO74ROSR0KTSZ5NJg==",
+      "type": "package",
+      "path": "autocad.net.model/23.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "adsk.xml",
+        "autocad.net.model.23.0.0.nupkg.sha512",
+        "autocad.net.model.nuspec",
+        "lib/net47/AcDbMgd.dll",
+        "lib/net47/AcDbMgd.xml",
+        "lib/net47/AcDbMgdBrep.xml",
+        "lib/net47/acdbmgdbrep.dll",
+        "tools/install.ps1"
+      ]
+    },
+    "Civil3D2019.Base/1.0.0": {
+      "sha512": "aSMfxwuZ06JUpeHsK4mKPkMYYVqzUPf5eSNy2HrvnX84TEG8SxmnGsxBIzmt1H9kJSheNwJqdy2iIo+/L0qmGg==",
+      "type": "package",
+      "path": "civil3d2019.base/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "civil3d2019.base.1.0.0.nupkg.sha512",
+        "civil3d2019.base.nuspec",
+        "lib/AecBaseMgd.dll",
+        "lib/AeccDbMgd.dll"
+      ]
+    },
+    "CFDG.API/1.0.0": {
+      "type": "project",
+      "path": "../CFDG.API/CFDG.API.csproj",
+      "msbuildProject": "../CFDG.API/CFDG.API.csproj"
+    },
+    "CFDG.UI/1.0.0": {
+      "type": "project",
+      "path": "../CFDG.UI/CFDG.UI.csproj",
+      "msbuildProject": "../CFDG.UI/CFDG.UI.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "AutoCAD.NET >= 23.0.0",
+      "AutoCAD.NET.Core >= 23.0.0",
+      "AutoCAD.NET.Model >= 23.0.0",
+      "CFDG.API >= 1.0.0",
+      "CFDG.UI >= 1.0.0",
+      "Civil3D2019.Base >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\CFDG-Projects\\CFDG.ACAD\\CFDG.ACAD.csproj",
+      "projectName": "CFDG.ACAD",
+      "projectPath": "D:\\CFDG-Projects\\CFDG.ACAD\\CFDG.ACAD.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "D:\\CFDG-Projects\\CFDG.ACAD\\obj\\",
+      "projectStyle": "PackageReference",
+      "skipContentFileWrite": true,
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net472"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net472": {
+          "projectReferences": {
+            "D:\\CFDG-Projects\\CFDG.API\\CFDG.API.csproj": {
+              "projectPath": "D:\\CFDG-Projects\\CFDG.API\\CFDG.API.csproj"
+            },
+            "D:\\CFDG-Projects\\CFDG.UI\\CFDG.UI.csproj": {
+              "projectPath": "D:\\CFDG-Projects\\CFDG.UI\\CFDG.UI.csproj"
+            }
+          }
+        }
+      }
+    },
+    "frameworks": {
+      "net472": {
+        "dependencies": {
+          "AutoCAD.NET": {
+            "target": "Package",
+            "version": "[23.0.0, )"
+          },
+          "AutoCAD.NET.Core": {
+            "target": "Package",
+            "version": "[23.0.0, )"
+          },
+          "AutoCAD.NET.Model": {
+            "target": "Package",
+            "version": "[23.0.0, )"
+          },
+          "Civil3D2019.Base": {
+            "target": "Package",
+            "version": "[1.0.0, )"
+          }
+        }
+      }
+    },
+    "runtimes": {
+      "win": {
+        "#import": []
+      },
+      "win-x64": {
+        "#import": []
+      },
+      "win-x86": {
+        "#import": []
+      }
+    }
+  }
+}

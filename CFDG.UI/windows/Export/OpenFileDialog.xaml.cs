@@ -276,5 +276,35 @@ namespace CFDG.UI.windows.Export
             System.IO.Directory.CreateDirectory(Path.Combine(Directory, dialogTextResult));
             PopulateDirectory();
         }
+
+        private void EstablishBackgroundWatcher(string directory, string file)
+        {
+            using (BackgroundWorker worker = new BackgroundWorker())
+            {
+                worker.WorkerReportsProgress = false;
+                worker.WorkerSupportsCancellation = false;
+                worker.DoWork += (sender, e) => Worker_DoWork(sender, e, directory, file);
+                worker.RunWorkerAsync();
+            }
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e, string directory, string file)
+        {
+            FileSystemWatcher fsw = new FileSystemWatcher(directory)
+            {
+                Filter = file,
+                NotifyFilter = NotifyFilters.Attributes
+                    | NotifyFilters.CreationTime
+                    | NotifyFilters.DirectoryName
+                    | NotifyFilters.FileName
+                    | NotifyFilters.LastAccess
+                    | NotifyFilters.LastWrite
+                    | NotifyFilters.Security
+                    | NotifyFilters.Size,
+                EnableRaisingEvents = true
+            };
+
+            WaitForChangedResult fileCreated = fsw.WaitForChanged(WatcherChangeTypes.Created, 2 * 60 * 100);
+        }
     }
 }
