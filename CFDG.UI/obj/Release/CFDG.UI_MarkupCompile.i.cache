@@ -10,11 +10,11 @@ none
 false
 TRACE
 
-41373907743
+61885179296
 
-8-2032765755
-29-1513259827
-windows\Calculations\ExportPointGroup.xaml;windows\FeedbackWindow.xaml;windows\PlotPageDialog.xaml;windows\SlopeDistance.xaml;
+12117944799
+30-1589017162
+windows\Calculations\ExportPointGroup.xaml;windows\Common\TextMessageBoxForm.xaml;windows\Export\OpenFileDialog.xaml;windows\FeedbackWindow.xaml;windows\PlotPageDialog.xaml;windows\SlopeDistance.xaml;
 
-False
+True
 

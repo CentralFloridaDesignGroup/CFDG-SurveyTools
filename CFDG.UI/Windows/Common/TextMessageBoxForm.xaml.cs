@@ -74,7 +74,7 @@ namespace CFDG.UI.windows.Common
         {
             TextMessageBoxForm form = new TextMessageBoxForm(message, title, presetVal)
             {
-                ShowInTaskbar = false                
+                ShowInTaskbar = false
             };
             form.ShowDialog();
             result = form.UserInput;

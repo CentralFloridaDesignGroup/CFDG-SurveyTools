@@ -8,6 +8,7 @@
         FontSize="14"
         x:ClassModifier="internal"
         ResizeMode="NoResize" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
         Title="TextMessageBoxForm" Height="200" Width="400">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
@@ -32,8 +33,12 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5" Grid.Row="2">
             <Button x:Name="CmdSubmit" Content="Accept" Margin="0 0 5 0" Style="{StaticResource BtnPrimary}" Width="100" Height="30"
                     Click="CmdSubmit_Click"/>
+<<<<<<< Updated upstream
             <Button x:Name="CmdCancel" Content="Cancel" Margin="5 0 0 0" Width="100" Height="30"
                     Click="CmdCancel_Click"/>
+=======
+            <Button x:Name="CmdCancel" Content="Cancel" Margin="5 0 0 0" Width="100" Height="30" Click="CmdCancel_Click"/>
+>>>>>>> Stashed changes
         </StackPanel>
     </Grid>
 </Window>

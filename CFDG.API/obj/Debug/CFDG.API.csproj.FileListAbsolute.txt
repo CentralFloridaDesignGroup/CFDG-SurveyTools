@@ -11,4 +11,3 @@ D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.csproj.AssemblyReference.ca
 D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.csproj.CoreCompileInputs.cache
 D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.dll
 D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.pdb
-D:\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.AssemblyReference.cache

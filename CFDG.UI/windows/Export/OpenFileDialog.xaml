@@ -92,7 +92,7 @@
                         <Button x:Name="CmdHome" Content="Return to Project" Width="125" Margin="5 0"
                                 Click="CmdHome_Click"/>
                         <Button x:Name="CmdNewFolder" Content="New Folder" Width="125" Margin="5 0" 
-                                Click="CmdNewFolder_Click"/>
+                                Click="CreateDirectory"/>
                         <Button x:Name="CmdDirUp" Content="↑" Width="24" Margin="5 0 0 0"
                             Click="CmdDirUp_Click"/>
                     </StackPanel>
@@ -100,7 +100,7 @@
             </DockPanel>
         </StackPanel>
         <DataGrid IsReadOnly="True" x:Name="LstDirList" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" SelectionMode="Single" GridLinesVisibility="None" Background="White"
-                  MouseDoubleClick="LstDirList_MouseDoubleClick" RowHeight="24">
+                  MouseDoubleClick="LstDirList_MouseDoubleClick" RowHeight="24" MouseDown="LstDirList_MouseDown">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="VerticalAlignment" Value="Center"/>

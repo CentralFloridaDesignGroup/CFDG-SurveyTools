@@ -39,7 +39,10 @@ namespace CFDG.UI.windows.Export
         public string Directory { get; internal set; }
         public bool OpenAfterCreation { get; internal set; }
 
+        internal ContextMenu menu { get; set; }
+
         internal List<string> Filters { get; set; }
+
 
         private void UpdateName()
         {
@@ -72,6 +75,17 @@ namespace CFDG.UI.windows.Export
             UpdateName();
 
             Filters = filter;
+
+            ContextMenu cm = new ContextMenu();
+            MenuItem addFolder = new MenuItem();
+            addFolder.Click += new RoutedEventHandler(CreateDirectory);
+            addFolder.Header = "Add Folder";
+            cm.Items.Add(addFolder);
+            MenuItem remove = new MenuItem();
+            remove.Click += new RoutedEventHandler(Deleteitem);
+            remove.Header = "Delete";
+            cm.Items.Add(remove);
+            menu = cm;
 
             PopulateDirectory();
         }
@@ -266,28 +280,6 @@ namespace CFDG.UI.windows.Export
             TxtCurrentPath.SelectAll();
         }
 
-        private void CmdNewFolder_Click(object sender, RoutedEventArgs e)
-        {
-            TextMessageBoxResult res = Common.TextMessageBox.Show("Please enter a name for the folder.", out string dialogTextResult);
-            if (res != TextMessageBoxResult.OK)
-            {
-                return;
-            }
-            System.IO.Directory.CreateDirectory(Path.Combine(Directory, dialogTextResult));
-            PopulateDirectory();
-        }
-
-        private void EstablishBackgroundWatcher(string directory, string file)
-        {
-            using (BackgroundWorker worker = new BackgroundWorker())
-            {
-                worker.WorkerReportsProgress = false;
-                worker.WorkerSupportsCancellation = false;
-                worker.DoWork += (sender, e) => Worker_DoWork(sender, e, directory, file);
-                worker.RunWorkerAsync();
-            }
-        }
-
         private void Worker_DoWork(object sender, DoWorkEventArgs e, string directory, string file)
         {
             FileSystemWatcher fsw = new FileSystemWatcher(directory)
@@ -305,6 +297,62 @@ namespace CFDG.UI.windows.Export
             };
 
             WaitForChangedResult fileCreated = fsw.WaitForChanged(WatcherChangeTypes.Created, 2 * 60 * 100);
+        }
+
+        private void LstDirList_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            object item = LstDirList.SelectedItem;
+
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Right)
+            {
+                MenuItem deleteOption = (MenuItem)menu.Items[1];
+                deleteOption.Visibility = item == null ? Visibility.Collapsed : Visibility.Visible;
+                menu.PlacementTarget = LstDirList;
+                menu.IsOpen = true;
+            }
+        }
+
+        private void CreateDirectory(object sender, RoutedEventArgs e)
+        {
+            TextMessageBoxResult res = Common.TextMessageBox.Show("Please enter a name for the folder.", out string dialogTextResult);
+            if (res != TextMessageBoxResult.OK)
+            {
+                return;
+            }
+            System.IO.Directory.CreateDirectory(Path.Combine(Directory, dialogTextResult));
+            PopulateDirectory();
+        }
+
+        private void Deleteitem(object s, RoutedEventArgs e)
+        {
+            ListInfo item = (ListInfo)LstDirList.SelectedItem;
+
+            if(MessageBox.Show($"Are you sure you want to delete {item.name}? This cannot be undone.", "Confirm deletion", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
+                return;
+            }
+            try
+            {
+
+                if (item.type == "folder")
+                {
+                    System.IO.Directory.Delete(Path.Combine(Directory, item.name), true);
+                    PopulateDirectory();
+                    return;
+                }
+                using (FileStream fs = new FileStream(Path.Combine(Directory, item.name), FileMode.Open))
+                {
+                    fs.Close();
+                }
+                File.Delete(Path.Combine(Directory, item.name));
+                PopulateDirectory();
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("The file is open in another application. Please either close the file or select another one.");
+                return;
+            }
         }
     }
 }

@@ -776,7 +776,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CFDG.ACAD, Version=0.2.2.3, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:CFDG.ACAD, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_95C89749D71CAE39E85B070DDA13FE5A"
@@ -972,15 +972,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Survey Toolbox"
-        "ProductCode" = "8:{1B3D1414-7D8D-4B10-A995-BABB8EBAA259}"
-        "PackageCode" = "8:{1D191B18-B9DB-4C63-A847-148AE03009CF}"
+        "ProductCode" = "8:{D33DC000-22F1-444D-AEB3-1B13A4FEC2AB}"
+        "PackageCode" = "8:{B78BF3B0-C159-4AC5-B89F-82AEF4816975}"
         "UpgradeCode" = "8:{E69A6A4D-A7AB-42D8-AA21-12D5BD854521}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.3.1"
+        "ProductVersion" = "8:0.3.0"
         "Manufacturer" = "8:Central Florida Design Group"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1494,7 +1494,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_10851025820F4E028B8FC885C1E1A55E"
             {
-            "SourcePath" = "8:..\\CFDG.ACAD.Installer\\obj\\Release\\CFDG.ACAD.Installer.exe"
+            "SourcePath" = "8:..\\CFDG.ACAD.Installer\\obj\\Debug\\CFDG.ACAD.Installer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_54D7E406705C4938A2978444A9C62C40"
