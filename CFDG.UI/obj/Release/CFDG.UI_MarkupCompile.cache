@@ -4,7 +4,7 @@
 library
 C#
 .cs
-D:\CFDG-Projects\CFDG.UI\obj\Release\
+C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.UI\obj\Release\
 CFDG.UI
 none
 false
@@ -13,7 +13,7 @@ TRACE
 61885179296
 
 111195523631
-30-1589017162
+301154822464
 windows\Calculations\ExportPointGroup.xaml;windows\Common\TextMessageBoxForm.xaml;windows\Export\OpenFileDialog.xaml;windows\FeedbackWindow.xaml;windows\PlotPageDialog.xaml;windows\SlopeDistance.xaml;
 
 False
