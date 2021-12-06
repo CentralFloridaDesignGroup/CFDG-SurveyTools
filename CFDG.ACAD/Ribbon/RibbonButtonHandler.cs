@@ -20,7 +20,7 @@ namespace CFDG.ACAD
 
         {
             // Grab the command associated with the button
-            var cmd = parameter as RibbonButton;
+            RibbonButton cmd = parameter as RibbonButton;
 
             Document dwg = ACApplication.DocumentManager.MdiActiveDocument;
 

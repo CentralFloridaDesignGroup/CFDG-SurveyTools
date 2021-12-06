@@ -124,12 +124,6 @@
   <data name="arrow-up" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrow-up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Create PG" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Create PG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Export PG" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Export PG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="field" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\field.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -163,11 +157,20 @@
   <data name="overlay-field" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\overlay-field.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="overlay_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\overlay-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pdf_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pdf-file.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="placehold 16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\placehold 16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="placehold 32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\placehold 32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Point_Group" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Point Group.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SlopeByPoints" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SlopeByPoints.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using CFDG.API;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
+using CFDG.ACAD.Common;
 
 namespace CFDG.ACAD.CommandClasses.Calculations
 {
@@ -38,11 +39,11 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 using (Transaction tr = doc.Database.TransactionManager.StartTransaction())
                 {
                     // Open the Block table record for read
-                    var acBlkTbl = tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
+                    BlockTable acBlkTbl = tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
 
                     // Open the Block table record Model space for write
-                    var acBlkTblRec = tr.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
-                    var acPoint = new DBPoint(point);
+                    BlockTableRecord acBlkTblRec = tr.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+                    DBPoint acPoint = new DBPoint(point);
                     acPoint.SetDatabaseDefaults();
                     acBlkTblRec.AppendEntity(acPoint);
                     tr.AddNewlyCreatedDBObject(acPoint, true);
@@ -53,7 +54,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
 
         private static Point3d GetMeasureDownCoordinates(Point3d top, double distance, double angle)
         {
-            var measures = new Triangle(distance, angle);
+            Triangle measures = new Triangle(distance, angle);
 
             double drop = measures.SideA;
             double offset = measures.SideB;

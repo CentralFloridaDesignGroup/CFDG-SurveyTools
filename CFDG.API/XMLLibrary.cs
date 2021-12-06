@@ -11,21 +11,21 @@ namespace CFDG.API
         #region Properties
         private static readonly string xmlFile = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\AppSettings.xml";
 
-        private static XElement xmlElement { get; set; }
+        private static XElement XmlElement { get; set; }
         #endregion
 
         #region Public Methods
         /// <summary>
         /// Read the value of <paramref name="key"/> in the <paramref name="category"/>
         /// </summary>
-        /// <param name="category">Setting category</param>
-        /// <param name="key">Key name</param>
+        /// <param name="category">Setting category (case-insesitive).</param>
+        /// <param name="key">Key name (case-insesitive).</param>
         /// <returns>Value or null if not found.</returns>
         public static dynamic ReadValue(string category, string key)
         {
-            if (xmlElement == null)
+            if (XmlElement == null)
             {
-                xmlElement = XDocument.Load(xmlFile).Root;
+                XmlElement = XDocument.Load(xmlFile).Root;
             }
             category = category.ToLower();
             key = key.ToLower();
@@ -51,12 +51,12 @@ namespace CFDG.API
         {
             try
             {
-                string value = xmlElement
+                string value = XmlElement
                     .Element(category)
                     .Element(key)
                     .Attribute("value")
                     .Value;
-                string type = xmlElement
+                string type = XmlElement
                     .Element(category)
                     .Element(key)
                     .Attribute("type")
