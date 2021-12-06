@@ -1,8 +1,0 @@
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\bin\Release\AppSettings.xml
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\bin\Release\CFDG.API.dll
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\bin\Release\CFDG.API.pdb
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\bin\Release\AecBaseMgd.dll
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\bin\Release\AeccDbMgd.dll
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\obj\Release\CFDG.API.csproj.CoreCompileInputs.cache
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\obj\Release\CFDG.API.dll
-C:\Users\Nathan\source\repos\CentralFloridaDesignGroup\CFDG-SurveyTools\CFDG.API\obj\Release\CFDG.API.pdb
