@@ -43,3 +43,32 @@ D:\CFDG-Projects\CFDG.ACAD\bin\Debug\AcDbMgd.dll
 D:\CFDG-Projects\CFDG.ACAD\bin\Debug\acdbmgdbrep.dll
 D:\CFDG-Projects\CFDG.ACAD\bin\Debug\AecBaseMgd.dll
 D:\CFDG-Projects\CFDG.ACAD\bin\Debug\AeccDbMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AppSettings.xml
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\CFDG.ACAD.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\CFDG.ACAD.pdb
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcCui.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcDx.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcMr.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcSeamless.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcTcMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcWindows.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AdUIMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AdUiPalettes.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AdWindows.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcCoreMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AcDbMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\acdbmgdbrep.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AecBaseMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\AeccDbMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\CFDG.API.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\CFDG.UI.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\CFDG.API.pdb
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\bin\Debug\CFDG.UI.pdb
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\obj\Debug\CFDG.ACAD.csproj.AssemblyReference.cache
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\obj\Debug\CFDG.ACAD.Properties.Resources.resources
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\obj\Debug\CFDG.ACAD.csproj.GenerateResource.cache
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\obj\Debug\CFDG.ACAD.csproj.CoreCompileInputs.cache
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\obj\Debug\CFDG.ACAD.csproj.CopyComplete
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\obj\Debug\CFDG.ACAD.dll
+E:\C# Programs\CFDG-Projects\CFDG.ACAD\obj\Debug\CFDG.ACAD.pdb

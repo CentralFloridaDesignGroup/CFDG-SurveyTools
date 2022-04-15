@@ -4,16 +4,16 @@
 library
 C#
 .cs
-D:\CFDG-Projects\CFDG.UI\obj\Debug\
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\
 CFDG.UI
 none
 false
 DEBUG;TRACE
 
-61885179296
+6-1222393744
 
-111195523631
-301157816930
+11-523925720
+30-820446023
 windows\Calculations\ExportPointGroup.xaml;windows\Common\TextMessageBoxForm.xaml;windows\Export\OpenFileDialog.xaml;windows\FeedbackWindow.xaml;windows\PlotPageDialog.xaml;windows\SlopeDistance.xaml;
 
 False

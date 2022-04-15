@@ -11,3 +11,14 @@ D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.csproj.AssemblyReference.ca
 D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.csproj.CoreCompileInputs.cache
 D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.dll
 D:\CFDG-Projects\General\CFDG.API\obj\Debug\CFDG.API.pdb
+D:\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.AssemblyReference.cache
+E:\C# Programs\CFDG-Projects\CFDG.API\bin\Debug\AppSettings.xml
+E:\C# Programs\CFDG-Projects\CFDG.API\bin\Debug\CFDG.API.dll
+E:\C# Programs\CFDG-Projects\CFDG.API\bin\Debug\CFDG.API.pdb
+E:\C# Programs\CFDG-Projects\CFDG.API\bin\Debug\AecBaseMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.API\bin\Debug\AeccDbMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.AssemblyReference.cache
+E:\C# Programs\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.CoreCompileInputs.cache
+E:\C# Programs\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.csproj.CopyComplete
+E:\C# Programs\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.dll
+E:\C# Programs\CFDG-Projects\CFDG.API\obj\Debug\CFDG.API.pdb

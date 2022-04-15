@@ -30,3 +30,32 @@ D:\CFDG-Projects\General\CFDG.UI\obj\Debug\CFDG.UI.dll
 D:\CFDG-Projects\General\CFDG.UI\obj\Debug\CFDG.UI.pdb
 D:\CFDG-Projects\CFDG.UI\obj\Debug\windows\Common\TextMessageBoxForm.g.cs
 D:\CFDG-Projects\CFDG.UI\obj\Debug\windows\Common\TextMessageBoxForm.baml
+E:\C# Programs\CFDG-Projects\CFDG.UI\bin\Debug\AppSettings.xml
+E:\C# Programs\CFDG-Projects\CFDG.UI\bin\Debug\CFDG.UI.dll
+E:\C# Programs\CFDG-Projects\CFDG.UI\bin\Debug\CFDG.UI.pdb
+E:\C# Programs\CFDG-Projects\CFDG.UI\bin\Debug\AecBaseMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.UI\bin\Debug\AeccDbMgd.dll
+E:\C# Programs\CFDG-Projects\CFDG.UI\bin\Debug\CFDG.API.dll
+E:\C# Programs\CFDG-Projects\CFDG.UI\bin\Debug\CFDG.API.pdb
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.csproj.AssemblyReference.cache
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\Export\OpenFileDialog.baml
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\Calculations\ExportPointGroup.g.cs
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\Common\TextMessageBoxForm.g.cs
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\Export\OpenFileDialog.g.cs
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\FeedbackWindow.g.cs
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\PlotPageDialog.g.cs
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\SlopeDistance.g.cs
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI_MarkupCompile.cache
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI_MarkupCompile.lref
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\Calculations\ExportPointGroup.baml
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\Common\TextMessageBoxForm.baml
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\FeedbackWindow.baml
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\PlotPageDialog.baml
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\windows\SlopeDistance.baml
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.g.resources
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.Properties.Resources.resources
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.csproj.GenerateResource.cache
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.csproj.CoreCompileInputs.cache
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.csproj.CopyComplete
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.dll
+E:\C# Programs\CFDG-Projects\CFDG.UI\obj\Debug\CFDG.UI.pdb

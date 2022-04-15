@@ -29,7 +29,7 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="TxtMessage" Text="placeholder text" Margin="0 5" Grid.Row="0"/>
         <TextBox x:Name="TxtInput" Grid.Row="1" FontSize="16" BorderThickness="0 0 0 2" Margin="0 5"
-                 GotFocus="TxtInput_GotFocus"/>
+                 GotFocus="TxtInput_GotFocus" KeyDown="TxtInput_KeyDown"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5" Grid.Row="2">
             <Button x:Name="CmdSubmit" Content="Accept" Margin="0 0 5 0" Style="{StaticResource BtnPrimary}" Width="100" Height="30"
                     Click="CmdSubmit_Click"/>

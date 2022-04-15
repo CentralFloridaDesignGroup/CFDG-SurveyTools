@@ -85,6 +85,16 @@ namespace CFDG.ACAD
             {
                 MessageBox.Show($"You currently have {currentDocCount} drawings open. A notification will show until you have under {excessive} drawings open. Please save and close drawings that you are done with.", "Close drawings", MessageBoxButton.OK);
             }
+
+            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            //Logging.Info($"Drawing opened by {userName} on machine {System.Environment.MachineName} at {DateTime.Now:MM-dd-yyyy hh-mm-ss}");
+
+            //docs.MdiActiveDocument.CommandEnded += onCommandFinished;
+        }
+
+        private void onCommandFinished(object sender, CommandEventArgs e)
+        {
+            Logging.Debug($"Command Info: {e} ({e.GlobalCommandName})");
         }
 
         /// <summary>
@@ -144,6 +154,7 @@ namespace CFDG.ACAD
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Computations", "Computations",
                         Ribbon.CreateLargeButton("Group Comp\nPoints", "GroupPoints", Properties.Resources.Point_Group, Properties.Resources.overlay_add),
+                        Ribbon.CreateLargeButton("Cogo From\nFeature Line", "CogoFromFeatureLine"),
                         Ribbon.RibbonSpacer,
                         Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
                             Ribbon.CreateSmallButton("Slope From Points", "SlopeFromPoints","Calculate slope by selecting two points.", Properties.Resources.SlopeByPoints),

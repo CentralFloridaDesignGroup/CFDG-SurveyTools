@@ -55,6 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandClasses\Calculations\CogoFromFeatureLine.cs" />
     <Compile Include="CommandClasses\Calculations\CreateACPoints.cs" />
     <Compile Include="CommandClasses\Export\ExportPointGroup.cs" />
     <Compile Include="CommandClasses\Calculations\GroupPoints.cs" />
