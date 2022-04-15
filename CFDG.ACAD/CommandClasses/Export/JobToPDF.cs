@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.PlottingServices;
 using Autodesk.AutoCAD.Runtime;
 using CFDG.ACAD.Common;
@@ -58,7 +63,7 @@ namespace CFDG.ACAD.CommandClasses.Export
             Autodesk.AutoCAD.ApplicationServices.Application.ShowModalWindow(selectFileDialog);
 
             if (!(bool)selectFileDialog.DialogResult)
-            {
+                {
                 Logging.Info("File not selected.");
                 return;
             }
@@ -72,8 +77,8 @@ namespace CFDG.ACAD.CommandClasses.Export
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 WaitandOpenFile(Path.Combine(selectFileDialog.Directory, selectFileDialog.FileName));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                }
             }
-        }
 
         private async static Task WaitandOpenFile(string path)
         {

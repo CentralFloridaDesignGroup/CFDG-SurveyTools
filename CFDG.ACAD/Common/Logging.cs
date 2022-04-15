@@ -77,6 +77,7 @@ namespace CFDG.ACAD.Common
             }
         }
 
+        [Conditional("DEBUG")]
         /// <summary>
         /// Show a debug message and log the action.
         /// </summary>
@@ -86,6 +87,7 @@ namespace CFDG.ACAD.Common
             Debug(message, false);
         }
 
+        [Conditional("DEBUG")]
         /// <summary>
         /// Show a debug message and log the action.
         /// </summary>
