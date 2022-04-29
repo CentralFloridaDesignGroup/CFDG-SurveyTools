@@ -51,6 +51,7 @@
             <Setter Property="BorderBrush" Value="DodgerBlue"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        <Image x:Key="gearImage" Source="images/gear.png"></Image>
     </Window.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -100,7 +101,7 @@
             </DockPanel>
         </StackPanel>
         <DataGrid IsReadOnly="True" x:Name="LstDirList" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" SelectionMode="Single" GridLinesVisibility="None" Background="White"
-                  MouseDoubleClick="LstDirList_MouseDoubleClick" RowHeight="24" MouseDown="LstDirList_MouseDown">
+                  MouseDoubleClick="LstDirList_MouseDoubleClick" RowHeight="24" MouseUp="LstDirList_MouseUp">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -128,7 +129,17 @@
             <DockPanel LastChildFill="True" Margin="0 2.5">
                 <TextBlock Margin="0 0 5 0">Description:</TextBlock>
                 <TextBox x:Name="TxtDescription" BorderThickness="0 0 0 1" BorderBrush="Black"
-                         TextChanged="TxtDescription_TextChanged"/>
+                         TextChanged="TxtDescription_TextChanged">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked, ElementName=ChkAutoNameFile}" Value="False">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </DockPanel>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Row="4" Grid.Column="2">
@@ -158,6 +169,8 @@
             <TextBlock>Open the file after being created.</TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="2">
+            <Button Content="{StaticResource gearImage}" x:Name="CmdSettings" Click="CmdSettings_Click">
+            </Button>
             <Button x:Name="CmdSave" Content="Save" Width="100" Margin="5 0" Style="{StaticResource BtnPrimary}"
                     Click="CmdSave_Click"/>
             <Button x:Name="CmdCancel" Content="Cancel" Width="100" Margin="5 0 0 0"
