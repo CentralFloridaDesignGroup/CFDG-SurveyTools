@@ -20,18 +20,23 @@ namespace CFDG.ACAD.Common
 
         #region Public Methods
 
+        public static string GetStringFromUser(string message)
+        {
+            return GetStringFromUser(message, false);
+        }
+
         /// <summary>
         /// Get string from user in AutoCAD.
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static string GetStringFromUser(string message)
+        public static string GetStringFromUser(string message, bool allowSpaces)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
             PromptStringOptions pso = new PromptStringOptions(message)
             {
-                AllowSpaces = false
+                AllowSpaces = allowSpaces
             };
 
             PromptResult tr = acVariables.Editor.GetString(pso);

@@ -16,7 +16,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
         public void InitialCommand()
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
-            string cogoText = UserInput.GetStringFromUser("Typical text for point description: ");
+            string cogoText = UserInput.GetStringFromUser("Typical text for point description: ", true);
             //string startPointNumber = UserInput.GetStringFromUser("Starting Point Number: ");
             var features = getFeatureLines();
             if (features.Count == 0)
