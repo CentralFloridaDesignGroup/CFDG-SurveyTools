@@ -105,6 +105,8 @@
   <ItemGroup>
     <Compile Include="ACAD\CogoExporter.cs" />
     <Compile Include="ACAD\GetCogoPoint.cs" />
+    <Compile Include="Calcs\Angles.cs" />
+    <Compile Include="Calcs\Lines.cs" />
     <Compile Include="Calculate.cs" />
     <Compile Include="Imaging.cs" />
     <Compile Include="JobNumber.cs" />

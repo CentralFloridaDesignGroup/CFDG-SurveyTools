@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calcs.cs" />
     <Compile Include="XML.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
