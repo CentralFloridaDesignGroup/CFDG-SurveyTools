@@ -377,7 +377,7 @@ namespace CFDG.UI.windows.Export
                 PopulateDirectory();
                 return;
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show("The file is open in another application. Please either close the file or select another one.");
                 return;
