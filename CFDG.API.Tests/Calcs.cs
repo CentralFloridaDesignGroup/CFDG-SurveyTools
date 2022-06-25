@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.AutoCAD.Geometry;
+using CFDG.API.Calcs;
 using NUnit.Framework;
 
 namespace CFDG.API.Tests
@@ -28,13 +30,27 @@ namespace CFDG.API.Tests
         [Theory]
         [TestCase("N00.00.00E", 0)]
         [TestCase("N15.15.00E", 15.25)]
-        [TestCase("S45.30.00E", 136.5)]
-        [TestCase("N00.00.00E", 0)]
-        [TestCase("N00.00.00E", 0)]
+        [TestCase("S46.00.00E", 134)]
+        [TestCase("S46.00.00W", 226)]
+        [TestCase("N45.00.00W", 315)]
         public void GetAzimuthFromBearing(string bearing, double expected)
         {
             double result = API.Calcs.Angles.BearingToAzimuth(bearing);
             Assert.AreEqual(expected, result);
         }
+
+        [Theory]
+        [TestCase("N45°05'02\"E", "N45.05.02E")]
+        [TestCase("N45D05'02\"E", "N45.05.02E")]
+        [TestCase("N45.0502E", "N45.05.02E")]
+        [TestCase("S45.0502W", "S45.05.02W")]
+        [TestCase("S45.0000E", "S45.00.00E")]
+        [TestCase("N15°06'59\"W", "N15.06.59W")]
+        public void ConvertBearing(string bearing, string expected)
+        {
+            string result = API.Calcs.Angles.ConvertBearing(bearing);
+            Assert.AreEqual(expected, result);
+        }
     }
+
 }

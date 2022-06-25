@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CFDG.API.Calcs
@@ -82,7 +83,7 @@ namespace CFDG.API.Calcs
             string angle = bearing.Substring(1, bearing.Length - 2);
             string[] angleParts = angle.Split('.');
             double rawAngle = Convert.ToDouble(angleParts[0]) + (Convert.ToDouble(angleParts[1]) / 60) + (Convert.ToDouble(angleParts[2]) / 3600);
-            string quadrant = $"{angle[0]}{angle[angle.Length - 1]}";
+            string quadrant = $"{bearing[0]}{bearing[bearing.Length - 1]}";
             switch (quadrant)
             {
                 case "NE": return rawAngle;
@@ -91,6 +92,25 @@ namespace CFDG.API.Calcs
                 case "NW": return 360 - rawAngle;
                 default: return -1;
             }
+        }
+
+        public static string ConvertBearing(string bearing)
+        {
+            bearing = bearing.ToUpper();
+            Regex regex = new Regex("(N|S)(\\d{2})(\\.|D|°)(\\d{2})('?)(\\d{2})(\"?)(W|E)");
+            if (!regex.IsMatch(bearing))
+            {
+                return "";
+            }
+            bearing = bearing.Replace("°", ".")
+                .Replace("D", ".")
+                .Replace("'", ".")
+                .Replace("\"", "");
+            if (bearing.Length == 9)
+            {
+                bearing = bearing.Insert(6, ".");
+            }
+            return bearing;
         }
 
         internal static double DivideAngle(double angle)

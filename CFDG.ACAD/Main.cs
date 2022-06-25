@@ -104,6 +104,7 @@ namespace CFDG.ACAD
         {
         }
 
+        [CommandMethod("EstablishTab")]
         /// <summary>
         /// Create tab and add panels to tab.
         /// </summary>
@@ -154,13 +155,15 @@ namespace CFDG.ACAD
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Computations", "Computations",
                         Ribbon.CreateLargeButton("Group Comp\nPoints", "GroupPoints", Properties.Resources.Point_Group, Properties.Resources.overlay_add),
-                        Ribbon.CreateLargeButton("Cogo From\nFeature Line", "CogoFromFeatureLine"),
+                        Ribbon.CreateLargeButton("Measured\nBearings", "GetMeasuredBearings", Properties.Resources.MeasuredBearings, Properties.Resources.overlay_add),
                         Ribbon.RibbonSpacer,
                         Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
                             Ribbon.CreateSmallButton("Slope From Points", "SlopeFromPoints","Calculate slope by selecting two points.", Properties.Resources.SlopeByPoints),
                             Ribbon.CreateSmallButton("Create Measure Down", "Measuredowns", "Create points using slope distance from a reference point.",Properties.Resources.MeasureDown),
-                            Ribbon.CreateSmallButton("Footprint", "Footprint","Draw a polyline by entering positive or negative values and angles.",
-                            Properties.Resources.footprint)
+                            Ribbon.CreateSmallButton("Footprint", "Footprint","Draw a polyline by entering positive or negative values and angles.", Properties.Resources.footprint)
+                        ),
+                        Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
+                            Ribbon.CreateSmallButton("Cogo From\nFeature Line", "CogoFromFeatureLine")
                         )
                     )
                 );
