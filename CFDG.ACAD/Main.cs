@@ -92,11 +92,6 @@ namespace CFDG.ACAD
             //docs.MdiActiveDocument.CommandEnded += onCommandFinished;
         }
 
-        private void onCommandFinished(object sender, CommandEventArgs e)
-        {
-            Logging.Debug($"Command Info: {e} ({e.GlobalCommandName})");
-        }
-
         /// <summary>
         /// Runs when a drawing is closed.
         /// </summary>
@@ -131,7 +126,7 @@ namespace CFDG.ACAD
                     Title = tabName,
                     Id = "CSurveyTab"
                 };
-                var textBoxRibbon = Ribbon.CreateRibbonTextBox(
+                RibbonTextBox textBoxRibbon = Ribbon.CreateRibbonTextBox(
                             "Other Job Number",
                             "Enter a job number to open another project folder from AutoCAD. Leave blank to open the current project folder.",
                             "TxtProMngJobNumber"

@@ -34,26 +34,26 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             }
             API.Calcs.LineInfo info = API.Calcs.Lines.CalculateLine(startPoint, endPoint);
             Logging.Debug($"Bearing: {info.Bearing}, Distance: {info.Length}, Azimuth: {info.Azimuth}");
-            var baseAzimuth = getBaseAzimuth();
+            var platAzimuth = GetPlatAzimuth();
 
             if (RotationValue == -1)
             {
                 Logging.Debug("Cancelling command.");
                 return;
             }
-            RotationValue = baseAzimuth - info.Azimuth;
+            RotationValue = platAzimuth - info.Azimuth;
             Logging.Debug($"Angle difference: {Math.Round(RotationValue, 6)}");
             GatherReferencePoints();
         }
 
-        internal double getBaseAzimuth()
+        internal double GetPlatAzimuth()
         {
-            string reference = getString("Enter the plat bearing: ");
+            string reference = GetString("Enter the plat bearing: ");
             string convertedRef = API.Calcs.Angles.ConvertBearing(reference);
             if (reference == "*keyword*" || convertedRef == "")
             {
                 Logging.Info("Invalid value, please enter again.");
-                return getBaseAzimuth();
+                return GetPlatAzimuth();
             }
             if (reference == "cancelled")
             {
@@ -86,19 +86,17 @@ namespace CFDG.ACAD.CommandClasses.Calculations
         internal void GatherReferencePoints()
         {
             List<Point3d> referencePoints = new List<Point3d>(); //Point list
-            bool commandActive = true;
             Point3d previousPoint;
             PromptPointResult result;
             //List<Entity> entities = new List<Entity>(); //Reference line list - deleted on command completion.
 
-            while (commandActive)
+            while (true)
             {
                 previousPoint = (referencePoints.Count > 0) ? referencePoints[referencePoints.Count - 1] : API.Helpers.Points.Null3dPoint;
                 result = UserInput.GetPoint("Select the next measured point: ", previousPoint);
                 if (result == null)
                 {
                     Logging.Error("Something went wrong, cancelling.");
-                    commandActive = false;
                     return;
                 }
                 if (result.Status == PromptStatus.Keyword && result.StringResult == "_u")
@@ -119,12 +117,10 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 //This is if you press "ENTER", the result just doesn't say enter.
                 if (result.Status == PromptStatus.Keyword && string.IsNullOrEmpty(result.StringResult))
                 {
-                    commandActive = false;
                     break;
                 }
                 if (result.Status == PromptStatus.Cancel)
                 {
-                    commandActive = false;
                     return;
                 }
                 referencePoints.Add(result.Value);
@@ -152,7 +148,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                     processedLines.Add(ProcessLine(referencePoints[i], referencePoints[i + 1])); //Goes from n to n+1.
                 }
             }
-            foreach (var line in processedLines)
+            foreach (ProcessedLine line in processedLines)
             {
                 CreateMText(line);
             }
@@ -195,7 +191,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 {
                     mTextObj.Location = pLine.CenterPoint;
                     mTextObj.Width = 0;
-                    mTextObj.Contents = $"{pLine.lineInfo.Bearing} {pLine.lineInfo.Length.ToString("#.00")}'";
+                    mTextObj.Contents = $"{pLine.lineInfo.Bearing} {pLine.lineInfo.Length:#.00}'";
                     mTextObj.Layer = "defpoints";
                     mTextObj.Attachment = AttachmentPoint.MiddleCenter;
                     mTextObj.TextHeight = 1.6;
@@ -208,13 +204,13 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             }
         }
 
-        internal string getString(string prompt)
+        internal string GetString(string prompt)
         {
             string value = UserInput.GetStringFromUser(prompt);
             if (value == "*keyword*")
             {
                 Logging.Info("Invalid value, please select again.");
-                return getString(prompt);
+                return GetString(prompt);
             }
             if (string.IsNullOrEmpty(value))
             {
