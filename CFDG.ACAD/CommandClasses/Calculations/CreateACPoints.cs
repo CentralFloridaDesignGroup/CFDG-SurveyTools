@@ -15,21 +15,22 @@ namespace CFDG.ACAD.CommandClasses.Calculations
         {
             while (true)
             {
-                Point3d point = UserInput.SelectPointInDoc("Please select a point: ");
-                Logging.Debug($"Raw value: {point}");
-                Logging.Info($"Value of entry: [{point.X:F3}', {point.Y:F3}', {point.Z:F3}'].");
-                if (point == new Point3d(-1,-1,-1))
+                PromptPointResult selectResult = UserInput.GetPoint("Please select a point: ");
+                if (selectResult == null)
+                {
+                    Logging.Error("There was an error, please try again or submit an issue ticket.");
+                    return;
+                }
+                if (selectResult.Status == PromptStatus.Cancel)
                 {
                     return;
                 }
-                if (point == new Point3d(0, 0, 0))
+                if (selectResult.Status == PromptStatus.OK && selectResult.Value != API.Helpers.Points.Null3dPoint)
                 {
-                    Logging.Warning("Not a valid point.\n");
+                    UserInput.AddPointToDrawing(selectResult.Value);
+                    continue;
                 }
-                else
-                {
-                    UserInput.AddPointToDrawing(point, BlockTableRecord.ModelSpace);
-                }
+                return;
             }
         }
     }

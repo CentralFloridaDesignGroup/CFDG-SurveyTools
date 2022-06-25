@@ -103,7 +103,7 @@ namespace CFDG.ACAD.Common
                 }
                 if (pr.Status == PromptStatus.Cancel)
                 {
-                    return new Point3d(-1002, -1002, -1002);
+                    return new Point3d(-1, -1, -1);
                 }
             }
             return new Point3d(-1, -1, -1);
@@ -170,7 +170,7 @@ namespace CFDG.ACAD.Common
             }
             Logging.Debug($"BasePoint: {basePoint}; prefer2dMode: {prefer2dMode}");
 
-            var result = acVariables.Editor.GetPoint(ppo);
+            PromptPointResult result = acVariables.Editor.GetPoint(ppo);
 
             Logging.Debug($"Status: {result.Status}; Value: {result.Value}; StringResult: {result.StringResult}");
             return result;
@@ -242,7 +242,7 @@ namespace CFDG.ACAD.Common
             }
         }
 
-        public static void AddPointToDrawing(Point3d point, string blockTableRecordSpace)
+        public static void AddPointToDrawing(Point3d point)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             using (Transaction trans = acVariables.Database.TransactionManager.StartTransaction())
@@ -251,7 +251,7 @@ namespace CFDG.ACAD.Common
                 BlockTable acBlkTbl = trans.GetObject(acVariables.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
 
                 // Open the Block table record Model space for write
-                BlockTableRecord acBlkTblRec = trans.GetObject(acBlkTbl[blockTableRecordSpace], OpenMode.ForWrite) as BlockTableRecord;
+                BlockTableRecord acBlkTblRec = trans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
                 DBPoint pointObj = new DBPoint(point);
                 pointObj.SetDatabaseDefaults();

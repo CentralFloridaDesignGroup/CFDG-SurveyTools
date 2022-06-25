@@ -55,9 +55,11 @@ namespace CFDG.ACAD
                 // Ensures that the tab is established on startup, but will not create additional.
                 Autodesk.AutoCAD.ApplicationServices.Application.Idle -= OnAppLoad;
             }
-
+#if !DEBUG
             Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} has been loaded successfully");
-
+#else
+            Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} [Debug Version] has been loaded successfully");
+#endif
             OnEachDocLoad();
         }
 
@@ -178,6 +180,6 @@ namespace CFDG.ACAD
             }
 
         }
-        #endregion
+#endregion
     }
 }

@@ -28,41 +28,25 @@ namespace CFDG.API.Calcs
             {
                 case "NE":
                 {
-                    output += start + Convert.ToInt32(Math.Floor(azimuth)).ToString("00") + "°";
-                    double nextVal = DivideAngle(azimuth);
-                    output += Convert.ToInt32(Math.Floor(nextVal)).ToString("00") + "'";
-                    nextVal = DivideAngle(nextVal);
-                    output += Convert.ToInt32(Math.Round(nextVal)).ToString("00") + "\"" + end;
+                    output += start + ConvertDDToDMS(azimuth) + end;
                     return output;
                 }
                 case "SW":
                 {
                     azimuth -= 180;
-                    output += start + Convert.ToInt32(Math.Floor(azimuth)).ToString("00") + "°";
-                    double nextVal = DivideAngle(azimuth);
-                    output += Convert.ToInt32(Math.Floor(nextVal)).ToString("00") + "'";
-                    nextVal = DivideAngle(nextVal);
-                    output += Convert.ToInt32(Math.Round(nextVal)).ToString("00") + "\"" + end;
+                    output += start + ConvertDDToDMS(azimuth) + end;
                     return output;
                 }
                 case "SE":
                 {
                     azimuth = 180 - azimuth;
-                    output += start + Convert.ToInt32(Math.Floor(azimuth)).ToString("00") + "°";
-                    double nextVal = DivideAngle(azimuth);
-                    output += Convert.ToInt32(Math.Floor(nextVal)).ToString("00") + "'";
-                    nextVal = DivideAngle(nextVal);
-                    output += Convert.ToInt32(Math.Round(nextVal)).ToString("00") + "\"" + end;
+                    output += start + ConvertDDToDMS(azimuth) + end;
                     return output;
                 }
                 case "NW":
                 {
                     azimuth = 360 - azimuth;
-                    output += start + Convert.ToInt32(Math.Floor(azimuth)).ToString("00") + "°";
-                    double nextVal = DivideAngle(azimuth);
-                    output += Convert.ToInt32(Math.Floor(nextVal)).ToString("00") + "'";
-                    nextVal = DivideAngle(nextVal);
-                    output += Convert.ToInt32(Math.Round(nextVal)).ToString("00") + "\"" + end;
+                    output += start + ConvertDDToDMS(azimuth) + end;
                     return output;
                 }
 
@@ -113,10 +97,35 @@ namespace CFDG.API.Calcs
             return bearing;
         }
 
-        internal static double DivideAngle(double angle)
+        private static double DivideAngle(double angle)
         {
             angle -= Math.Floor(angle);
             return angle * 60;
+        }
+
+        private static string ConvertDDToDMS(double azimuth)
+        {
+            int degree;
+            int minute;
+            int second;
+            double remainder;
+
+            degree = Convert.ToInt32(Math.Floor(azimuth));
+            remainder = DivideAngle(azimuth);
+            minute = Convert.ToInt32(Math.Floor(remainder));
+            remainder = DivideAngle(remainder);
+            second = Convert.ToInt32(Math.Round(remainder));
+            if (second == 60)
+            {
+                minute += 1;
+                second = 0;
+            }
+            if (minute == 60)
+            {
+                degree += 1;
+                minute = 0;
+            }
+            return $"{degree:00}°{minute:00}'{second:00}\"";
         }
     }
 }
