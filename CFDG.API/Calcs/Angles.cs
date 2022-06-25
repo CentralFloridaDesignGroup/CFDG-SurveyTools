@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace CFDG.API.Calcs
 {
+    /// <summary>
+    /// Equations related to angles.
+    /// </summary>
     public static class Angles
     {
+        /// <summary>
+        /// Convert decimal degree azimuth to formatted bearing
+        /// </summary>
+        /// <param name="azimuth">Decimal degree azimuth</param>
+        /// <returns>Properly formatted bearing</returns>
         public static string AzimuthToBearing(double azimuth)
         {
             if (azimuth < 0)
@@ -57,6 +65,11 @@ namespace CFDG.API.Calcs
             }
         }
 
+        /// <summary>
+        /// Convert a pre-formatted bearing to decimal degree azimuth
+        /// </summary>
+        /// <param name="bearing">Pre-formatted bearing using the ConvertBearing method</param>
+        /// <returns>Decimal degree azimuth</returns>
         public static double BearingToAzimuth(string bearing)
         {
             if (string.IsNullOrEmpty(bearing))
@@ -78,6 +91,11 @@ namespace CFDG.API.Calcs
             }
         }
 
+        /// <summary>
+        /// Formats a bearing string into a format to pass to BearingToAzimuth
+        /// </summary>
+        /// <param name="bearing">Bearing to format</param>
+        /// <returns>Properly formatted bearing string or empty if failed.</returns>
         public static string ConvertBearing(string bearing)
         {
             bearing = bearing.ToUpper();
@@ -97,12 +115,22 @@ namespace CFDG.API.Calcs
             return bearing;
         }
 
+        /// <summary>
+        /// Equation for converting decimal degree into DMS
+        /// </summary>
+        /// <param name="angle">Angle to convert.</param>
+        /// <returns>DMS formatted double</returns>
         private static double DivideAngle(double angle)
         {
             angle -= Math.Floor(angle);
             return angle * 60;
         }
 
+        /// <summary>
+        /// Converts decimal degree angles into DMS
+        /// </summary>
+        /// <param name="azimuth">DD angle to convert</param>
+        /// <returns>DMS formatted text</returns>
         private static string ConvertDDToDMS(double azimuth)
         {
             int degree;
