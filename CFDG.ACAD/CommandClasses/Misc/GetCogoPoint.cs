@@ -38,7 +38,7 @@ namespace CFDG.ACAD.CommandClasses.Misc
         public void GetCogoText()
         {
             PromptPointResult result = UserInput.GetPoint("Select a point: ", false);
-            if (result.Status == PromptStatus.OK && result.Value == API.Helpers.Points.Null3dPoint)
+            if (result.Status == PromptStatus.OK && result.Value != API.Helpers.Points.Null3dPoint)
             {
                 Clipboard.SetText($"{result.Value.X}\t{result.Value.Y}\t{result.Value.Z}", TextDataFormat.Text);
                 Logging.Info("Location copied to clipboard.");
