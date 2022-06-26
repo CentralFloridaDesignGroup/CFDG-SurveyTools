@@ -322,6 +322,12 @@ namespace CFDG.ACAD.Common
         {
             AcVariablesStruct acVariables;
             acVariables.Document = AcApplication.DocumentManager.MdiActiveDocument;
+            if (acVariables.Document == null)
+            {
+                acVariables.Editor = null;
+                acVariables.Database = null;
+                return acVariables;
+            }
             acVariables.Editor = acVariables.Document.Editor;
             acVariables.Database = acVariables.Document.Database;
             return acVariables;
