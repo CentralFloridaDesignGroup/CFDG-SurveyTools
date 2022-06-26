@@ -30,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28ACAD 23%29|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug %28ACAD 23%29\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AcCoreMgd, Version=23.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoCAD.NET.Core.23.0.0\lib\net47\AcCoreMgd.dll</HintPath>
@@ -105,7 +114,10 @@
   <ItemGroup>
     <Compile Include="ACAD\CogoExporter.cs" />
     <Compile Include="ACAD\GetCogoPoint.cs" />
+    <Compile Include="Calcs\Angles.cs" />
+    <Compile Include="Calcs\Lines.cs" />
     <Compile Include="Calculate.cs" />
+    <Compile Include="Helpers\Points.cs" />
     <Compile Include="Imaging.cs" />
     <Compile Include="JobNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,6 +2,7 @@
 using System.Windows;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
 using CFDG.ACAD.Common;
@@ -33,21 +34,16 @@ namespace CFDG.ACAD.CommandClasses.Misc
             Clipboard.SetText($"{cogoPoint.Easting:0.000}\t{cogoPoint.Northing:0.000}\t{cogoPoint.Elevation:0.000}\t{cogoPoint.RawDescription}", TextDataFormat.Text);
         }
 
-        [CommandMethod("ExportLocation", CommandFlags.Modal | CommandFlags.NoBlockEditor | CommandFlags.NoPaperSpace)]
+        [CommandMethod("GetLocation", CommandFlags.Modal | CommandFlags.NoBlockEditor | CommandFlags.NoPaperSpace)]
         public void GetCogoText()
         {
-            Autodesk.AutoCAD.Geometry.Point3d coordinate3d = UserInput.SelectPointInDoc("Please select a point.\n");
-            if (coordinate3d == new Autodesk.AutoCAD.Geometry.Point3d(-1, -1, -1))
+            PromptPointResult result = UserInput.GetPoint("Select a point: ", false);
+            if (result.Status == PromptStatus.OK && result.Value != API.Helpers.Points.Null3dPoint)
             {
-                Logging.Info("Command exited.");
+                Clipboard.SetText($"{result.Value.X}\t{result.Value.Y}\t{result.Value.Z}", TextDataFormat.Text);
+                Logging.Info("Location copied to clipboard.");
                 return;
             }
-            if (coordinate3d == new Autodesk.AutoCAD.Geometry.Point3d(0, 0, 0))
-            {
-                Logging.Debug("Command snapped to 0,0,0; exiting.\n");
-                return;
-            }
-            Clipboard.SetText($"{coordinate3d.X:0.000}\t{coordinate3d.Y:0.000}\t{coordinate3d.Z:0.000}", TextDataFormat.Text);
         }
 
         public static List<ObjectId> GetPoint(bool multipleSelections, System.IntPtr handle)

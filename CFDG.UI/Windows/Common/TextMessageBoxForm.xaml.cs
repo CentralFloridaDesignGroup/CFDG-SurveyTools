@@ -51,6 +51,16 @@ namespace CFDG.UI.windows.Common
         {
             TxtInput.SelectAll();
         }
+
+        private void TxtInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            var key = e.Key;
+            if (key == Key.Enter)
+            {
+                e.Handled = true;
+                CmdSubmit_Click(sender, new RoutedEventArgs());
+            }
+        }
     }
 
     public static class TextMessageBox

@@ -55,9 +55,11 @@ namespace CFDG.ACAD
                 // Ensures that the tab is established on startup, but will not create additional.
                 Autodesk.AutoCAD.ApplicationServices.Application.Idle -= OnAppLoad;
             }
-
+#if !DEBUG
             Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} has been loaded successfully");
-
+#else
+            Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} [Debug Version] has been loaded successfully");
+#endif
             OnEachDocLoad();
         }
 
@@ -85,6 +87,11 @@ namespace CFDG.ACAD
             {
                 MessageBox.Show($"You currently have {currentDocCount} drawings open. A notification will show until you have under {excessive} drawings open. Please save and close drawings that you are done with.", "Close drawings", MessageBoxButton.OK);
             }
+
+            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            //Logging.Info($"Drawing opened by {userName} on machine {System.Environment.MachineName} at {DateTime.Now:MM-dd-yyyy hh-mm-ss}");
+
+            //docs.MdiActiveDocument.CommandEnded += onCommandFinished;
         }
 
         /// <summary>
@@ -94,6 +101,7 @@ namespace CFDG.ACAD
         {
         }
 
+        [CommandMethod("EstablishTab")]
         /// <summary>
         /// Create tab and add panels to tab.
         /// </summary>
@@ -120,7 +128,7 @@ namespace CFDG.ACAD
                     Title = tabName,
                     Id = "CSurveyTab"
                 };
-                var textBoxRibbon = Ribbon.CreateRibbonTextBox(
+                RibbonTextBox textBoxRibbon = Ribbon.CreateRibbonTextBox(
                             "Other Job Number",
                             "Enter a job number to open another project folder from AutoCAD. Leave blank to open the current project folder.",
                             "TxtProMngJobNumber"
@@ -144,12 +152,15 @@ namespace CFDG.ACAD
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Computations", "Computations",
                         Ribbon.CreateLargeButton("Group Comp\nPoints", "GroupPoints", Properties.Resources.Point_Group, Properties.Resources.overlay_add),
+                        Ribbon.CreateLargeButton("Measured\nBearings", "GetMeasuredBearings", Properties.Resources.MeasuredBearings, Properties.Resources.overlay_add),
                         Ribbon.RibbonSpacer,
                         Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
                             Ribbon.CreateSmallButton("Slope From Points", "SlopeFromPoints","Calculate slope by selecting two points.", Properties.Resources.SlopeByPoints),
                             Ribbon.CreateSmallButton("Create Measure Down", "Measuredowns", "Create points using slope distance from a reference point.",Properties.Resources.MeasureDown),
-                            Ribbon.CreateSmallButton("Footprint", "Footprint","Draw a polyline by entering positive or negative values and angles.",
-                            Properties.Resources.footprint)
+                            Ribbon.CreateSmallButton("Footprint", "Footprint","Draw a polyline by entering positive or negative values and angles.", Properties.Resources.footprint)
+                        ),
+                        Ribbon.CreateRibbonRow(Ribbon.RibbonRowType.ImageOnly,
+                            Ribbon.CreateSmallButton("Cogo From\nFeature Line", "CogoFromFeatureLine")
                         )
                     )
                 );
@@ -169,6 +180,6 @@ namespace CFDG.ACAD
             }
 
         }
-        #endregion
+#endregion
     }
 }

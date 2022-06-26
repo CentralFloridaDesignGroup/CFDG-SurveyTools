@@ -26,16 +26,10 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             string pointStr = "";
             string descriptionStr = "";
 
-            // Get the purpose of the points
-            PromptStringOptions pStrOpts = new PromptStringOptions("\nEnter the purpose: ")
-            {
-                AllowSpaces = true
-            };
-            PromptResult pRlt = adEd.GetString(pStrOpts);
+            string groupName = Common.UserInput.GetStringFromUser("Please enter the point group name: ", true);
 
             // If the string was empty (or null somehow)
-            if (string.IsNullOrEmpty(pRlt.StringResult)) { adEd.WriteMessage("\nThe string entered was empty, please try again."); return; }
-            string purpose = pRlt.StringResult;
+            if (string.IsNullOrEmpty(groupName)) { adEd.WriteMessage("\nThe string entered was empty, please try again."); return; }
 
             //Selection method
             PromptKeywordOptions pKeyOpts = new PromptKeywordOptions("\nPlease select a method of point selection: ");
@@ -45,20 +39,16 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             pKeyOpts.Keywords.Default = "List";
             pKeyOpts.AllowNone = true;
 
-            pRlt = adEd.GetKeywords(pKeyOpts);
+            PromptResult pRlt = adEd.GetKeywords(pKeyOpts);
             string selType = pRlt.StringResult;
             switch (selType)
             {
                 case "List":
                 {
-                    pStrOpts = new PromptStringOptions("\nEnter the point range using dashes (-) and commas (,): ")
-                    {
-                        AllowSpaces = true
-                    };
-                    pRlt = adEd.GetString(pStrOpts);
-                    if (string.IsNullOrEmpty(pRlt.StringResult)) { adEd.WriteMessage("\nThe string entered was empty, please try again."); return; }
-                    pointStr = pRlt.StringResult;
-
+                    string pointList = Common.UserInput.GetStringFromUser("Enter the point range using dashes (-) and commas (,): ", true);
+                    
+                    if (string.IsNullOrEmpty(pointList)) { adEd.WriteMessage("\nThe string entered was empty, please try again."); return; }
+                    pointStr = pointList;
                     break;
                 }
                 case "Selection":
@@ -86,13 +76,8 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 }
                 case "Descriptions":
                 {
-                    pStrOpts = new PromptStringOptions("\nEnter the raw descriptions including wildcards (*) and commas (,): ")
-                    {
-                        AllowSpaces = true
-                    };
-                    pRlt = adEd.GetString(pStrOpts);
-                    if (string.IsNullOrEmpty(pRlt.StringResult)) { adEd.WriteMessage("\nThe string entered was empty, please try again."); return; }
-                    descriptionStr = pRlt.StringResult;
+                    descriptionStr = Common.UserInput.GetStringFromUser("\nEnter the raw descriptions including wildcards (*) and commas (,): ", true);
+                    if (string.IsNullOrEmpty(descriptionStr)) { adEd.WriteMessage("\nThe string entered was empty, please try again."); return; }
 
                     break;
                 }
@@ -106,7 +91,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             using (Transaction tr = acDb.TransactionManager.StartTransaction())
             {
                 //Establish points
-                string groupName = $"[{DateTime.Now:MM-dd-yyyy}] {purpose.ToUpper()}";
+                groupName = $"[{DateTime.Now:MM-dd-yyyy}] {groupName.ToUpper()}";
 
                 StandardPointGroupQuery query = new StandardPointGroupQuery();
                 if (selType == "Descriptions")

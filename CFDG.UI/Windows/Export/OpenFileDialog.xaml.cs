@@ -68,9 +68,10 @@ namespace CFDG.UI.windows.Export
             TxtCurrentPath.Text = currentDir;
             Directory = currentDir;
 
-            ProjectNumber = API.JobNumber.GetJobNumber(filePath);
-            IncludeDate = true;
-            AutomaticName = true;
+            ProjectNumber = Path.GetFileNameWithoutExtension(filePath);
+
+            UpdateSettings();
+
             Description = "";
             UpdateName();
 
@@ -88,6 +89,16 @@ namespace CFDG.UI.windows.Export
             menu = cm;
 
             PopulateDirectory();
+        }
+
+        private void UpdateSettings()
+        {
+            IncludeDate = SaveDialogSettings.Default.AutoAddDate;
+            ChkIncludeDate.IsChecked = SaveDialogSettings.Default.AutoAddDate;
+            AutomaticName = SaveDialogSettings.Default.AutomaticName;
+            ChkAutoNameFile.IsChecked = SaveDialogSettings.Default.AutomaticName;
+            OpenAfterCreation = SaveDialogSettings.Default.OpenAfterSave;
+            ChkOpenAfterCreate.IsChecked = SaveDialogSettings.Default.OpenAfterSave;
         }
 
         private void PopulateDirectory()
@@ -299,7 +310,7 @@ namespace CFDG.UI.windows.Export
             WaitForChangedResult fileCreated = fsw.WaitForChanged(WatcherChangeTypes.Created, 2 * 60 * 100);
         }
 
-        private void LstDirList_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void LstDirList_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             object item = LstDirList.SelectedItem;
 
@@ -309,6 +320,24 @@ namespace CFDG.UI.windows.Export
                 deleteOption.Visibility = item == null ? Visibility.Collapsed : Visibility.Visible;
                 menu.PlacementTarget = LstDirList;
                 menu.IsOpen = true;
+                e.Handled = true;
+            }
+            else if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+            {
+                if (item == null)
+                {
+                    e.Handled = true;
+                    return;
+                }
+
+                var itemInfo = (ListInfo)item;
+                if (itemInfo.type == "file")
+                {
+                    TxtFileName.Text = itemInfo.name;
+                    AutomaticName = false;
+                    ChkAutoNameFile.IsChecked = false;
+                }
+                e.Handled = true;
             }
         }
 
@@ -348,10 +377,20 @@ namespace CFDG.UI.windows.Export
                 PopulateDirectory();
                 return;
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show("The file is open in another application. Please either close the file or select another one.");
                 return;
+            }
+        }
+
+        private void CmdSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow window = new SettingsWindow();
+            var result = window.ShowDialog();
+            if (result == true)
+            {
+                UpdateSettings();
             }
         }
     }

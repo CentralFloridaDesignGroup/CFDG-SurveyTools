@@ -39,6 +39,15 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28ACAD 23%29|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug %28ACAD 23%29\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AcCoreMgd, Version=23.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoCAD.NET.Core.23.0.0\lib\net47\AcCoreMgd.dll</HintPath>
@@ -115,7 +124,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandClasses\Calculations\CogoFromFeatureLine.cs" />
     <Compile Include="CommandClasses\Calculations\CreateACPoints.cs" />
+    <Compile Include="CommandClasses\Calculations\GetMeasuredBearings.cs" />
     <Compile Include="CommandClasses\Export\ExportPointGroup.cs" />
     <Compile Include="CommandClasses\Calculations\GroupPoints.cs" />
     <Compile Include="CommandClasses\Export\JobToPDF.cs" />
@@ -160,12 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\arrow-up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Create PG.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Export PG.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Field Export.png" />
@@ -229,6 +234,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\pdf-file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MeasuredBearings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

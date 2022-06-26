@@ -116,7 +116,10 @@ namespace CFDG.ACAD.Common
         private static void WriteAcMessage(string message)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
-            acVariables.Editor.WriteMessage($"{message}{Environment.NewLine}");
+            if (acVariables.Editor != null)
+            {
+                acVariables.Editor.WriteMessage($"{message}{Environment.NewLine}");
+            }
         }
 
         /// <summary>
