@@ -50,12 +50,12 @@ namespace CFDG.ACAD.CommandClasses.Calculations
         {
             string reference = GetString("Enter the plat bearing: ");
             string convertedRef = API.Calcs.Angles.ConvertBearing(reference);
-            if (reference == "*keyword*" || convertedRef == "")
+            if (reference.ToLower() == "*keyword*" || convertedRef == "")
             {
                 Logging.Info("Invalid value, please enter again.");
                 return GetPlatAzimuth();
             }
-            if (reference == "cancelled")
+            if (reference.ToLower() == "*cancel*")
             {
                 return -1;
             }
@@ -158,22 +158,28 @@ namespace CFDG.ACAD.CommandClasses.Calculations
         {
             ProcessedLine result = new ProcessedLine();
             Logging.Debug($"Start: {start}; End: {end}");
-            result.lineInfo = Lines.CalculateLine(start, end);
-            result.lineInfo.Azimuth += RotationValue;
-            Logging.Debug($"Corrected Azimuth: {result.lineInfo.Azimuth}; Bearing: {result.lineInfo.Bearing}");
+            result.LineInfo = Lines.CalculateLine(start, end);
+            result.LineInfo.Azimuth += RotationValue;
+            Logging.Debug($"Corrected Azimuth: {result.LineInfo.Azimuth}; Bearing: {result.LineInfo.Bearing}");
             result.CenterPoint = new Point3d((start.X + end.X) / 2, (start.Y + end.Y) / 2, 0);
             return result;
         }
 
-        internal struct ProcessedLine
+        internal class ProcessedLine
         {
-            internal API.Calcs.LineInfo lineInfo;
+            internal LineInfo LineInfo;
 
             internal Point3d CenterPoint;
 
+            internal ProcessedLine()
+            {
+                LineInfo = null;
+                CenterPoint = API.Helpers.Points.Null3dPoint;
+            }
+
             internal ProcessedLine(API.Calcs.LineInfo info, Point3d center)
             {
-                lineInfo = info;
+                LineInfo = info;
                 CenterPoint = center;
             }
         }
@@ -191,7 +197,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 {
                     mTextObj.Location = pLine.CenterPoint;
                     mTextObj.Width = 0;
-                    mTextObj.Contents = $"{pLine.lineInfo.Bearing} {pLine.lineInfo.Length:#.00}'";
+                    mTextObj.Contents = $"{pLine.LineInfo.Bearing} {pLine.LineInfo.Length:#.00}'";
                     mTextObj.Layer = "defpoints";
                     mTextObj.Attachment = AttachmentPoint.MiddleCenter;
                     mTextObj.TextHeight = 1.6;
