@@ -32,11 +32,11 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 Logging.Debug("Cancelling command.");
                 return;
             }
-            API.Calcs.LineInfo info = API.Calcs.Lines.CalculateLine(startPoint, endPoint);
+            LineInfo info = Lines.CalculateLine(startPoint, endPoint);
             Logging.Debug($"Bearing: {info.Bearing}, Distance: {info.Length}, Azimuth: {info.Azimuth}");
             var platAzimuth = GetPlatAzimuth();
 
-            if (RotationValue == -1)
+            if (platAzimuth == -1)
             {
                 Logging.Debug("Cancelling command.");
                 return;
@@ -48,18 +48,25 @@ namespace CFDG.ACAD.CommandClasses.Calculations
 
         internal double GetPlatAzimuth()
         {
-            string reference = GetString("Enter the plat bearing: ");
-            string convertedRef = API.Calcs.Angles.ConvertBearing(reference);
-            if (reference.ToLower() == "*keyword*" || convertedRef == "")
-            {
-                Logging.Info("Invalid value, please enter again.");
-                return GetPlatAzimuth();
-            }
-            if (reference.ToLower() == "*cancel*")
+            PromptResult reference = UserInput.GetText("Enter the plat bearing: ");
+            if (reference.Status == PromptStatus.Cancel)
             {
                 return -1;
             }
-            return Math.Round(API.Calcs.Angles.BearingToAzimuth(convertedRef), 6);
+            if (reference.Status == PromptStatus.OK && !string.IsNullOrEmpty(reference.StringResult))
+            {
+                string platBearingFormatted = Angles.ConvertBearing(reference.StringResult);
+                if (string.IsNullOrEmpty(platBearingFormatted))
+                {
+                    Logging.Info("Provided bearing does not match an accepted format, please try again.");
+                    return GetPlatAzimuth();
+                }
+                Logging.Debug("Text returned OK and isn't null");
+                double platAzimuth = Angles.BearingToAzimuth(platBearingFormatted);
+                //TODO: Add check for possible reverse bearing
+                return platAzimuth;
+            }
+            return GetPlatAzimuth();
         }
 
         internal Point3d GetPoint(string prompt)
@@ -81,6 +88,23 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 GetPoint(prompt, refPoint);
             }
             return result.Value;
+        }
+
+        internal string GetText(string prompt)
+        {
+            PromptResult result = UserInput.GetText(prompt, out string promptResult);
+            if (result.Status == PromptStatus.Cancel)
+            {
+                return "";
+            }
+            if (result.Status == PromptStatus.OK && !string.IsNullOrEmpty(promptResult))
+            {
+                Logging.Debug("Text returned OK and isn't null");
+                return promptResult;
+            }
+
+            Logging.Debug("GetText wasn't cancelled and didn't successfully pass. Restarting");
+            return GetText(prompt);
         }
 
         internal void GatherReferencePoints()

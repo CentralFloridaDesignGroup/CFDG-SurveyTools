@@ -20,11 +20,13 @@ namespace CFDG.ACAD.Common
 
         #region Public Methods
 
+        [Obsolete("GetStringFromUser is obsolete, use GetText instead.")]
         public static string GetStringFromUser(string message)
         {
             return GetStringFromUser(message, false);
         }
 
+        [Obsolete("GetStringFromUser is obsolete, use GetText instead.")]
         /// <summary>
         /// Get string from user in AutoCAD.
         /// </summary>
@@ -49,6 +51,55 @@ namespace CFDG.ACAD.Common
                 return "*keyword*";
             }
             return tr.StringResult;
+        }
+
+        /// <summary>
+        /// Get text input from user in AutoCAD
+        /// </summary>
+        /// <param name="prompt">Message for prompt</param>
+        /// <returns>PromptResult containing the results of the prompt.</returns>
+        public static PromptResult GetText(string prompt)
+        {
+            return GetText(prompt, true, out _);
+        }
+
+        /// <summary>
+        /// Get text input from user in AutoCAD
+        /// </summary>
+        /// <param name="prompt">Message for prompt</param>
+        /// <param name="result">The StringResult of the prompt.</param>
+        /// <returns>PromptResult containing the results of the prompt.</returns>
+        public static PromptResult GetText(string prompt, out string result)
+        {
+            return GetText(prompt, true, out result);
+        }
+
+        /// <summary>
+        /// Get text input from user in AutoCAD
+        /// </summary>
+        /// <param name="prompt">Message for prompt</param>
+        /// <param name="allowSpaces">Allow the user to use spaces instead of letting space advance the command.</param>
+        /// <returns>PromptResult containing the results of the prompt.</returns>
+        public static PromptResult GetText(string prompt, bool allowSpaces)
+        {
+            return GetText(prompt, allowSpaces, out _);
+        }
+
+        /// <summary>
+        /// Get text input from user in AutoCAD
+        /// </summary>
+        /// <param name="prompt">Message for prompt</param>
+        /// <param name="allowSpaces">Allow the user to use spaces instead of letting space advance the command.</param>
+        /// <param name="result">The StringResult of the prompt.</param>
+        /// <returns>PromptResult containing the results of the prompt.</returns>
+        public static PromptResult GetText(string prompt, bool allowSpaces, out string result)
+        {
+            AcVariablesStruct acVariables = GetCurrentDocSpace();
+
+            PromptStringOptions stringOptions = new PromptStringOptions(prompt) { AllowSpaces = allowSpaces };
+            PromptResult tr = acVariables.Editor.GetString(stringOptions);
+            result = tr.StringResult;
+            return tr;
         }
 
         [Obsolete]
