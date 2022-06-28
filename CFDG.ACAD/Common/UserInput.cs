@@ -53,6 +53,7 @@ namespace CFDG.ACAD.Common
             return tr.StringResult;
         }
 
+        [Obsolete]
         /// <summary>
         /// Get text input from user in AutoCAD
         /// </summary>

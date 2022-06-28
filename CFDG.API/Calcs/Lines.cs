@@ -22,7 +22,6 @@ namespace CFDG.API.Calcs
             Length = -1;
             Azimuth = -1;
         }
-
         public LineInfo(double length, double azimuth)
         {
             Length = length;

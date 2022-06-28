@@ -106,7 +106,6 @@ namespace CFDG.ACAD.CommandClasses.Calculations
             Logging.Debug("GetText wasn't cancelled and didn't successfully pass. Restarting");
             return GetText(prompt);
         }
-
         internal void GatherReferencePoints()
         {
             List<Point3d> referencePoints = new List<Point3d>(); //Point list
