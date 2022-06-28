@@ -32,11 +32,11 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 Logging.Debug("Cancelling command.");
                 return;
             }
-            API.Calcs.LineInfo info = API.Calcs.Lines.CalculateLine(startPoint, endPoint);
+            LineInfo info = Lines.CalculateLine(startPoint, endPoint);
             Logging.Debug($"Bearing: {info.Bearing}, Distance: {info.Length}, Azimuth: {info.Azimuth}");
             var platAzimuth = GetPlatAzimuth();
 
-            if (RotationValue == -1)
+            if (platAzimuth == -1)
             {
                 Logging.Debug("Cancelling command.");
                 return;
@@ -48,18 +48,25 @@ namespace CFDG.ACAD.CommandClasses.Calculations
 
         internal double GetPlatAzimuth()
         {
-            string reference = GetString("Enter the plat bearing: ");
-            string convertedRef = API.Calcs.Angles.ConvertBearing(reference);
-            if (reference == "*keyword*" || convertedRef == "")
-            {
-                Logging.Info("Invalid value, please enter again.");
-                return GetPlatAzimuth();
-            }
-            if (reference == "cancelled")
+            PromptResult reference = UserInput.GetText("Enter the plat bearing: ");
+            if (reference.Status == PromptStatus.Cancel)
             {
                 return -1;
             }
-            return Math.Round(API.Calcs.Angles.BearingToAzimuth(convertedRef), 6);
+            if (reference.Status == PromptStatus.OK && !string.IsNullOrEmpty(reference.StringResult))
+            {
+                string platBearingFormatted = Angles.ConvertBearing(reference.StringResult);
+                if (string.IsNullOrEmpty(platBearingFormatted))
+                {
+                    Logging.Info("Provided bearing does not match an accepted format, please try again.");
+                    return GetPlatAzimuth();
+                }
+                Logging.Debug("Text returned OK and isn't null");
+                double platAzimuth = Angles.BearingToAzimuth(platBearingFormatted);
+                //TODO: Add check for possible reverse bearing
+                return platAzimuth;
+            }
+            return GetPlatAzimuth();
         }
 
         internal Point3d GetPoint(string prompt)
@@ -81,6 +88,23 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 GetPoint(prompt, refPoint);
             }
             return result.Value;
+        }
+
+        internal string GetText(string prompt)
+        {
+            PromptResult result = UserInput.GetText(prompt, out string promptResult);
+            if (result.Status == PromptStatus.Cancel)
+            {
+                return "";
+            }
+            if (result.Status == PromptStatus.OK && !string.IsNullOrEmpty(promptResult))
+            {
+                Logging.Debug("Text returned OK and isn't null");
+                return promptResult;
+            }
+
+            Logging.Debug("GetText wasn't cancelled and didn't successfully pass. Restarting");
+            return GetText(prompt);
         }
 
         internal void GatherReferencePoints()
@@ -158,22 +182,28 @@ namespace CFDG.ACAD.CommandClasses.Calculations
         {
             ProcessedLine result = new ProcessedLine();
             Logging.Debug($"Start: {start}; End: {end}");
-            result.lineInfo = Lines.CalculateLine(start, end);
-            result.lineInfo.Azimuth += RotationValue;
-            Logging.Debug($"Corrected Azimuth: {result.lineInfo.Azimuth}; Bearing: {result.lineInfo.Bearing}");
+            result.LineInfo = Lines.CalculateLine(start, end);
+            result.LineInfo.Azimuth += RotationValue;
+            Logging.Debug($"Corrected Azimuth: {result.LineInfo.Azimuth}; Bearing: {result.LineInfo.Bearing}");
             result.CenterPoint = new Point3d((start.X + end.X) / 2, (start.Y + end.Y) / 2, 0);
             return result;
         }
 
-        internal struct ProcessedLine
+        internal class ProcessedLine
         {
-            internal API.Calcs.LineInfo lineInfo;
+            internal LineInfo LineInfo;
 
             internal Point3d CenterPoint;
 
+            internal ProcessedLine()
+            {
+                LineInfo = null;
+                CenterPoint = API.Helpers.Points.Null3dPoint;
+            }
+
             internal ProcessedLine(API.Calcs.LineInfo info, Point3d center)
             {
-                lineInfo = info;
+                LineInfo = info;
                 CenterPoint = center;
             }
         }
@@ -191,7 +221,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 {
                     mTextObj.Location = pLine.CenterPoint;
                     mTextObj.Width = 0;
-                    mTextObj.Contents = $"{pLine.lineInfo.Bearing} {pLine.lineInfo.Length:#.00}'";
+                    mTextObj.Contents = $"{pLine.LineInfo.Bearing} {pLine.LineInfo.Length:#.00}'";
                     mTextObj.Layer = "defpoints";
                     mTextObj.Attachment = AttachmentPoint.MiddleCenter;
                     mTextObj.TextHeight = 1.6;
