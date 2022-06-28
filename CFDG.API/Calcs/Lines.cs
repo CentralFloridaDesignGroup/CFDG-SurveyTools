@@ -7,7 +7,7 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace CFDG.API.Calcs
 {
-    public struct LineInfo
+    public class LineInfo
     {
         public double Length { get; set; }
         public double Azimuth { get; set; }
@@ -17,6 +17,11 @@ namespace CFDG.API.Calcs
             }
         }
 
+        public LineInfo()
+        {
+            Length = -1;
+            Azimuth = -1;
+        }
         public LineInfo(double length, double azimuth)
         {
             Length = length;
