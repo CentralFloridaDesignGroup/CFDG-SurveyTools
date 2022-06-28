@@ -2,11 +2,9 @@
 using System.IO;
 using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using CFDG.ACAD.Functions;
 using CFDG.API;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 
@@ -22,18 +20,23 @@ namespace CFDG.ACAD.Common
 
         #region Public Methods
 
+        public static string GetStringFromUser(string message)
+        {
+            return GetStringFromUser(message, false);
+        }
+
         /// <summary>
         /// Get string from user in AutoCAD.
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static string GetStringFromUser(string message)
+        public static string GetStringFromUser(string message, bool allowSpaces)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
 
             PromptStringOptions pso = new PromptStringOptions(message)
             {
-                AllowSpaces = false
+                AllowSpaces = allowSpaces
             };
 
             PromptResult tr = acVariables.Editor.GetString(pso);
@@ -41,9 +44,14 @@ namespace CFDG.ACAD.Common
             {
                 return "";
             }
+            if (tr.Status == PromptStatus.Keyword)
+            {
+                return "*keyword*";
+            }
             return tr.StringResult;
         }
 
+        [Obsolete]
         /// <summary>
         /// Select a point in the current document (3D)
         /// </summary>
@@ -54,6 +62,7 @@ namespace CFDG.ACAD.Common
             return SelectPointInDoc(message, new Point3d(-1, -1, -1));
         }
 
+        [Obsolete]
         /// <summary>
         /// Select a point in the current document (3D)
         /// </summary>
@@ -71,7 +80,7 @@ namespace CFDG.ACAD.Common
                     AllowArbitraryInput = true,
                     AllowNone = false
                 };
-                if (basePoint != new Point3d(-1, -1, -1))
+                if (basePoint != API.Helpers.Points.Null3dPoint)
                 {
                     ppo.BasePoint = basePoint;
                     ppo.UseBasePoint = true;
@@ -79,13 +88,92 @@ namespace CFDG.ACAD.Common
                 }
 
                 PromptPointResult pr = acVariables.Editor.GetPoint(ppo);
-                if (pr.Status != PromptStatus.Cancel)
+                Logging.Debug($"Prompt return: {pr.Value}; Prompt status: {pr.Status}; StringResult: {pr.StringResult}");
+                if (pr.Status == PromptStatus.OK && pr.Value != new Point3d(0, 0, 0))
                 {
                     return pr.Value;
                 }
-                return new Point3d(-1, -1, -1);
+                if (pr.Status == PromptStatus.Keyword)
+                {
+                    if (pr.StringResult == "_u")
+                    {
+                        return new Point3d(-1011, -1011, -1011);
+                    }
+                    return new Point3d(-1001, -1001, -1001);
+                }
+                if (pr.Status == PromptStatus.Cancel)
+                {
+                    return new Point3d(-1, -1, -1);
+                }
             }
             return new Point3d(-1, -1, -1);
+        }
+
+        /// <summary>
+        /// Requests the user to select a point in the AutoCAD application.
+        /// </summary>
+        /// <param name="prompt">The message when selecting a point.</param>
+        /// <returns>PromptPointResult containing the selected point and relevant information.</returns>
+        public static PromptPointResult GetPoint(string prompt)
+        {
+            return GetPoint(prompt, new Point3d(-1, -1, -1), true);
+        }
+
+        /// <summary>
+        /// Requests the user to select a point in the AutoCAD application.
+        /// </summary>
+        /// <param name="prompt">The message when selecting a point.</param>
+        /// <param name="basePoint">The base point where AutoCAD draws a temporary line.</param>
+        /// <returns>PromptPointResult containing the selected point and relevant information.</returns>
+        public static PromptPointResult GetPoint(string prompt, Point3d basePoint)
+        {
+            return GetPoint(prompt, basePoint, true);
+        }
+
+        /// <summary>
+        /// Requests the user to select a point in the AutoCAD application.
+        /// </summary>
+        /// <param name="prompt">The message when selecting a point.</param>
+        /// <param name="prefer2dMode">Determine if the osnapz setting should be on or off.</param>
+        /// <returns>PromptPointResult containing the selected point and relevant information.</returns>
+        public static PromptPointResult GetPoint(string prompt, bool prefer2dMode)
+        {
+            return GetPoint(prompt, new Point3d(-1, -1, -1), prefer2dMode);
+        }
+
+        /// <summary>
+        /// Requests the user to select a point in the AutoCAD application.
+        /// </summary>
+        /// <param name="prompt">The message when selecting a point.</param>
+        /// <param name="basePoint">The base point where AutoCAD draws a temporary line.</param>
+        /// <param name="prefer2dMode">Determine if the osnapz setting should be on or off.</param>
+        /// <returns>PromptPointResult containing the selected point and relevant information.</returns>
+        public static PromptPointResult GetPoint(string prompt, Point3d basePoint, bool prefer2dMode)
+        {
+            AcVariablesStruct acVariables = GetCurrentDocSpace();
+            if (!VerifyZenthValues(prefer2dMode))
+            {
+                Logging.Error($"The command preferrs to have the osnapz setting to {(prefer2dMode ? "1" : "0")}. Cancelling the command.");
+                return null;
+            }
+
+            PromptPointOptions ppo = new PromptPointOptions($"\n{prompt}")
+            {
+                AllowArbitraryInput = true,
+                AllowNone = false
+            };
+            if (basePoint != API.Helpers.Points.Null3dPoint)
+            {
+                ppo.BasePoint = basePoint;
+                ppo.UseBasePoint = true;
+                ppo.UseDashedLine = true;
+            }
+            Logging.Debug($"BasePoint: {basePoint}; prefer2dMode: {prefer2dMode}");
+
+            PromptPointResult result = acVariables.Editor.GetPoint(ppo);
+
+            Logging.Debug($"Status: {result.Status}; Value: {result.Value}; StringResult: {result.StringResult}");
+            return result;
         }
 
         /// <summary>
@@ -154,7 +242,7 @@ namespace CFDG.ACAD.Common
             }
         }
 
-        public static void AddPointToDrawing(Point3d point, string blockTableRecordSpace)
+        public static void AddPointToDrawing(Point3d point)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             using (Transaction trans = acVariables.Database.TransactionManager.StartTransaction())
@@ -163,7 +251,7 @@ namespace CFDG.ACAD.Common
                 BlockTable acBlkTbl = trans.GetObject(acVariables.Database.BlockTableId, OpenMode.ForRead) as BlockTable;
 
                 // Open the Block table record Model space for write
-                BlockTableRecord acBlkTblRec = trans.GetObject(acBlkTbl[blockTableRecordSpace], OpenMode.ForWrite) as BlockTableRecord;
+                BlockTableRecord acBlkTblRec = trans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
                 DBPoint pointObj = new DBPoint(point);
                 pointObj.SetDatabaseDefaults();
@@ -198,7 +286,7 @@ namespace CFDG.ACAD.Common
         public static bool CheckForProjectFolder(Document AcDoc, out string projectFolder)
         {
             // determines the job number of the active drawing.
-            string jobNumber = DocumentProperties.GetJobNumber(AcDoc);
+            string jobNumber = API.JobNumber.GetJobNumber(AcDoc);
             if (string.IsNullOrEmpty(jobNumber))
             {
                 Logging.Warning("Could not determine the project number.");
@@ -234,6 +322,12 @@ namespace CFDG.ACAD.Common
         {
             AcVariablesStruct acVariables;
             acVariables.Document = AcApplication.DocumentManager.MdiActiveDocument;
+            if (acVariables.Document == null)
+            {
+                acVariables.Editor = null;
+                acVariables.Database = null;
+                return acVariables;
+            }
             acVariables.Editor = acVariables.Document.Editor;
             acVariables.Database = acVariables.Document.Database;
             return acVariables;

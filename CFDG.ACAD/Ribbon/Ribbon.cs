@@ -1,6 +1,8 @@
+using System;
+using System.Drawing;
 using System.Windows.Controls;
 using Autodesk.Windows;
-using CFDG.ACAD.Functions;
+using CFDG.ACAD.Common;
 
 namespace CFDG.ACAD
 {
@@ -9,6 +11,21 @@ namespace CFDG.ACAD
     /// </summary>
     public class Ribbon
     {
+        public static RibbonTextBox CreateRibbonTextBox(string prompt, string description, string id)
+        {
+            RibbonTextBox textBox = new RibbonTextBox()
+            {
+                Prompt = prompt,
+                Description = description,
+                IsEmptyTextValid = false,
+                Width = 150,
+                MinWidth = 150,
+                SelectTextOnFocus = true,  
+                Id = id
+            };
+            return textBox;
+        }
+
         /// <summary>
         /// Create a large vertical button
         /// </summary>
@@ -87,6 +104,69 @@ namespace CFDG.ACAD
         /// </summary>
         /// <param name="text">Display text</param>
         /// <param name="command">Command to execute</param>
+        /// <returns>small horizontal RibbonButton</returns>
+        public static RibbonActionButton CreateSmallActionButton(string text, Action<string> commandAction, RibbonTextBox inputRibbonItem)
+        {
+            return CreateSmallActionButton(text, "", commandAction, inputRibbonItem, Properties.Resources.placehold_16);
+        }
+
+        /// <summary>
+        /// Create a small horizontal button
+        /// </summary>
+        /// <param name="text">Display text</param>
+        /// <param name="command">Command to execute</param>
+        /// <returns>small horizontal RibbonButton</returns>
+        public static RibbonActionButton CreateSmallActionButton(string text, Action<string> commandAction, RibbonTextBox inputRibbonItem, params System.Drawing.Bitmap[] images)
+        {
+            return CreateSmallActionButton(text, "", commandAction, inputRibbonItem, images);
+        }
+
+        /// <summary>
+        /// Create a small horizontal button
+        /// </summary>
+        /// <param name="text">Display text</param>
+        /// <param name="command">Command to execute</param>
+        /// <param name="description">Description of command.</param>
+        /// <returns>small horizontal RibbonButton</returns>
+        public static RibbonActionButton CreateSmallActionButton(string text, string description, Action<string> commandAction, RibbonTextBox inputRibbonItem)
+        {
+            return CreateSmallActionButton(text, description, commandAction, inputRibbonItem, Properties.Resources.placehold_16);
+        }
+        /// <summary>
+        /// Create a small horizontal button
+        /// </summary>
+        /// <param name="text">Display text</param>
+        /// <param name="command">Command to execute</param>
+        /// <param name="description">Description of command.</param>
+        /// <param name="images">List of Bitmap Images</param>        /// 
+        /// <returns>small horizontal RibbonButton</returns>
+        public static RibbonActionButton CreateSmallActionButton(string text, string description, Action<string> commandAction, RibbonTextBox inputRibbonItem, params System.Drawing.Bitmap[] images)
+        {
+            return CreateSmallButton(text, description, commandAction, inputRibbonItem, images);
+        }
+
+        private static RibbonActionButton CreateSmallButton(string text, string description, Action<string> commandAction, RibbonTextBox inputRibbonItem, Bitmap[] images)
+        {
+            RibbonActionButton btn = new RibbonActionButton()
+            {
+                Text = text,
+                ShowImage = true,
+                ShowText = true,
+                Orientation = Orientation.Horizontal,
+                Size = RibbonItemSize.Standard,
+                CommandHandler = new RibbonActionButtonHandler(),
+                Image = Imaging.BitmapToImageSource(images),
+                CommandAction = commandAction,
+                ReferenceTextBox = inputRibbonItem
+            };
+            return btn;
+        }
+
+        /// <summary>
+        /// Create a small horizontal button
+        /// </summary>
+        /// <param name="text">Display text</param>
+        /// <param name="command">Command to execute</param>
         /// <param name="images">List of Bitmap Images</param>
         /// <returns>small horizontal RibbonButton</returns>
         public static RibbonButton CreateSmallButton(string text, string command, params System.Drawing.Bitmap[] images)
@@ -131,6 +211,27 @@ namespace CFDG.ACAD
             return btn;
         }
 
+        public static RibbonSplitButton CreateSmallSplitButton(params RibbonButton[] buttons)
+        {
+            RibbonSplitButton btn = new RibbonSplitButton
+            {
+                Text = "splitbutton",
+                CommandHandler = new RibbonButtonHandler(),
+                ShowImage = true,
+                ShowText = true,
+                Image = Imaging.BitmapToImageSource(CFDG.ACAD.Properties.Resources.placehold_16),
+                LargeImage = Imaging.BitmapToImageSource(CFDG.ACAD.Properties.Resources.placehold_32),
+                IsSplit = true,
+                Size = RibbonItemSize.Standard,
+                Orientation = Orientation.Horizontal
+            };
+            foreach (RibbonButton commandBtn in buttons)
+            {
+                btn.Items.Add(commandBtn);
+            }
+            return btn;
+        }
+
         //TODO: Add feature for multiple buttons per line.
         /// <summary>
         /// Create a row set of buttons
@@ -138,7 +239,7 @@ namespace CFDG.ACAD
         /// <param name="rowType">Row display type</param>
         /// <param name="button1">First button</param>
         /// <returns>small horizontal RibbonRowPanel</returns>
-        public static RibbonRowPanel CreateRibbonRow(RibbonRowType rowType, RibbonButton button1)
+        public static RibbonRowPanel CreateRibbonRow(RibbonRowType rowType, RibbonItem button1)
         {
             RibbonRowPanel rrp = new RibbonRowPanel();
             if (rowType == RibbonRowType.ImageOnly)
@@ -161,7 +262,7 @@ namespace CFDG.ACAD
         /// <param name="button1">First button</param>
         /// <param name="button2">Second button</param>
         /// <returns>small horizontal RibbonRowPanel</returns>
-        public static RibbonRowPanel CreateRibbonRow(RibbonRowType rowType, RibbonButton button1, RibbonButton button2)
+        public static RibbonRowPanel CreateRibbonRow(RibbonRowType rowType, RibbonItem button1, RibbonItem button2)
         {
             RibbonRowPanel rrp = new RibbonRowPanel();
             if (rowType == RibbonRowType.ImageOnly)
@@ -190,7 +291,7 @@ namespace CFDG.ACAD
         /// <param name="button2">Second button</param>
         /// <param name="button3">Third button</param>
         /// <returns>small horizontal RibbonRowPanel</returns>
-        public static RibbonRowPanel CreateRibbonRow(RibbonRowType rowType, RibbonButton button1, RibbonButton button2, RibbonButton button3)
+        public static RibbonRowPanel CreateRibbonRow(RibbonRowType rowType, RibbonItem button1, RibbonItem button2, RibbonItem button3)
         {
             RibbonRowPanel rrp = new RibbonRowPanel();
             if (rowType == RibbonRowType.ImageOnly)

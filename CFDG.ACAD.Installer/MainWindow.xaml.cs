@@ -1,19 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.IO;
-using System.Globalization;
-using System.Diagnostics;
+using System.Windows;
 
 namespace CFDG.ACAD.Installer
 {
@@ -23,20 +10,23 @@ namespace CFDG.ACAD.Installer
     public partial class MainWindow : Window
     {
         string DllFile = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + @"\CFDG.ACAD.dll";
+
+        //TODO: Change storage location of path to file from not displaying.
         public MainWindow()
         {
             InitializeComponent();
-            DllFile = DllFile.Replace('\\', '/');
+            DllFile = DllFile.Replace('\\', '/'); //Because why use the standard delineator for your file paths.
             UpdateList();
         }
 
         private void UpdateList()
         {
             LstVersions.Items.Clear();
+
             string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
             string searchCriteria = Path.Combine(programFiles, "Autodesk");
             string[] Subdirectiores = Directory.GetDirectories(searchCriteria, "AutoCAD 20*");
-            string ci = CultureInfo.CurrentUICulture.Name;
+
             foreach (string subDirectory in Subdirectiores)
             {
                 string autoCad = Path.GetFileName(subDirectory);
@@ -53,14 +43,11 @@ namespace CFDG.ACAD.Installer
                     else
                     {
                         LstVersions.Items.Add(autoCad + " (Not Installed) | " + supportFile);
-                        //File.Create(supportFile);
-                        //File.WriteAllText(supportFile, $"(command \"_netload\" \"{ dllFile }\")");
                     }
                 }
                 else
                 {
-                    LstVersions.Items.Add(autoCad + " (Not Installed) | " + supportFile);
-
+                    LstVersions.Items.Add(autoCad + " (File not found) | " + supportFile);
                 }
             }
         }
@@ -72,14 +59,14 @@ namespace CFDG.ACAD.Installer
 
         private void CmdSubmit_Click(object sender, RoutedEventArgs e)
         {
-            var selection = LstVersions.SelectedItem;
+            object selection = LstVersions.SelectedItem;
             if (selection == null)
             {
                 MessageBox.Show("Nothing was selected");
                 return;
             }
 
-            var versionstr = LstVersions.SelectedValue.ToString();
+            string versionstr = LstVersions.SelectedValue.ToString();
 
             if (versionstr.Contains("Already"))
             {
@@ -87,8 +74,8 @@ namespace CFDG.ACAD.Installer
                 return;
             }
 
-            var versionSplit = versionstr.Split('|');
-            var path = versionSplit[1].Remove(0, 1);
+            string[] versionSplit = versionstr.Split('|');
+            string path = versionSplit[1].Remove(0, 1);
             File.AppendAllText(path, $"{Environment.NewLine}(command \"_netload\" \"{ DllFile }\")");
             MessageBox.Show("Required files added and loaded. Good to go!");
             UpdateList();

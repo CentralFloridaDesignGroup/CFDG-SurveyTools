@@ -31,6 +31,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28ACAD 23%29|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug %28ACAD 23%29\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AcCoreMgd, Version=23.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoCAD.NET.Core.23.0.0\lib\net47\AcCoreMgd.dll</HintPath>
@@ -108,8 +117,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ExportPointGroupModel.cs" />
+    <Compile Include="TextMessageBoxResultEnum.cs" />
     <Compile Include="windows\Calculations\ExportPointGroup.xaml.cs">
       <DependentUpon>ExportPointGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Common\TextMessageBoxForm.xaml.cs">
+      <DependentUpon>TextMessageBoxForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Export\OpenFileDialog.xaml.cs">
+      <DependentUpon>OpenFileDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Export\SaveDialogSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>SaveDialogSettings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="windows\Export\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="windows\FeedbackWindow.xaml.cs">
       <DependentUpon>FeedbackWindow.xaml</DependentUpon>
@@ -137,14 +161,31 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="windows\Export\SaveDialogSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>SaveDialogSettings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="windows\Calculations\ExportPointGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\Common\TextMessageBoxForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\Export\OpenFileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="windows\Export\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -172,6 +213,14 @@
       <Project>{3e9d0793-99ad-40f6-b73f-8a2fc42dc3e8}</Project>
       <Name>CFDG.API</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="windows\Export\images\gear.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

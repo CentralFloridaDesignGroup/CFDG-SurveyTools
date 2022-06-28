@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -13,11 +14,47 @@ namespace CFDG.ACAD.CommandClasses.Export
 {
     public class PlotHandler
     {
-        public static PreviewEndPlotStatus Preview(PlotEngine pe, string layout)
+        public static PreviewEndPlotStatus Preview(string layout)
+        {
+
+            PlotEngine plotEngine = PlotFactory.CreatePreviewEngine((int)PreviewEngineFlags.Plot);
+            using (plotEngine)
+            {
+                try
+                {
+                    return PlotHandle(plotEngine, layout, "");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Critical(ex.Message);
+                    return PreviewEndPlotStatus.Cancel;
+                }
+            }
+        }
+
+        public static PreviewEndPlotStatus Plot(string layout, string filePath)
+        {
+            PlotEngine plotEngine = PlotFactory.CreatePublishEngine();
+            using (plotEngine)
+            {
+                try
+                {
+                    return PlotHandle(plotEngine, layout, filePath);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Critical(ex.Message);
+                    return PreviewEndPlotStatus.Cancel;
+                }
+            }
+        }
+
+        private static PreviewEndPlotStatus PlotHandle(PlotEngine pe, string layout, string saveDir)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
+            bool isPlot = !string.IsNullOrEmpty(saveDir); //string is empty -> preview; string isn't empty -> plot.
 
-            PreviewEndPlotStatus returnValue = PreviewEndPlotStatus.Cancel;
+            PreviewEndPlotStatus returnValue;
             using (Transaction AcTransaction = acVariables.Database.TransactionManager.StartTransaction())
             {
                 Layout layoutObject = (Layout)AcTransaction.GetObject(LayoutManager.Current.GetLayoutId(layout), OpenMode.ForRead);
@@ -25,6 +62,7 @@ namespace CFDG.ACAD.CommandClasses.Export
                 // We'll be plotting the current layout
                 BlockTableRecord btr = (BlockTableRecord)AcTransaction.GetObject(layoutObject.BlockTableRecordId, OpenMode.ForRead);
                 Layout lo = (Layout)AcTransaction.GetObject(btr.LayoutId, OpenMode.ForRead);
+                Logging.Info($"Plotting layout {lo.LayoutName}");
 
                 PlotSettings ps = new PlotSettings(lo.ModelType);
                 ps.CopyFrom(lo);
@@ -44,28 +82,13 @@ namespace CFDG.ACAD.CommandClasses.Export
                 };
 
                 piv.Validate(pi);
-
-                /*
-                // We need a PlotInfo object linked to the layout
-                PlotInfo pi = new PlotInfo();
-                pi.Layout = lo.BlockTableRecordId;
-                // We need a PlotSettings object based on the layout settings which we then customize
-                PlotSettings ps = new PlotSettings(lo.ModelType);
-                ps.CopyFrom(lo);
-                // The PlotSettingsValidator helps create a valid PlotSettings object
-                PlotSettingsValidator psv = PlotSettingsValidator.Current;
-                
-                // We need to link the PlotInfo to the PlotSettings and then validate it
-                pi.OverrideSettings = ps;
-                PlotInfoValidator piv = new PlotInfoValidator();
-                piv.MediaMatchingPolicy = MatchingPolicy.MatchEnabled;
-                piv.Validate(pi);*/
+                Logging.Info($"Validation complete\nStarting plot");
 
                 // Create a Progress Dialog to provide info and allow thej user to cancel
-                PlotProgressDialog ppd = new PlotProgressDialog(true, 1, true);
+                PlotProgressDialog ppd = new PlotProgressDialog(!isPlot, 1, true);
                 using (ppd)
                 {
-                    ppd.set_PlotMsgString(PlotMessageIndex.DialogTitle, "Custom Preview Progress");
+                    ppd.set_PlotMsgString(PlotMessageIndex.DialogTitle, isPlot ? "Print Progress" : "Preview Progress");
                     ppd.set_PlotMsgString(PlotMessageIndex.SheetName, acVariables.Document.Name.Substring(acVariables.Document.Name.LastIndexOf("\\") + 1));
                     ppd.set_PlotMsgString(PlotMessageIndex.CancelJobButtonMessage, "Cancel Job");
                     ppd.set_PlotMsgString(PlotMessageIndex.CancelSheetButtonMessage, "Cancel Sheet");
@@ -81,7 +104,7 @@ namespace CFDG.ACAD.CommandClasses.Export
                     pe.BeginPlot(ppd, null);
 
                     // We'll be plotting/previewing a single document
-                    pe.BeginDocument(pi, acVariables.Document.Name, null, 1, false, "");
+                    pe.BeginDocument(pi, acVariables.Document.Name, null, 1, isPlot, saveDir);
 
                     // Which contains a single sheet
                     ppd.OnBeginSheet();
@@ -103,6 +126,7 @@ namespace CFDG.ACAD.CommandClasses.Export
 
                     // Finish the document
                     pe.EndDocument(null);
+                    Logging.Info("Plot complete.");
 
                     // And finish the plot
                     ppd.PlotProgressPos = 100;
