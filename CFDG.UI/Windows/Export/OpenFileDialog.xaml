@@ -129,7 +129,8 @@
             <DockPanel LastChildFill="True" Margin="0 2.5">
                 <TextBlock Margin="0 0 5 0">Description:</TextBlock>
                 <TextBox x:Name="TxtDescription" BorderThickness="0 0 0 1" BorderBrush="Black"
-                         TextChanged="TxtDescription_TextChanged">
+                         TextChanged="TxtDescription_TextChanged"
+                         KeyDown="HandleEnterKey">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Style.Triggers>
@@ -150,7 +151,8 @@
             </StackPanel>
             <DockPanel LastChildFill="True" Margin="0 2.5">
                 <TextBlock Margin="0 0 5 0">File Name:</TextBlock>
-                <TextBox x:Name="TxtFileName" BorderThickness="0 0 0 1" BorderBrush="Black">
+                <TextBox x:Name="TxtFileName" BorderThickness="0 0 0 1" BorderBrush="Black"
+                         KeyDown="HandleEnterKey">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Style.Triggers>

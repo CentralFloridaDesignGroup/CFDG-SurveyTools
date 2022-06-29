@@ -393,5 +393,14 @@ namespace CFDG.UI.windows.Export
                 UpdateSettings();
             }
         }
+
+        private void HandleEnterKey(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                e.Handled = true;
+                CmdSave_Click(sender, new RoutedEventArgs());
+            }
+        }
     }
 }
