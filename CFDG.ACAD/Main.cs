@@ -165,6 +165,14 @@ namespace CFDG.ACAD
                     )
                 );
 
+                //Lidar Tab
+                rtab.Panels.Add(
+                    Ribbon.CreatePanel("Lidar", "Lidar",
+                        Ribbon.CreateLargeButton("Lidar Tiles", "CreateLidarTiles", "Creates an outline of selected lidar files and places a text object in the center for reference.")
+                    )
+                );
+
+                //Exports Tab
                 rtab.Panels.Add(
                     Ribbon.CreatePanel("Export", "Export",
                         Ribbon.CreateLargeButton("Export Point\nGroup", "ExportPointGroup", Properties.Resources.Point_Group, Properties.Resources.overlay_export),

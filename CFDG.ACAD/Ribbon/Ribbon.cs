@@ -34,7 +34,19 @@ namespace CFDG.ACAD
         /// <returns>Large Vertical RibbonButton</returns>
         public static RibbonButton CreateLargeButton(string text, string command)
         {
-            return CreateLargeButton(text, command, Properties.Resources.placehold_32);
+            return CreateLargeButton(text, command, "", Properties.Resources.placehold_32);
+        }
+
+        /// <summary>
+        /// Create a large vertical button
+        /// </summary>
+        /// <param name="text">Display text</param>
+        /// <param name="command">Command to execute</param>
+        /// <param name="description">The tooltip text when you hover over the command.</param>
+        /// <returns>Large Vertical RibbonButton</returns>
+        public static RibbonButton CreateLargeButton(string text, string command, string description)
+        {
+            return CreateLargeButton(text, command, description, Properties.Resources.placehold_32);
         }
 
         /// <summary>
@@ -46,6 +58,19 @@ namespace CFDG.ACAD
         /// <returns>Large Vertical RibbonButton</returns>
         public static RibbonButton CreateLargeButton(string text, string command, params System.Drawing.Bitmap[] images)
         {
+            return CreateLargeButton(text, command, "", images);
+        }
+
+        /// <summary>
+        /// Create a large vertical button
+        /// </summary>
+        /// <param name="text">Display text</param>
+        /// <param name="command">Command to execute</param>
+        /// <param name="description">The tooltip text when you hover over the command.</param>
+        /// <param name="images">List of Bitmap Images</param>
+        /// <returns>Large Vertical RibbonButton</returns>
+        public static RibbonButton CreateLargeButton(string text, string command, string description, params System.Drawing.Bitmap[] images)
+        {
             RibbonButton btn = new RibbonButton()
             {
                 Text = text,
@@ -54,8 +79,9 @@ namespace CFDG.ACAD
                 Orientation = Orientation.Vertical,
                 Size = RibbonItemSize.Large,
                 CommandHandler = new RibbonButtonHandler(),
-                CommandParameter = $"._{ command.ToUpper() } ",
-                LargeImage = Imaging.BitmapToImageSource(images)
+                CommandParameter = $"._{command.ToUpper()} ",
+                LargeImage = Imaging.BitmapToImageSource(images),
+                Description = description
             };
             return btn;
         }
