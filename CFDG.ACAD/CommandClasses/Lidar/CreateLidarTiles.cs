@@ -10,7 +10,7 @@ using System;
 
 namespace CFDG.ACAD.CommandClasses.Lidar
 {
-    public class LidarTiles : ICommandMethod
+    public class CreateLidarTiles : ICommandMethod
     {
         [CommandMethod("CreateLidarTiles", CommandFlags.Modal | CommandFlags.NoPaperSpace)]
         public void InitialCommand()

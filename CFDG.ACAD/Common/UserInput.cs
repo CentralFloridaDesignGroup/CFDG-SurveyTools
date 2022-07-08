@@ -227,6 +227,33 @@ namespace CFDG.ACAD.Common
             return result;
         }
 
+        public static Point2d[] GetRectange()
+        {
+            AcVariablesStruct acVariables = GetCurrentDocSpace();
+            var firstPoint = GetPoint("Specifiy the first corner: ");
+            if (firstPoint.Status != PromptStatus.OK)
+            {
+                return null;
+            }
+            PromptCornerOptions cornerOptions = new PromptCornerOptions("Specifiy the other corner: ", firstPoint.Value);
+            PromptPointResult secondPoint = acVariables.Editor.GetCorner(cornerOptions);
+
+            if (secondPoint.Status != PromptStatus.OK)
+            {
+                return null;
+            }
+
+
+            if ((firstPoint.Value - secondPoint.Value).IsZeroLength())
+            {
+                return null;
+            }
+
+            Point2d min = new Point2d(Math.Min(firstPoint.Value.X, secondPoint.Value.X), Math.Min(firstPoint.Value.Y, secondPoint.Value.Y));
+            Point2d max = new Point2d(Math.Max(firstPoint.Value.X, secondPoint.Value.X), Math.Max(firstPoint.Value.Y, secondPoint.Value.Y));
+            return new Point2d[2] { min, max };
+        }
+
         /// <summary>
         /// Select a angle in the current document
         /// </summary>

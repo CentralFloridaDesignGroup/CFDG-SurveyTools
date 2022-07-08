@@ -40,12 +40,18 @@ namespace CFDG.API
             return output;
         }
 
+        
+
         public static Point3dCollection GetValidPoints(string path, Point2d min, Point2d max)
         {
             Point3dCollection points = new Point3dCollection();
             laszip panel = new laszip();
             panel.open_reader(path, out bool _);
-            var lidarPoints = panel.header.number_of_point_records;
+            long lidarPoints = panel.header.number_of_point_records;
+            if (lidarPoints == 0)
+            {
+                lidarPoints = (long)panel.header.extended_number_of_point_records;
+            }
             double[] coordinates = new double[3];
             for (int i = 0; i < lidarPoints; i++)
             {
