@@ -101,7 +101,10 @@ namespace CFDG.API
         public event ProgressChangedHandler ProgressChanged;
         private void TriggerPointsProcessed(long pointsProcessed)
         {
-            ProgressChanged(pointsProcessed);
+            if(ProgressChanged != null)
+            {
+                ProgressChanged(pointsProcessed);
+            }
         }
         #endregion
 

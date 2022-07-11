@@ -46,7 +46,7 @@ namespace CFDG.ACAD.CommandClasses.Lidar
             Logging.Debug($"Area valid\nMin: {area[0]}\nMax: {area[1]}");
             Logging.Info("Processing lidar files.");
 
-            var lidarFilesProcess = ProcessFileMethods(fileDialog.FileNames, area);
+            var lidarFilesProcess = ProcessFileMethods(fileDialog.FileNames, area).Result;
 
             if (!lidarFilesProcess)
             {
@@ -63,7 +63,7 @@ namespace CFDG.ACAD.CommandClasses.Lidar
             await CreateTIN();
         }
 
-        private bool ProcessFileMethods(string[] files, Point2d[] area)
+        private async Task<bool> ProcessFileMethods(string[] files, Point2d[] area)
         {
             int track = 1;
             foreach (string file in files)
