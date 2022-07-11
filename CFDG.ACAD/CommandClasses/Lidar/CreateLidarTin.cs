@@ -12,19 +12,25 @@ using System.Threading.Tasks;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.ApplicationServices;
 using Autodesk.Civil.DatabaseServices.Styles;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace CFDG.ACAD.CommandClasses.Lidar
 {
-    public class CreateLidarTin : ICommandMethod
+    public class CreateLidarTin
     {
+        private List<Point3d> _collectedPoints;
+
+        private UI.Lidar.StatusWindow _statusWindow;
+
         [CommandMethod("CreateLidarTin", CommandFlags.Modal | CommandFlags.NoPaperSpace)]
-        public void InitialCommand()
+        public async void InitialCommand()
         {
             OpenFileDialog fileDialog = new OpenFileDialog()
             {
                 Filter = "All Supported Formats|*.las;*.laz|Lidar Format File (*.las)|*.las|Lidar Compressed File (*.laz)|*.laz",
                 Title = "Select lidar file(s)",
-                Multiselect = false
+                Multiselect = true
             };
             if (fileDialog.ShowDialog() != DialogResult.OK || fileDialog.FileNames.Length < 1)
             {
@@ -35,31 +41,66 @@ namespace CFDG.ACAD.CommandClasses.Lidar
             if (area == null)
             {
                 Logging.Error("Could not determine the area to gather lidar.");
-            }
-            Logging.Debug($"Area valid\nMin: {area[0]}\nMax: {area[1]}");
-            Logging.Info("Collecting points");
-            var points = GetPointsFromFile(fileDialog.FileNames[0], area[0], area[1]);
-            if (points is null)
-            {
-                Logging.Error("Points returned null.");
                 return;
             }
-            Logging.Info($"Returned {points.Count} points.");
-            if (points.Count < 3)
+            Logging.Debug($"Area valid\nMin: {area[0]}\nMax: {area[1]}");
+            Logging.Info("Processing lidar files.");
+
+            var lidarFilesProcess = ProcessFileMethods(fileDialog.FileNames, area);
+
+            if (!lidarFilesProcess)
+            {
+                Logging.Error("Something happened during the processing of the lidar file. Exiting.");
+                return;
+            }
+
+            Logging.Info($"Returned {_collectedPoints.Count} points.");
+            if (_collectedPoints.Count < 3)
             {
                 Logging.Error("Not enough points were returned.");
                 return;
             }
-            CreateTIN(points);
+            await CreateTIN();
         }
 
-        private Point3dCollection GetPointsFromFile(string path, Point2d min, Point2d max)
+        private bool ProcessFileMethods(string[] files, Point2d[] area)
         {
-            return API.Lidar.GetValidPoints(path, min, max);
+            int track = 1;
+            foreach (string file in files)
+            {
+                //TODO: Impliment UI for importing
+                bool lidarFileProcessed = ProcessLidarFile(file, area[0], area[1]).Result;
+                if (!lidarFileProcessed)
+                {
+                    return false;
+                }
+                track++;
+            }
+            return true;
         }
 
-        private void CreateTIN(Point3dCollection collection)
+        private async Task<bool> ProcessLidarFile(string path, Point2d min, Point2d max)
         {
+            if (_collectedPoints == null)
+            {
+                _collectedPoints = new List<Point3d>();
+            }
+
+            API.Lidar lidar = new API.Lidar(path);
+            
+            var success = await lidar.CompileGroundShotsAsync(min, max);
+            if (!success)
+            {
+                return false;
+            }
+            _collectedPoints.AddRange(lidar.GroundPoints);
+            return true;
+        }
+
+        private async Task CreateTIN()
+        {
+            Logging.Info("Preparing TIN surface.");
+            Point3dCollection collection = new Point3dCollection(_collectedPoints.ToArray());
             using (Transaction transaction = AcApplication.DocumentManager.MdiActiveDocument.Database.TransactionManager.StartTransaction())
             {
                 try

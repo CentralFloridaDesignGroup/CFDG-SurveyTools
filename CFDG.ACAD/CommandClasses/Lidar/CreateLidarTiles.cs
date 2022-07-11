@@ -32,13 +32,15 @@ namespace CFDG.ACAD.CommandClasses.Lidar
                 Logging.Error("No files were selected. Exiting...");
                 return;
             }
+            API.Lidar lidar;
             foreach (var file in fileDialog.FileNames)
             {
-                var info = ProcessLidarPanel(file);
-                minX = (minX == 0) ? info.SouthBound : Math.Min(minX, info.SouthBound);
-                minY = (minY == 0) ? info.WestBound : Math.Min(minY, info.WestBound);
-                maxX = (maxX == 0) ? info.NorthBound : Math.Max(maxX, info.NorthBound);
-                maxY = (maxY == 0) ? info.EastBound : Math.Max(maxY, info.EastBound);
+                lidar = new API.Lidar(file);
+                minX = (minX == 0) ? lidar.Meta.SouthBound :    Math.Min(minX, lidar.Meta.SouthBound);
+                minY = (minY == 0) ? lidar.Meta.WestBound  :    Math.Min(minY, lidar.Meta.WestBound);
+                maxX = (maxX == 0) ? lidar.Meta.NorthBound :    Math.Max(maxX, lidar.Meta.NorthBound);
+                maxY = (maxY == 0) ? lidar.Meta.EastBound  :    Math.Max(maxY, lidar.Meta.EastBound);
+                CreatePolyline(lidar);
             }
             ZoomToResult(acVariables.Editor, new Point2d(minX, minY), new Point2d(maxX, maxY));
         }
@@ -55,21 +57,7 @@ namespace CFDG.ACAD.CommandClasses.Lidar
             ed.SetCurrentView(view);
         }
 
-        private API.Lidar.PanelInfo ProcessLidarPanel(string file)
-        {
-            Logging.Debug($"Parsing \"{file}\"");
-            API.Lidar.PanelInfo info = API.Lidar.GetPanelInfo(file);
-            if (info is null)
-            {
-                Logging.Error("There was a parsing error with the file.");
-                return null;
-            }
-            CreatePolyline(info);
-            Logging.Debug("Parsing succeeded!");
-            return info;
-        }
-
-        private void CreatePolyline(API.Lidar.PanelInfo panelInfo)
+        private void CreatePolyline(API.Lidar panelInfo)
         {
             AcVariablesStruct acVariables = UserInput.GetCurrentDocSpace();
             double annoScale = double.Parse(AcApplication.GetSystemVariable("CANNOSCALEVALUE").ToString());
@@ -81,20 +69,20 @@ namespace CFDG.ACAD.CommandClasses.Lidar
                     //Create polyline
                     Polyline polyline = new Polyline(4);
                     polyline.SetDatabaseDefaults();
-                    polyline.AddVertexAt(0, new Point2d(panelInfo.NorthBound, panelInfo.EastBound), 0, 0, 0);
-                    polyline.AddVertexAt(1, new Point2d(panelInfo.NorthBound, panelInfo.WestBound), 0, 0, 0);
-                    polyline.AddVertexAt(2, new Point2d(panelInfo.SouthBound, panelInfo.WestBound), 0, 0, 0);
-                    polyline.AddVertexAt(3, new Point2d(panelInfo.SouthBound, panelInfo.EastBound), 0, 0, 0);
+                    polyline.AddVertexAt(0, new Point2d(panelInfo.Meta.NorthBound, panelInfo.Meta.EastBound), 0, 0, 0);
+                    polyline.AddVertexAt(1, new Point2d(panelInfo.Meta.NorthBound, panelInfo.Meta.WestBound), 0, 0, 0);
+                    polyline.AddVertexAt(2, new Point2d(panelInfo.Meta.SouthBound, panelInfo.Meta.WestBound), 0, 0, 0);
+                    polyline.AddVertexAt(3, new Point2d(panelInfo.Meta.SouthBound, panelInfo.Meta.EastBound), 0, 0, 0);
                     polyline.Elevation = 0;
                     polyline.Closed = true;
 
                     //Create MText
                     MText text = new MText
                     {
-                        Contents = panelInfo.Name,
+                        Contents = panelInfo.Meta.ToString(),
                         TextHeight = 50,
                         Attachment = AttachmentPoint.MiddleCenter,
-                        Location = new Point3d((panelInfo.NorthBound + panelInfo.SouthBound) / 2, (panelInfo.WestBound + panelInfo.EastBound) / 2, 0),
+                        Location = new Point3d((panelInfo.Meta.NorthBound + panelInfo.Meta.SouthBound) / 2, (panelInfo.Meta.WestBound + panelInfo.Meta.EastBound) / 2, 0),
                         Layer = "0"
                     };
 

@@ -118,6 +118,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lidar\StatusWindow\StatusWindow.xaml.cs">
+      <DependentUpon>StatusWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\ExportPointGroupModel.cs" />
     <Compile Include="TextMessageBoxResultEnum.cs" />
     <Compile Include="windows\Calculations\ExportPointGroup.xaml.cs">
@@ -175,6 +178,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Lidar\StatusWindow\StatusWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="windows\Calculations\ExportPointGroup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
