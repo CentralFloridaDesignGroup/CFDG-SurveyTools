@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CFDG.UI.Lidar"
+        xmlns:mi="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         FontSize="16"
         ResizeMode="NoResize"
@@ -38,7 +39,7 @@
         <TextBlock x:Name="txtStatus" Grid.Row="0" d:Text="This is debug text"/>
         <ProgressBar x:Name="pbStatus" Grid.Row="1" d:Value="26"/>
         <StackPanel x:Name="grpChecks" Orientation="Vertical" Grid.Row="2">
-            <CheckBox d:IsChecked="True">Finding relevant panels</CheckBox>
+            <CheckBox d:IsChecked="True" Click="CheckBox_Click">Finding relevant panels</CheckBox>
             <CheckBox>Gathering points from panel</CheckBox>
             <CheckBox>Creating TIN surface</CheckBox>
         </StackPanel>

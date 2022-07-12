@@ -14,29 +14,20 @@ using Autodesk.Civil.ApplicationServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 using System.Collections.Generic;
 using System.Threading;
+using System.IO;
 
 namespace CFDG.ACAD.CommandClasses.Lidar
 {
     public class CreateLidarTin
     {
+        private List<string> _lidarPanels;
         private List<Point3d> _collectedPoints;
-
-        private UI.Lidar.StatusWindow _statusWindow;
+        private Point2d _minCorner;
+        private Point2d _maxCorner;
 
         [CommandMethod("CreateLidarTin", CommandFlags.Modal | CommandFlags.NoPaperSpace)]
         public async void InitialCommand()
         {
-            OpenFileDialog fileDialog = new OpenFileDialog()
-            {
-                Filter = "All Supported Formats|*.las;*.laz|Lidar Format File (*.las)|*.las|Lidar Compressed File (*.laz)|*.laz",
-                Title = "Select lidar file(s)",
-                Multiselect = true
-            };
-            if (fileDialog.ShowDialog() != DialogResult.OK || fileDialog.FileNames.Length < 1)
-            {
-                Logging.Error("No files were selected. Exiting...");
-                return;
-            }
             Point2d[] area = UserInput.GetRectange();
             if (area == null)
             {
@@ -44,32 +35,79 @@ namespace CFDG.ACAD.CommandClasses.Lidar
                 return;
             }
             Logging.Debug($"Area valid\nMin: {area[0]}\nMax: {area[1]}");
+            _minCorner = area[0];
+            _maxCorner = area[1];
             Logging.Info("Processing lidar files.");
-
-            var lidarFilesProcess = ProcessFileMethods(fileDialog.FileNames, area).Result;
-
-            if (!lidarFilesProcess)
-            {
-                Logging.Error("Something happened during the processing of the lidar file. Exiting.");
+            if (!await GetRelevantPanels()){
+                Logging.Error("Could not process lidar files.");
                 return;
             }
-
-            Logging.Info($"Returned {_collectedPoints.Count} points.");
-            if (_collectedPoints.Count < 3)
+            if (!await ProcessFileMethods())
             {
-                Logging.Error("Not enough points were returned.");
+                Logging.Error("Could not generate points from files.");
                 return;
             }
-            await CreateTIN();
+            if (!await CreateTIN())
+            {
+                Logging.Error("Could not create a TIN surface.");
+                return;
+            }
         }
 
-        private async Task<bool> ProcessFileMethods(string[] files, Point2d[] area)
+        private async Task<bool> GetRelevantPanels()
         {
-            int track = 1;
+            _lidarPanels = new List<string>();
+            string currentZone = AcApplication.GetSystemVariable("cgeocs").ToString();
+            if (string.IsNullOrEmpty(currentZone))
+            {
+                Logging.Error("The coordinate zone was not properly set.");
+                return false;
+            }
+            currentZone = currentZone.Split('-')[1];
+            string indexValue = API.XML.ReadValue("lidar", "indexfile");
+            if (string.IsNullOrEmpty(indexValue))
+            {
+                return false;
+            }
+            string[] files = File.ReadAllLines(indexValue);
+            API.Lidar lidar;
+            Point2d[] corners = new Point2d[4] { _minCorner, _maxCorner, new Point2d(_minCorner.X, _maxCorner.Y), new Point2d(_maxCorner.X, _minCorner.Y) };
+            bool isValid = false;
             foreach (string file in files)
             {
+                isValid = false;
+                string lidarFile = file.Split(',')[0];
+                string zone = file.Split(',')[1];
+                lidar = new API.Lidar(lidarFile);
+                if (zone != currentZone)
+                {
+                    continue;
+                }
+                foreach (Point2d point in corners)
+                {
+                    if ((lidar.Meta.WestBound <= point.Y) && (point.Y <= lidar.Meta.EastBound))
+                    {
+                        if ((lidar.Meta.SouthBound <= point.X) && (point.X <= lidar.Meta.NorthBound))
+                        {
+                            isValid = true;
+                        }
+                    }
+                }
+                if (isValid)
+                {
+                    _lidarPanels.Add(file);
+                }
+            }
+            return true;
+        }
+
+        private async Task<bool> ProcessFileMethods()
+        {
+            int track = 1;
+            foreach (string file in _lidarPanels)
+            {
                 //TODO: Impliment UI for importing
-                bool lidarFileProcessed = ProcessLidarFile(file, area[0], area[1]).Result;
+                bool lidarFileProcessed = await ProcessLidarFile(file, _minCorner, _maxCorner);
                 if (!lidarFileProcessed)
                 {
                     return false;
@@ -97,7 +135,7 @@ namespace CFDG.ACAD.CommandClasses.Lidar
             return true;
         }
 
-        private async Task CreateTIN()
+        private async Task<bool> CreateTIN()
         {
             Logging.Info("Preparing TIN surface.");
             Point3dCollection collection = new Point3dCollection(_collectedPoints.ToArray());
@@ -124,8 +162,10 @@ namespace CFDG.ACAD.CommandClasses.Lidar
                 {
                     Logging.Error("An issue occured with creating the surface.");
                     transaction.Commit();
+                    return false;
                 }
             }
+            return true;
         }
     }
 }

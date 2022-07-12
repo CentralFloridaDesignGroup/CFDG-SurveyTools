@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LidarCompiler": {
+      "commandName": "Project",
+      "commandLineArgs": "\"X:\\GIS Data\\Lidar Files\\relevant_files_220712_105949.txt\""
+    }
+  }
+}
