@@ -58,7 +58,7 @@ namespace CFDG.ACAD
 #if !DEBUG
             Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} has been loaded successfully");
 #else
-            Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} [Debug Version] has been loaded successfully");
+            Common.Logging.Info($"CFDG Survey plugin version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version} [Debug Version] has been loaded successfully");
 #endif
             OnEachDocLoad();
         }
@@ -76,13 +76,13 @@ namespace CFDG.ACAD
         /// </summary>
         private void OnEachDocLoad()
         {
-            if ((bool)XML.ReadValue("Autocad", "EnableOsnapZ"))
+            if (Settings.GetValue<bool>("Autocad.EnableOsnapZ"))
             {
                 ACApplication.SetSystemVariable("OSnapZ", 1);
             }
             DocumentCollection docs = ACApplication.DocumentManager;
             int currentDocCount = docs.Count;
-            int excessive = (int)XML.ReadValue("autocad", "warnExcessiveDwgOpen");
+            int excessive = Settings.GetValue<int>("Autocad.ExcessiveFiles");
             if (excessive > 0 && currentDocCount >= excessive)
             {
                 MessageBox.Show($"You currently have {currentDocCount} drawings open. A notification will show until you have under {excessive} drawings open. Please save and close drawings that you are done with.", "Close drawings", MessageBoxButton.OK);
@@ -108,7 +108,7 @@ namespace CFDG.ACAD
         private void EstablishTab()
         {
             //Get tab name
-            string tabName = (string)XML.ReadValue("General", "CompanyAbbreviation");
+            string tabName = Settings.GetValue<string>("General.CompanyAbbreviation");
 
             //Add Ribbon
             RibbonControl ribbon = ComponentManager.Ribbon;

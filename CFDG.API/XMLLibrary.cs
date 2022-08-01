@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml.Linq;
 
 namespace CFDG.API
@@ -6,6 +7,8 @@ namespace CFDG.API
     /// <summary>
     /// Internal XML Handling including reading and writing
     /// </summary>
+    /// 
+    [Obsolete("Use the Setting class", true)]
     public class XML
     {
         #region Properties

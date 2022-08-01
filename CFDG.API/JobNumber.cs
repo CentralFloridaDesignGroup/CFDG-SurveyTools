@@ -151,7 +151,7 @@ namespace CFDG.API
         public static string GetPath(string JobNumber)
         {
             //Base variables setup
-            string dir = (string)XML.ReadValue("general", "defaultprojectpath");
+            string dir = Settings.GetValue<string>("General.DefaultProjectPath");
 
             //Error checks
             if (!TryParse(JobNumber, JobNumberFormats.LongHyphan, out string fullNumber))
@@ -226,7 +226,7 @@ namespace CFDG.API
         /// <returns>Job number or <paramref name="empty"/> string</returns>
         private static string ParseFileName(string fileName)
         {
-            dynamic match = Regex.Match(fileName, API.XML.ReadValue("General", "DefaultProjectNumber"));
+            dynamic match = Regex.Match(fileName, Settings.GetValue<string>("General.DefaultProjectNumber"));
             if (match.Success)
             {
                 return match.Value;

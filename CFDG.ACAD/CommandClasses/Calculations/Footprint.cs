@@ -7,7 +7,6 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using CFDG.ACAD.Common;
-using CFDG.API;
 using AcApplication = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace CFDG.ACAD.CommandClasses.Calculations
@@ -65,7 +64,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                     return false;
                 }
             }
-            Triangle triangle = new Triangle(distance, angle);
+            API.Triangle triangle = new API.Triangle(distance, angle);
             Point3d endPoint = new Point3d(start.X + triangle.SideA, start.Y + triangle.SideB, start.Z);
             CreateLine(start, endPoint);
             CurrentPoint = endPoint;
@@ -99,7 +98,7 @@ namespace CFDG.ACAD.CommandClasses.Calculations
                 distance = Math.Abs(double.Parse(distanceStr));
             }
             CurrentAngle += angle;
-            Triangle triangle = new Triangle(distance, CurrentAngle);
+            API.Triangle triangle = new API.Triangle(distance, CurrentAngle);
             Point3d endPoint = new Point3d(CurrentPoint.X + triangle.SideA, CurrentPoint.Y + triangle.SideB, 0);
             CreateLine(CurrentPoint, endPoint);
             CurrentPoint = endPoint;
