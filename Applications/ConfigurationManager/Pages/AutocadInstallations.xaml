@@ -30,9 +30,11 @@
                     <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Center">
                         <Image Source="{Binding Image}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" />
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+                        <TextBlock Text="{Binding Status}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            
         </ListView>
     </Grid>
 </Page>
